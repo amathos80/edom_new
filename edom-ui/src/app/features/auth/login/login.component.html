@@ -1,0 +1,53 @@
+<div class="login-container">
+  <p-card>
+    <ng-template #header>
+      <div class="login-header">
+        <h2>eDom</h2>
+        <p>Accedi alla tua area riservata</p>
+      </div>
+    </ng-template>
+
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      @if (errorMessage()) {
+        <p-message severity="error" [text]="errorMessage()!" styleClass="mb-4 w-full" />
+      }
+
+      <div class="field">
+        <label for="username">Utente</label>
+        <input
+          id="username"
+          pInputText
+          type="text"
+          formControlName="username"
+          class="w-full"
+          autocomplete="username"
+          [class.ng-dirty]="form.get('username')?.touched" />
+        @if (form.get('username')?.touched && form.get('username')?.hasError('required')) {
+          <small class="p-error">Il nome utente è obbligatorio.</small>
+        }
+      </div>
+
+      <div class="field">
+        <label for="password">Password</label>
+        <p-password
+          inputId="password"
+          formControlName="password"
+          [feedback]="false"
+          [toggleMask]="true"
+          styleClass="w-full"
+          inputStyleClass="w-full"
+          autocomplete="current-password" />
+        @if (form.get('password')?.touched && form.get('password')?.hasError('required')) {
+          <small class="p-error">La password è obbligatoria.</small>
+        }
+      </div>
+
+      <p-button
+        type="submit"
+        label="Accedi"
+        styleClass="w-full mt-3"
+        [loading]="loading()"
+        [disabled]="form.invalid" />
+    </form>
+  </p-card>
+</div>

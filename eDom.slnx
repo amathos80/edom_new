@@ -1,0 +1,8 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/eDom.Api/eDom.Api.csproj" />
+    <Project Path="src/eDom.Application/eDom.Application.csproj" />
+    <Project Path="src/eDom.Core/eDom.Core.csproj" />
+    <Project Path="src/eDom.Infrastructure/eDom.Infrastructure.csproj" />
+  </Folder>
+</Solution>

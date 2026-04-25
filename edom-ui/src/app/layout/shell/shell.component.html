@@ -1,0 +1,58 @@
+<div class="layout-wrapper" [class.sidebar-collapsed]="sidebarCollapsed()">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      @if (!sidebarCollapsed()) {
+        <span class="app-brand">eDom</span>
+      }
+      <p-button
+        [icon]="sidebarCollapsed() ? 'pi pi-bars' : 'pi pi-times'"
+        [text]="true"
+        severity="secondary"
+        (onClick)="toggleSidebar()"
+        class="toggle-btn"
+      />
+    </div>
+
+    <nav class="sidebar-nav">
+      @for (item of menuItems; track item.route) {
+        <a
+          [routerLink]="item.route"
+          routerLinkActive="active"
+          class="nav-item"
+          pRipple
+          [pTooltip]="sidebarCollapsed() ? item.label : ''"
+          tooltipPosition="right"
+        >
+          <i [class]="item.icon"></i>
+          @if (!sidebarCollapsed()) {
+            <span>{{ item.label }}</span>
+          }
+        </a>
+      }
+    </nav>
+  </aside>
+
+  <!-- Main area -->
+  <div class="main-area">
+    <header class="topbar">
+      <div class="topbar-end">
+        <span class="user-name">{{ auth.currentUser()?.given_name }}</span>
+        <p-avatar icon="pi pi-user" shape="circle" />
+        <p-button
+          icon="pi pi-sign-out"
+          severity="secondary"
+          [text]="true"
+          (onClick)="logout()"
+          pTooltip="Esci"
+        />
+      </div>
+    </header>
+
+    <main class="page-content">
+      <router-outlet />
+    </main>
+  </div>
+
+</div>

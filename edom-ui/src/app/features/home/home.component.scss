@@ -1,0 +1,41 @@
+.home-page {
+  max-width: 1200px;
+}
+
+.welcome-banner {
+  margin-bottom: 2rem;
+
+  h1 {
+    font-size: 1.75rem;
+    font-weight: 600;
+    color: var(--p-surface-800);
+    margin: 0 0 0.5rem;
+  }
+
+  p {
+    color: var(--p-surface-500);
+    margin: 0;
+  }
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1.5rem;
+}
+
+.stat-content {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.stat-icon {
+  font-size: 2rem;
+  color: var(--p-primary-color);
+}
+
+.stat-label {
+  color: var(--p-surface-600);
+  font-size: 0.9rem;
+}

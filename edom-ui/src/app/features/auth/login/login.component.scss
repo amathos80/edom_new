@@ -1,0 +1,39 @@
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: var(--p-surface-ground);
+
+  p-card {
+    width: 100%;
+    max-width: 420px;
+  }
+}
+
+.login-header {
+  text-align: center;
+  padding: 1.5rem 1.5rem 0;
+
+  h2 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--p-primary-color);
+    margin: 0 0 0.25rem;
+  }
+
+  p {
+    color: var(--p-text-muted-color);
+    margin: 0;
+  }
+}
+
+.field {
+  margin-bottom: 1.25rem;
+
+  label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+}
