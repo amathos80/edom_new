@@ -11,6 +11,7 @@ public class HctDbContext(DbContextOptions<HctDbContext> options) : DbContext(op
     public DbSet<AuditLog> AuditLogs => Set<AuditLog>();
     public DbSet<LogAccesso> LogAccessi => Set<LogAccesso>();
     public DbSet<Configurazione> Configurazioni => Set<Configurazione>();
+    public DbSet<UserDashboardLayout> UserDashboardLayouts => Set<UserDashboardLayout>();
 
     /// <summary>
     /// Quando true, AuditInterceptor non genera record per questo contesto.
@@ -23,7 +24,9 @@ public class HctDbContext(DbContextOptions<HctDbContext> options) : DbContext(op
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+
         base.OnModelCreating(modelBuilder);
+        modelBuilder.HasDefaultSchema("HICT");
 
         // ── SI_UTENTI ──────────────────────────────────────────────────────────
         modelBuilder.Entity<Utente>(e =>
@@ -228,6 +231,18 @@ public class HctDbContext(DbContextOptions<HctDbContext> options) : DbContext(op
             e.Property(x => x.Codice).HasColumnName("CONF_CODICE").HasMaxLength(100).IsRequired();
             e.Property(x => x.Valore).HasColumnName("CONF_VALORE").HasMaxLength(500);
             e.Property(x => x.Descrizione).HasColumnName("CONF_DESCR").HasMaxLength(500);
+        });
+
+        // ── APP_DASH_LAYOUT ────────────────────────────────────────────────────
+        modelBuilder.Entity<UserDashboardLayout>(e =>
+        {
+            e.ToTable("APP_DASH_LAYOUT");
+            e.HasKey(x => x.Id);
+            e.Property(x => x.Id).HasColumnName("DASH_ID").ValueGeneratedOnAdd();
+            e.Property(x => x.UserCodice).HasColumnName("DASH_USER_CODICE").HasMaxLength(100).IsRequired();
+            e.Property(x => x.LayoutJson).HasColumnName("DASH_LAYOUT_JSON").IsRequired();
+            e.Property(x => x.UpdatedAt).HasColumnName("DASH_UPDATED_AT").IsRequired();
+            e.HasIndex(x => x.UserCodice).IsUnique().HasDatabaseName("UX_DASH_USER_CODICE");
         });
     }
 }

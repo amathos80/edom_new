@@ -1,0 +1,20 @@
+<section class="custom-components-home">
+  <header class="hero">
+    <h1>Custom Components</h1>
+    <p>
+      Sezione dedicata ai componenti condivisi. Ogni esempio viene caricato in lazy
+      loading, così il relativo chunk viene scaricato solo quando viene aperto.
+    </p>
+  </header>
+
+  <div class="components-grid">
+    @for (entry of entries; track entry.path) {
+      <a class="component-link" [routerLink]="['/app/custom-components', entry.path]">
+        <p-card [header]="entry.title" styleClass="component-card">
+          <p class="description">{{ entry.description }}</p>
+          <p-tag value="Lazy chunk" severity="info" />
+        </p-card>
+      </a>
+    }
+  </div>
+</section>

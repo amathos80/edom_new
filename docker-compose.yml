@@ -1,4 +1,6 @@
 services:
+
+  # ── Database ──────────────────────────────────────────────────────────────
   postgres:
     image: postgres:16-alpine
     container_name: edom-postgres
@@ -17,6 +19,57 @@ services:
       timeout: 5s
       retries: 5
 
+  # ── Backend API ───────────────────────────────────────────────────────────
+  api:
+    build:
+      context: ./src
+      dockerfile: Dockerfile.api
+    container_name: edom-api
+    user: "${UID:-1000}:${GID:-1000}"
+    restart: unless-stopped
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: http://+:5075
+      HOME: /src/.home
+      DOTNET_CLI_HOME: /src/.home
+      NUGET_PACKAGES: /src/.nuget/packages
+      DatabaseProvider: PostgreSQL
+      ConnectionStrings__PostgreSQL: "Host=edom-postgres;Database=edom;Username=postgres;Password=postgres"
+      AllowedOrigins__0: "http://localhost:4200"
+      JwtSettings__Secret: "CHANGEME_MIN32CHARS_SECRET_KEY_FOR_EDOM_APP"
+    ports:
+      - "5075:5075"
+    cap_add:
+      - SYS_PTRACE
+    security_opt:
+      - seccomp:unconfined
+    volumes:
+      - ./src:/src
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  # ── Frontend Angular ──────────────────────────────────────────────────────
+  frontend:
+    build:
+      context: ./edom-ui
+      dockerfile: Dockerfile
+    container_name: edom-frontend
+    user: "${UID:-1000}:${GID:-1000}"
+    restart: unless-stopped
+    environment:
+      HOME: /tmp
+      npm_config_cache: /tmp/npm-cache
+    ports:
+      - "4200:4200"
+    volumes:
+      - ./edom-ui:/app
+      - edom-node-modules:/app/node_modules
+    depends_on:
+      - api
+
 volumes:
   edom-pgdata:
+    driver: local
+  edom-node-modules:
     driver: local

@@ -3,6 +3,8 @@
 # Compiled output
 */bin
 */obj
+.home/
+.nuget/
 
 
 # IDEs and editors

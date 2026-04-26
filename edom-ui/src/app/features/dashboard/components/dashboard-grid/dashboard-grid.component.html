@@ -1,0 +1,32 @@
+@if (gridFailed) {
+  <section class="dashboard-grid-fallback">
+    @for (widget of widgets; track widget.id) {
+      <article class="fallback-card">
+        <app-dashboard-widget-container
+          [widget]="widget"
+          (removeRequested)="onRemoveWidget($event)"
+        />
+      </article>
+    }
+  </section>
+} @else {
+  <section #gridHost class="grid-stack">
+    @for (widget of widgets; track widget.id) {
+      <div
+        class="grid-stack-item"
+        [attr.gs-id]="widget.id"
+        [attr.gs-x]="widget.x"
+        [attr.gs-y]="widget.y"
+        [attr.gs-w]="widget.w"
+        [attr.gs-h]="widget.h"
+      >
+        <div class="grid-stack-item-content widget-shell">
+          <app-dashboard-widget-container
+            [widget]="widget"
+            (removeRequested)="onRemoveWidget($event)"
+          />
+        </div>
+      </div>
+    }
+  </section>
+}

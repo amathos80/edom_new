@@ -1,0 +1,52 @@
+.widget-container {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  height: 100%;
+  min-height: 100%;
+  background: #fff;
+}
+
+.widget-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.6rem 0.75rem;
+  border-bottom: 1px solid var(--p-surface-200);
+  background: linear-gradient(120deg, #f8fafc 0%, #eef2ff 100%);
+
+  h3 {
+    margin: 0;
+    font-size: 0.95rem;
+    font-weight: 600;
+  }
+}
+
+.widget-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.widget-body {
+  padding: 0.75rem;
+  overflow: auto;
+}
+
+.widget-state {
+  display: grid;
+  place-items: center;
+  min-height: 88px;
+  color: var(--p-surface-500);
+}
+
+.widget-error {
+  color: var(--p-red-500);
+}
+
+.widget-children {
+  border-top: 1px dashed var(--p-surface-300);
+  padding: 0.5rem;
+  display: grid;
+  gap: 0.5rem;
+}

@@ -10,6 +10,8 @@ namespace eDom.Infrastructure;
 
 public static class DependencyInjection
 {
+    private const string DefaultSchema = "HICT";
+
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
         var provider = configuration["DatabaseProvider"] ?? "Oracle";
@@ -29,7 +31,8 @@ public static class DependencyInjection
                     options.UseSqlServer(connectionString);
                     break;
                 case "PostgreSQL":
-                    options.UseNpgsql(connectionString);
+                    options.UseNpgsql(connectionString, npgsql =>
+                        npgsql.MigrationsHistoryTable("__EFMigrationsHistory", DefaultSchema));
                     break;
                 default:
                     throw new NotSupportedException($"Database provider '{provider}' is not supported.");
@@ -41,6 +44,7 @@ public static class DependencyInjection
         services.AddScoped<IPazientiRepository, PazientiRepository>();
         services.AddScoped<ILogAccessoRepository, LogAccessoRepository>();
         services.AddScoped<IConfigurazioneRepository, ConfigurazioneRepository>();
+        services.AddScoped<IUserDashboardLayoutRepository, UserDashboardLayoutRepository>();
 
         return services;
     }

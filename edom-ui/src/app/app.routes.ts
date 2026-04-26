@@ -20,6 +20,14 @@ export const routes: Routes = [
       {
         path: 'pazienti',
         loadComponent: () => import('./features/pazienti/pazienti-list/pazienti-list.component').then(m => m.PazientiListComponent)
+      },
+      {
+        path: 'custom-components',
+        loadChildren: () => import('./features/custom-components/custom-components.routes').then(m => m.CUSTOM_COMPONENTS_ROUTES)
+      },
+      {
+        path: 'dashboard',
+        loadChildren: () => import('./features/dashboard/dashboard.routes').then(m => m.DASHBOARD_ROUTES)
       }
     ]
   },

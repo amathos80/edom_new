@@ -1,0 +1,43 @@
+<article class="widget-container">
+  <header class="widget-header">
+    <div class="widget-title-wrap">
+      <h3>{{ widget.title || widget.type }}</h3>
+      <p-tag value="Widget" severity="secondary" />
+    </div>
+
+    <p-button
+      icon="pi pi-times"
+      severity="secondary"
+      [text]="true"
+      (onClick)="requestRemove()"
+      pTooltip="Rimuovi widget"
+    />
+  </header>
+
+  <section class="widget-body">
+    @if (loading()) {
+      <div class="widget-state">
+        <p-progress-spinner ariaLabel="Caricamento widget" [style]="{ width: '1.5rem', height: '1.5rem' }" />
+      </div>
+    } @else if (error()) {
+      <div class="widget-state widget-error">
+        {{ error() }}
+      </div>
+    } @else if (componentType(); as currentComponent) {
+      <ng-container *ngComponentOutlet="currentComponent; inputs: componentInputs" />
+    }
+  </section>
+
+  @if ((widget.children?.length ?? 0) > 0 && canRenderChildren) {
+    <section class="widget-children">
+      @for (child of widget.children; track child.id) {
+        <app-dashboard-widget-container
+          [widget]="child"
+          [depth]="depth + 1"
+          [maxDepth]="maxDepth"
+          (removeRequested)="removeRequested.emit($event)"
+        />
+      }
+    </section>
+  }
+</article>

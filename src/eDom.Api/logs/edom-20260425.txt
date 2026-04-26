@@ -1,0 +1,360 @@
+2026-04-25 11:28:02.430 +00:00 [WRN] Storing keys in a directory '/root/.aspnet/DataProtection-Keys' that may not be persisted outside of the container. Protected data will be unavailable when container is destroyed. For more information go to https://aka.ms/aspnet/dataprotectionwarning
+2026-04-25 11:28:03.019 +00:00 [WRN] No XML encryptor configured. Key {b749c0d7-8871-416c-87bd-fa5aea86233d} may be persisted to storage in unencrypted form.
+2026-04-25 11:28:03.192 +00:00 [WRN] Overriding HTTP_PORTS '8080' and HTTPS_PORTS ''. Binding to values defined by URLS instead 'http://localhost:5075'.
+2026-04-25 11:31:46.817 +00:00 [WRN] Storing keys in a directory '/root/.aspnet/DataProtection-Keys' that may not be persisted outside of the container. Protected data will be unavailable when container is destroyed. For more information go to https://aka.ms/aspnet/dataprotectionwarning
+2026-04-25 11:31:47.350 +00:00 [WRN] Overriding HTTP_PORTS '8080' and HTTPS_PORTS ''. Binding to values defined by URLS instead 'http://localhost:5075'.
+2026-04-25 11:35:49.764 +00:00 [WRN] Storing keys in a directory '/root/.aspnet/DataProtection-Keys' that may not be persisted outside of the container. Protected data will be unavailable when container is destroyed. For more information go to https://aka.ms/aspnet/dataprotectionwarning
+2026-04-25 11:35:50.190 +00:00 [WRN] No XML encryptor configured. Key {4af8c09c-12ad-45bf-a4e8-5b8485246f76} may be persisted to storage in unencrypted form.
+2026-04-25 11:35:50.353 +00:00 [WRN] Overriding HTTP_PORTS '8080' and HTTPS_PORTS ''. Binding to values defined by URLS instead 'http://+:5075'.
+2026-04-25 11:40:32.578 +00:00 [WRN] Storing keys in a directory '/root/.aspnet/DataProtection-Keys' that may not be persisted outside of the container. Protected data will be unavailable when container is destroyed. For more information go to https://aka.ms/aspnet/dataprotectionwarning
+2026-04-25 11:40:33.043 +00:00 [WRN] No XML encryptor configured. Key {801d02e3-fba4-4674-875c-cc674f478db6} may be persisted to storage in unencrypted form.
+2026-04-25 11:40:33.180 +00:00 [WRN] Overriding HTTP_PORTS '8080' and HTTPS_PORTS ''. Binding to values defined by URLS instead 'http://+:5075'.
+2026-04-25 11:42:49.708 +00:00 [INF] HTTP OPTIONS /api/auth/login responded 204 in 101.7966 ms
+2026-04-25 11:42:58.619 +00:00 [ERR] Failed executing DbCommand (311ms) [Parameters=[@codice='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT s2."UTEN_ID", s2."UTEN_CODICE", s2."UTEN_CODFISC", s2."UTEN_COGNOME", s2."UTEN_DTDISAT", s2."UTEN_DTINS", s2."UTEN_DTMOD", s2."UTEN_DTRIAT", s2."UTEN_DTSCPASS", s2."UTEN_EMAIL", s2."UTEN_F_CHPASS", s2."UTEN_F_SMCARD", s2."UTEN_MATR", s2."UTEN_NOME", s2."UTEN_PASSWD", s2."UTEN_LASTLOGIN", s2."UTEN_UTINS", s2."UTEN_UTMOD", s2."UTEN_VERSION", s3."RuoliId", s3."UtentiId", s3."RUOL_ID", s3."RUOL_CODICE", s3."RUOL_DTINS", s3."RUOL_DTMOD", s3."RUOL_DESCR", s3."RUOL_F_ADMIN", s3."RUOL_PROC_ID", s3."RUOL_UTINS", s3."RUOL_UTMOD", s3."RUOL_VERSION"
+FROM (
+    SELECT s."UTEN_ID", s."UTEN_CODICE", s."UTEN_CODFISC", s."UTEN_COGNOME", s."UTEN_DTDISAT", s."UTEN_DTINS", s."UTEN_DTMOD", s."UTEN_DTRIAT", s."UTEN_DTSCPASS", s."UTEN_EMAIL", s."UTEN_F_CHPASS", s."UTEN_F_SMCARD", s."UTEN_MATR", s."UTEN_NOME", s."UTEN_PASSWD", s."UTEN_LASTLOGIN", s."UTEN_UTINS", s."UTEN_UTMOD", s."UTEN_VERSION"
+    FROM "SI_UTENTI" AS s
+    WHERE s."UTEN_CODICE" = @codice
+    LIMIT 1
+) AS s2
+LEFT JOIN (
+    SELECT s0."RuoliId", s0."UtentiId", s1."RUOL_ID", s1."RUOL_CODICE", s1."RUOL_DTINS", s1."RUOL_DTMOD", s1."RUOL_DESCR", s1."RUOL_F_ADMIN", s1."RUOL_PROC_ID", s1."RUOL_UTINS", s1."RUOL_UTMOD", s1."RUOL_VERSION"
+    FROM "SI_UTENRUOL" AS s0
+    INNER JOIN "SI_RUOLI" AS s1 ON s0."RuoliId" = s1."RUOL_ID"
+) AS s3 ON s2."UTEN_ID" = s3."UtentiId"
+ORDER BY s2."UTEN_ID", s3."RuoliId", s3."UtentiId"
+2026-04-25 11:42:58.801 +00:00 [ERR] An exception occurred while iterating over the results of a query for context type 'eDom.Infrastructure.Data.HctDbContext'.
+Npgsql.PostgresException (0x80004005): 42P01: relation "SI_UTENTI" does not exist
+
+POSITION: 901
+   at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteDbDataReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+  Exception data:
+    Severity: ERROR
+    SqlState: 42P01
+    MessageText: relation "SI_UTENTI" does not exist
+    Position: 901
+    File: parse_relation.c
+    Line: 1449
+    Routine: parserOpenTable
+Npgsql.PostgresException (0x80004005): 42P01: relation "SI_UTENTI" does not exist
+
+POSITION: 901
+   at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteDbDataReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+  Exception data:
+    Severity: ERROR
+    SqlState: 42P01
+    MessageText: relation "SI_UTENTI" does not exist
+    Position: 901
+    File: parse_relation.c
+    Line: 1449
+    Routine: parserOpenTable
+2026-04-25 11:42:58.883 +00:00 [ERR] HTTP POST /api/auth/login responded 500 in 9058.5069 ms
+Npgsql.PostgresException (0x80004005): 42P01: relation "SI_UTENTI" does not exist
+
+POSITION: 901
+   at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteDbDataReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+   at Microsoft.EntityFrameworkCore.Query.ShapedQueryCompilingExpressionVisitor.SingleOrDefaultAsync[TSource](IAsyncEnumerable`1 asyncEnumerable, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.ShapedQueryCompilingExpressionVisitor.SingleOrDefaultAsync[TSource](IAsyncEnumerable`1 asyncEnumerable, CancellationToken cancellationToken)
+   at eDom.Infrastructure.Repositories.UtenteRepository.GetByCodiceWithRuoliAsync(String codice, CancellationToken ct) in /src/eDom.Infrastructure/Repositories/UtenteRepository.cs:line 14
+   at eDom.Application.Features.Auth.LoginHandler.HandleAsync(LoginCommand cmd, CancellationToken ct) in /src/eDom.Application/Features/Auth/Login/LoginHandler.cs:line 24
+   at eDom.Api.Controllers.AuthController.Login(LoginCommand command, CancellationToken ct) in /src/eDom.Api/Controllers/AuthController.cs:line 18
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeInnerFilterAsync>g__Awaited|13_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIMiddleware.Invoke(HttpContext httpContext)
+   at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
+   at Serilog.AspNetCore.RequestLoggingMiddleware.Invoke(HttpContext httpContext)
+  Exception data:
+    Severity: ERROR
+    SqlState: 42P01
+    MessageText: relation "SI_UTENTI" does not exist
+    Position: 901
+    File: parse_relation.c
+    Line: 1449
+    Routine: parserOpenTable
+2026-04-25 11:42:59.009 +00:00 [ERR] An unhandled exception has occurred while executing the request.
+Npgsql.PostgresException (0x80004005): 42P01: relation "SI_UTENTI" does not exist
+
+POSITION: 901
+   at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteDbDataReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+   at Microsoft.EntityFrameworkCore.Query.ShapedQueryCompilingExpressionVisitor.SingleOrDefaultAsync[TSource](IAsyncEnumerable`1 asyncEnumerable, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.ShapedQueryCompilingExpressionVisitor.SingleOrDefaultAsync[TSource](IAsyncEnumerable`1 asyncEnumerable, CancellationToken cancellationToken)
+   at eDom.Infrastructure.Repositories.UtenteRepository.GetByCodiceWithRuoliAsync(String codice, CancellationToken ct) in /src/eDom.Infrastructure/Repositories/UtenteRepository.cs:line 14
+   at eDom.Application.Features.Auth.LoginHandler.HandleAsync(LoginCommand cmd, CancellationToken ct) in /src/eDom.Application/Features/Auth/Login/LoginHandler.cs:line 24
+   at eDom.Api.Controllers.AuthController.Login(LoginCommand command, CancellationToken ct) in /src/eDom.Api/Controllers/AuthController.cs:line 18
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeInnerFilterAsync>g__Awaited|13_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIMiddleware.Invoke(HttpContext httpContext)
+   at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
+   at Serilog.AspNetCore.RequestLoggingMiddleware.Invoke(HttpContext httpContext)
+   at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddlewareImpl.Invoke(HttpContext context)
+  Exception data:
+    Severity: ERROR
+    SqlState: 42P01
+    MessageText: relation "SI_UTENTI" does not exist
+    Position: 901
+    File: parse_relation.c
+    Line: 1449
+    Routine: parserOpenTable
+2026-04-25 12:58:47.775 +00:00 [ERR] Failed executing DbCommand (137ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "MigrationId", "ProductVersion"
+FROM "__EFMigrationsHistory"
+ORDER BY "MigrationId";
+2026-04-25 13:31:05.874 +00:00 [ERR] Failed executing DbCommand (157ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "MigrationId", "ProductVersion"
+FROM "__EFMigrationsHistory"
+ORDER BY "MigrationId";
+2026-04-25 13:37:46.101 +00:00 [ERR] Failed executing DbCommand (131ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "MigrationId", "ProductVersion"
+FROM "__EFMigrationsHistory"
+ORDER BY "MigrationId";
+2026-04-25 13:37:48.218 +00:00 [ERR] Failed executing DbCommand (9ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE "CO_PAZIENTI" (
+    "PAZI_ID" NUMBER(10) NOT NULL,
+    "PAZI_CODICE" NVARCHAR2(50) NOT NULL,
+    "PAZI_VALID_FROM" TIMESTAMP(7) NOT NULL,
+    "PAZI_VALID_TO" TIMESTAMP(7) NOT NULL,
+    "PAZI_COGNOME" NVARCHAR2(100) NOT NULL,
+    "PAZI_NOME" NVARCHAR2(100) NOT NULL,
+    "PAZI_DTNAS" TIMESTAMP(7) NOT NULL,
+    "PAZI_CODFISC" NVARCHAR2(20) NOT NULL,
+    "PAZI_SESSO" NVARCHAR2(1) NOT NULL,
+    "PAZI_EMAIL" NVARCHAR2(200),
+    "PAZI_CODICESANIT" NVARCHAR2(50) NOT NULL,
+    "PAZI_CITTADIN_ID" NUMBER(10) NOT NULL,
+    "PAZI_COMNAS_ID" NUMBER(10) NOT NULL,
+    "PAZI_COMRES_ID" NUMBER(10) NOT NULL,
+    "PAZI_CAPRES" NVARCHAR2(10),
+    "PAZI_INDRES" NVARCHAR2(200),
+    "PAZI_AREARES_ID" NUMBER(10) NOT NULL,
+    "PAZI_COMDOM_ID" NUMBER(10),
+    "PAZI_CAPDOM" NVARCHAR2(10),
+    "PAZI_INDDOM" NVARCHAR2(200),
+    "PAZI_AREADOM_ID" NUMBER(10),
+    "PAZI_COMREP_ID" NUMBER(10),
+    "PAZI_CAPREP" NVARCHAR2(10),
+    "PAZI_INDREP" NVARCHAR2(200),
+    "PAZI_CAMPREP" NVARCHAR2(50),
+    "PAZI_AREAREP_ID" NUMBER(10),
+    "PAZI_TELEF01" NVARCHAR2(30),
+    "PAZI_TELEF02" NVARCHAR2(30),
+    "PAZI_TELEF03" NVARCHAR2(30),
+    "PAZI_ELTG_STRANDOCTIPO" NUMBER(10),
+    "PAZI_STRANDOCNUM" NVARCHAR2(50),
+    "PAZI_STRANDOCSCAD" TIMESTAMP(7),
+    "PAZI_TEAMNUM" NVARCHAR2(50),
+    "PAZI_TEAMSCAD" TIMESTAMP(7),
+    "PAZI_ESENZ_ID" NUMBER(10),
+    "PAZI_DTESENZ" TIMESTAMP(7),
+    "PAZI_ELTG_STATOCIV" NUMBER(10) NOT NULL,
+    "PAZI_ELTG_TITSTU" NUMBER(10),
+    "PAZI_ELTG_RELIG" NUMBER(10),
+    "PAZI_ELTG_EVEANAG" NUMBER(10),
+    "PAZI_DTEVEANAG" TIMESTAMP(7),
+    "PAZI_ELTG_PROFES" NUMBER(10),
+    "PAZI_ELTG_CONDPROFES" NUMBER(10),
+    "PAZI_ELTG_POSPROFES" NUMBER(10),
+    "PAZI_MEDICO_ID" NUMBER(10),
+    "PAZI_CONSULTORIO_ID" NUMBER(10),
+    "PAZI_COGNOMEPADRE" NVARCHAR2(100),
+    "PAZI_NOMEPADRE" NVARCHAR2(100),
+    "PAZI_CODFISCPADRE" NVARCHAR2(20),
+    "PAZI_DTNASPADRE" TIMESTAMP(7),
+    "PAZI_INDRESPADRE" NVARCHAR2(200),
+    "PAZI_COMRESPADRE_ID" NUMBER(10),
+    "PAZI_TELEFPADRE" NVARCHAR2(30),
+    "PAZI_COGNOMEMADRE" NVARCHAR2(100),
+    "PAZI_NOMEMADRE" NVARCHAR2(100),
+    "PAZI_CODFISCMADRE" NVARCHAR2(20),
+    "PAZI_DTNASMADRE" TIMESTAMP(7),
+    "PAZI_INDRESMADRE" NVARCHAR2(200),
+    "PAZI_COMRESMADRE_ID" NUMBER(10),
+    "PAZI_TELEFMADRE" NVARCHAR2(30),
+    "PAZI_COGNOMEFAM1" NVARCHAR2(100),
+    "PAZI_NOMEFAM1" NVARCHAR2(100),
+    "PAZI_CODFISCFAM1" NVARCHAR2(20),
+    "PAZI_DTNASFAM1" TIMESTAMP(7),
+    "PAZI_INDRESFAM1" NVARCHAR2(200),
+    "PAZI_COMRESFAM1_ID" NUMBER(10),
+    "PAZI_TELEFFAM1" NVARCHAR2(30),
+    "PAZI_CODALT01" NVARCHAR2(50),
+    "PAZI_CODALT02" NVARCHAR2(50),
+    "PAZI_NOTE01" NVARCHAR2(2000),
+    "PAZI_UTINS" NUMBER(10) NOT NULL,
+    "PAZI_DTINS" TIMESTAMP(7) NOT NULL,
+    "PAZI_UTMOD" NUMBER(10),
+    "PAZI_DTMOD" TIMESTAMP(7),
+    "PAZI_VERSION" TIMESTAMP(7),
+    "PAZI_F_ATT" NUMBER(5) NOT NULL,
+    CONSTRAINT "PK_CO_PAZIENTI" PRIMARY KEY ("PAZI_ID")
+);
+2026-04-25 14:07:44.805 +00:00 [WRN] No XML encryptor configured. Key {987f925d-c555-4237-906e-872df658b9ca} may be persisted to storage in unencrypted form.
+2026-04-25 14:07:45.108 +00:00 [WRN] Overriding HTTP_PORTS '8080' and HTTPS_PORTS ''. Binding to values defined by URLS instead 'http://+:5075'.
+2026-04-25 14:07:55.701 +00:00 [INF] HTTP OPTIONS /api/auth/login responded 204 in 181.9393 ms
+2026-04-25 14:07:59.216 +00:00 [INF] HTTP POST /api/auth/login responded 401 in 3369.5626 ms
+2026-04-25 14:51:29.870 +00:00 [ERR] Failed executing DbCommand (212ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "MigrationId", "ProductVersion"
+FROM "__EFMigrationsHistory"
+ORDER BY "MigrationId";
+2026-04-25 14:58:09.966 +00:00 [ERR] Failed executing DbCommand (504ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "MigrationId", "ProductVersion"
+FROM "HICT"."__EFMigrationsHistory"
+ORDER BY "MigrationId";
+2026-04-25 14:58:31.801 +00:00 [WRN] Overriding HTTP_PORTS '8080' and HTTPS_PORTS ''. Binding to values defined by URLS instead 'http://+:5075'.
+2026-04-25 14:58:58.778 +00:00 [WRN] Overriding HTTP_PORTS '8080' and HTTPS_PORTS ''. Binding to values defined by URLS instead 'http://+:5075'.
+2026-04-25 15:11:16.867 +00:00 [WRN] Overriding HTTP_PORTS '8080' and HTTPS_PORTS ''. Binding to values defined by URLS instead 'http://+:5075'.
+2026-04-25 19:13:47.479 +00:00 [INF] HTTP OPTIONS /api/auth/login responded 204 in 197.0598 ms
+2026-04-25 19:13:51.937 +00:00 [INF] HTTP POST /api/auth/login responded 401 in 4334.4369 ms
+2026-04-25 19:13:56.565 +00:00 [INF] HTTP OPTIONS /api/auth/login responded 204 in 4.8393 ms
+2026-04-25 19:13:56.971 +00:00 [INF] HTTP POST /api/auth/login responded 401 in 387.9094 ms
+2026-04-25 19:14:01.837 +00:00 [INF] HTTP OPTIONS /api/auth/login responded 204 in 0.2175 ms
+2026-04-25 19:14:01.924 +00:00 [INF] HTTP POST /api/auth/login responded 401 in 64.1186 ms
+2026-04-25 19:14:16.240 +00:00 [INF] HTTP OPTIONS /api/auth/login responded 204 in 0.2448 ms
+2026-04-25 19:14:16.688 +00:00 [INF] HTTP POST /api/auth/login responded 401 in 429.7580 ms
+2026-04-25 19:14:21.528 +00:00 [INF] HTTP OPTIONS /api/auth/login responded 204 in 0.2186 ms
+2026-04-25 19:14:21.562 +00:00 [INF] HTTP POST /api/auth/login responded 401 in 17.9228 ms
+2026-04-25 22:29:45.507 +00:00 [INF] HTTP OPTIONS /api/auth/login responded 204 in 0.1740 ms
+2026-04-25 22:29:45.620 +00:00 [INF] HTTP POST /api/auth/login responded 401 in 105.1187 ms
+2026-04-25 22:35:53.484 +00:00 [INF] HTTP OPTIONS /api/auth/login responded 204 in 3.6411 ms
+2026-04-25 22:35:54.396 +00:00 [INF] HTTP POST /api/auth/login responded 401 in 836.3056 ms
+2026-04-25 22:55:48.702 +00:00 [WRN] Overriding HTTP_PORTS '8080' and HTTPS_PORTS ''. Binding to values defined by URLS instead 'http://+:5075'.
+2026-04-25 22:59:42.879 +00:00 [WRN] Overriding HTTP_PORTS '8080' and HTTPS_PORTS ''. Binding to values defined by URLS instead 'http://+:5075'.
+2026-04-25 22:59:50.208 +00:00 [INF] HTTP OPTIONS /api/auth/login responded 204 in 232.7334 ms
+2026-04-25 22:59:51.785 +00:00 [INF] hashed password for user admin: 1ARVn2Auq2/WAqx2gNrL+q3RNjAzXpUfCXrzkA6d4Xa22yhRLy4AC50E+6UTPoscbo31nbOoq51gvkuXzJ6B2w==
+2026-04-25 22:59:55.037 +00:00 [INF] HTTP POST /api/auth/login responded 401 in 4548.1777 ms
+2026-04-25 23:02:12.306 +00:00 [INF] HTTP OPTIONS /api/auth/login responded 204 in 17.7100 ms
+2026-04-25 23:02:13.262 +00:00 [INF] hashed password for user admin: 1ARVn2Auq2/WAqx2gNrL+q3RNjAzXpUfCXrzkA6d4Xa22yhRLy4AC50E+6UTPoscbo31nbOoq51gvkuXzJ6B2w==
+2026-04-25 23:02:13.390 +00:00 [INF] HTTP POST /api/auth/login responded 401 in 1011.4212 ms
+2026-04-25 23:02:40.505 +00:00 [INF] HTTP OPTIONS /api/auth/login responded 204 in 0.1839 ms
+2026-04-25 23:02:40.649 +00:00 [INF] hashed password for user admin: 1ARVn2Auq2/WAqx2gNrL+q3RNjAzXpUfCXrzkA6d4Xa22yhRLy4AC50E+6UTPoscbo31nbOoq51gvkuXzJ6B2w==
+2026-04-25 23:02:40.667 +00:00 [INF] user
+2026-04-25 23:02:40.676 +00:00 [INF] HTTP POST /api/auth/login responded 401 in 145.6799 ms
+2026-04-25 23:03:40.382 +00:00 [INF] HTTP OPTIONS /api/auth/login responded 204 in 0.2467 ms
+2026-04-25 23:03:40.674 +00:00 [INF] hashed password for user admin: 1ARVn2Auq2/WAqx2gNrL+q3RNjAzXpUfCXrzkA6d4Xa22yhRLy4AC50E+6UTPoscbo31nbOoq51gvkuXzJ6B2w==
+2026-04-25 23:03:40.722 +00:00 [INF] user: null
+2026-04-25 23:03:40.728 +00:00 [INF] user roles: null
+2026-04-25 23:03:40.752 +00:00 [INF] HTTP POST /api/auth/login responded 401 in 280.7543 ms
+2026-04-25 23:04:27.924 +00:00 [INF] HTTP OPTIONS /api/auth/login responded 204 in 0.1593 ms
+2026-04-25 23:04:28.483 +00:00 [INF] hashed password for user admin: 1ARVn2Auq2/WAqx2gNrL+q3RNjAzXpUfCXrzkA6d4Xa22yhRLy4AC50E+6UTPoscbo31nbOoq51gvkuXzJ6B2w==
+2026-04-25 23:04:28.664 +00:00 [INF] user: null
+2026-04-25 23:04:28.669 +00:00 [INF] user roles: null
+2026-04-25 23:04:28.754 +00:00 [INF] HTTP POST /api/auth/login responded 401 in 292.9346 ms
+2026-04-25 23:04:40.552 +00:00 [INF] HTTP OPTIONS /api/auth/login responded 204 in 0.2332 ms
+2026-04-25 23:04:40.585 +00:00 [INF] hashed password for user admin: 1ARVn2Auq2/WAqx2gNrL+q3RNjAzXpUfCXrzkA6d4Xa22yhRLy4AC50E+6UTPoscbo31nbOoq51gvkuXzJ6B2w==
+2026-04-25 23:04:41.358 +00:00 [INF] user: null
+2026-04-25 23:04:41.361 +00:00 [INF] user roles: null
+2026-04-25 23:04:41.378 +00:00 [INF] HTTP POST /api/auth/login responded 401 in 805.9138 ms
+2026-04-25 23:05:02.036 +00:00 [INF] HTTP OPTIONS /api/auth/login responded 204 in 0.3821 ms
+2026-04-25 23:05:02.052 +00:00 [INF] hashed password for user admin: 1ARVn2Auq2/WAqx2gNrL+q3RNjAzXpUfCXrzkA6d4Xa22yhRLy4AC50E+6UTPoscbo31nbOoq51gvkuXzJ6B2w==
+2026-04-25 23:05:02.067 +00:00 [INF] user: null
+2026-04-25 23:05:02.069 +00:00 [INF] user roles: null
+2026-04-25 23:05:02.070 +00:00 [INF] HTTP POST /api/auth/login responded 401 in 20.4849 ms
+2026-04-25 23:05:29.223 +00:00 [INF] HTTP OPTIONS /api/auth/login responded 204 in 0.2077 ms
+2026-04-25 23:05:29.248 +00:00 [INF] hashed password for user admin: 1ARVn2Auq2/WAqx2gNrL+q3RNjAzXpUfCXrzkA6d4Xa22yhRLy4AC50E+6UTPoscbo31nbOoq51gvkuXzJ6B2w==
+2026-04-25 23:05:29.265 +00:00 [INF] user: null
+2026-04-25 23:05:29.266 +00:00 [INF] user roles: null
+2026-04-25 23:05:29.267 +00:00 [INF] HTTP POST /api/auth/login responded 401 in 22.2982 ms
+2026-04-25 23:06:03.786 +00:00 [INF] HTTP OPTIONS /api/auth/login responded 204 in 0.4318 ms
+2026-04-25 23:06:04.093 +00:00 [INF] hashed password for user admin: 1ARVn2Auq2/WAqx2gNrL+q3RNjAzXpUfCXrzkA6d4Xa22yhRLy4AC50E+6UTPoscbo31nbOoq51gvkuXzJ6B2w==
+2026-04-25 23:06:04.104 +00:00 [INF] user: null
+2026-04-25 23:06:04.105 +00:00 [INF] user roles: null
+2026-04-25 23:06:04.113 +00:00 [INF] HTTP POST /api/auth/login responded 401 in 125.6278 ms
+2026-04-25 23:07:11.732 +00:00 [INF] HTTP OPTIONS /api/auth/login responded 204 in 0.1644 ms
+2026-04-25 23:07:11.749 +00:00 [INF] hashed password for user admin: 1ARVn2Auq2/WAqx2gNrL+q3RNjAzXpUfCXrzkA6d4Xa22yhRLy4AC50E+6UTPoscbo31nbOoq51gvkuXzJ6B2w==
+2026-04-25 23:07:12.069 +00:00 [INF] user: null
+2026-04-25 23:07:12.070 +00:00 [INF] user roles: null
+2026-04-25 23:07:12.070 +00:00 [INF] HTTP POST /api/auth/login responded 401 in 324.9241 ms
+2026-04-25 23:18:35.563 +00:00 [WRN] Overriding HTTP_PORTS '8080' and HTTPS_PORTS ''. Binding to values defined by URLS instead 'http://+:5075'.
+2026-04-25 23:21:40.603 +00:00 [INF] HTTP OPTIONS /api/auth/login responded 204 in 190.5751 ms
+2026-04-25 23:21:42.382 +00:00 [INF] hashed password for user admin: 1ARVn2Auq2/WAqx2gNrL+q3RNjAzXpUfCXrzkA6d4Xa22yhRLy4AC50E+6UTPoscbo31nbOoq51gvkuXzJ6B2w==
+2026-04-25 23:21:46.128 +00:00 [INF] user: null
+2026-04-25 23:21:46.132 +00:00 [INF] user roles: null
+2026-04-25 23:21:46.242 +00:00 [INF] HTTP POST /api/auth/login responded 401 in 5491.9568 ms
+2026-04-25 23:23:13.198 +00:00 [INF] HTTP OPTIONS /api/auth/login responded 204 in 4.5101 ms
+2026-04-25 23:23:13.530 +00:00 [INF] hashed password for user admin: 1ARVn2Auq2/WAqx2gNrL+q3RNjAzXpUfCXrzkA6d4Xa22yhRLy4AC50E+6UTPoscbo31nbOoq51gvkuXzJ6B2w==
+2026-04-25 23:23:13.570 +00:00 [INF] user: null
+2026-04-25 23:23:13.570 +00:00 [INF] user roles: null
+2026-04-25 23:23:13.585 +00:00 [INF] HTTP POST /api/auth/login responded 401 in 371.9360 ms
+2026-04-25 23:24:39.704 +00:00 [INF] HTTP OPTIONS /api/auth/login responded 204 in 0.2397 ms
+2026-04-25 23:24:39.795 +00:00 [INF] hashed password for user admin: 1ARVn2Auq2/WAqx2gNrL+q3RNjAzXpUfCXrzkA6d4Xa22yhRLy4AC50E+6UTPoscbo31nbOoq51gvkuXzJ6B2w==
+2026-04-25 23:24:43.805 +00:00 [INF] user: null
+2026-04-25 23:24:43.807 +00:00 [INF] user roles: null
+2026-04-25 23:24:43.809 +00:00 [INF] HTTP POST /api/auth/login responded 401 in 4092.7056 ms
+2026-04-25 23:27:21.307 +00:00 [WRN] Overriding HTTP_PORTS '8080' and HTTPS_PORTS ''. Binding to values defined by URLS instead 'http://+:5075'.
+2026-04-25 23:28:36.991 +00:00 [INF] HTTP OPTIONS /api/auth/login responded 204 in 268.9039 ms
+2026-04-25 23:28:38.567 +00:00 [INF] hashed password for user admin: 1ARVn2Auq2/WAqx2gNrL+q3RNjAzXpUfCXrzkA6d4Xa22yhRLy4AC50E+6UTPoscbo31nbOoq51gvkuXzJ6B2w==
+2026-04-25 23:28:41.237 +00:00 [INF] user: null
+2026-04-25 23:28:41.240 +00:00 [INF] user roles: null
+2026-04-25 23:28:41.313 +00:00 [INF] HTTP POST /api/auth/login responded 401 in 4239.2061 ms
+2026-04-25 23:33:52.146 +00:00 [INF] HTTP OPTIONS /api/auth/login responded 204 in 5.5776 ms
+2026-04-25 23:33:52.569 +00:00 [INF] hashed password for user admin: 1ARVn2Auq2/WAqx2gNrL+q3RNjAzXpUfCXrzkA6d4Xa22yhRLy4AC50E+6UTPoscbo31nbOoq51gvkuXzJ6B2w==
+2026-04-25 23:34:52.757 +00:00 [INF] user: null
+2026-04-25 23:34:52.766 +00:00 [INF] user roles: null
+2026-04-25 23:34:52.770 +00:00 [INF] HTTP POST /api/auth/login responded 401 in 60602.9256 ms
+2026-04-25 23:34:59.020 +00:00 [INF] HTTP OPTIONS /api/auth/login responded 204 in 0.2931 ms
+2026-04-25 23:34:59.104 +00:00 [INF] hashed password for user ADMIN: 1ARVn2Auq2/WAqx2gNrL+q3RNjAzXpUfCXrzkA6d4Xa22yhRLy4AC50E+6UTPoscbo31nbOoq51gvkuXzJ6B2w==
+2026-04-25 23:35:04.715 +00:00 [INF] user: eDom.Core.Entities.Utente
+2026-04-25 23:35:04.720 +00:00 [INF] user roles: []
+2026-04-25 23:35:07.373 +00:00 [INF] HTTP POST /api/auth/login responded 200 in 8334.6809 ms

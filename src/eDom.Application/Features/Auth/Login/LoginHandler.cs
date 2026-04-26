@@ -44,6 +44,7 @@ public sealed class LoginHandler(
 
         // --- Deve cambiare password? ---
         var hashedDefault = HashPassword("1234");
+        
         bool mustChangePassword =
             !utente.UltimoLogin.HasValue ||                                                              // primo accesso
             (utente.DataScadenzaPassword.HasValue && utente.DataScadenzaPassword.Value.Date < DateTime.UtcNow.Date) || // password scaduta

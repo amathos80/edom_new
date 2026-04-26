@@ -21,7 +21,9 @@ export class ShellComponent {
 
   readonly menuItems = [
     { label: 'Home', icon: 'pi pi-home', route: '/app/home' },
-    { label: 'Pazienti', icon: 'pi pi-users', route: '/app/pazienti' }
+    { label: 'Dashboard', icon: 'pi pi-th-large', route: '/app/dashboard' },
+    { label: 'Pazienti', icon: 'pi pi-users', route: '/app/pazienti' },
+    { label: 'Custom Components', icon: 'pi pi-box', route: '/app/custom-components' }
   ];
 
   toggleSidebar(): void {

@@ -1,0 +1,15 @@
+# Immagine SDK .NET 10 per sviluppo con hot reload
+FROM mcr.microsoft.com/dotnet/sdk:10.0
+
+WORKDIR /src
+
+# Espone la porta HTTP dell'API e la porta del debugger
+EXPOSE 5075
+
+# Installa vsdbg per il debug remoto da VS Code
+RUN curl -sSL https://aka.ms/getvsdbgsh | bash /dev/stdin -v latest -l /vsdbg
+
+# Runtime stabile per sviluppo: evita loop di rebuild in watch su bind mount
+ENV ASPNETCORE_URLS=http://+:5075
+
+ENTRYPOINT ["dotnet", "run", "--project", "eDom.Api/eDom.Api.csproj", "--no-launch-profile"]

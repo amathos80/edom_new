@@ -1,0 +1,12 @@
+<section class="component-page">
+  <h2>Custom Badge</h2>
+  <p>Demo del componente badge: questo blocco viene caricato solo aprendo questa pagina.</p>
+
+  <p-card header="Varianti">
+    <div class="badges">
+      @for (state of states; track state.label) {
+        <p-tag [value]="state.label" [severity]="state.severity" />
+      }
+    </div>
+  </p-card>
+</section>

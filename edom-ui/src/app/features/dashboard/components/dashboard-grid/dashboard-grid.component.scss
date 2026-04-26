@@ -1,0 +1,23 @@
+.grid-stack {
+  min-height: 380px;
+}
+
+.widget-shell {
+  border-radius: 0.75rem;
+  border: 1px solid var(--p-surface-200);
+  background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+  overflow: hidden;
+}
+
+.dashboard-grid-fallback {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+  gap: 1rem;
+}
+
+.fallback-card {
+  border: 1px solid var(--p-surface-200);
+  border-radius: 0.75rem;
+  background: #fff;
+  min-height: 200px;
+}

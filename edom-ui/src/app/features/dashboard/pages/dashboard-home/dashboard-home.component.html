@@ -1,0 +1,69 @@
+<section class="dashboard-page">
+  <header class="dashboard-header">
+    <div>
+      <h1>Dashboard</h1>
+      <p>Layout personalizzabile con drag, resize e salvataggio automatico.</p>
+    </div>
+
+    <div class="dashboard-state">
+      <p-tag value="Schema v{{ layoutVersion() }}" severity="contrast" />
+      @if (saving()) {
+        <p-tag value="Salvataggio..." severity="warn" />
+      } @else {
+        <p-tag value="Sincronizzato" severity="success" />
+      }
+      @if (fallbackEnabled()) {
+        <p-tag value="Modalita fallback" severity="danger" />
+      }
+    </div>
+  </header>
+
+  <section class="catalog-grid">
+    @for (entry of catalog; track entry.type) {
+      <p-card styleClass="catalog-card">
+        <div class="catalog-content">
+          <div class="catalog-title">
+            <i [class]="entry.icon"></i>
+            <strong>{{ entry.title }}</strong>
+          </div>
+          <p>{{ entry.description }}</p>
+          <p-button
+            label="Aggiungi"
+            icon="pi pi-plus"
+            size="small"
+            (onClick)="addWidget(entry.type)"
+          />
+        </div>
+      </p-card>
+    }
+    <p-card styleClass="catalog-card catalog-reset">
+      <div class="catalog-content">
+        <div class="catalog-title">
+          <i class="pi pi-refresh"></i>
+          <strong>Reset layout</strong>
+        </div>
+        <p>Ripristina il set base di widget MVP mantenendo autosave attivo.</p>
+        <p-button
+          label="Ripristina"
+          icon="pi pi-refresh"
+          severity="secondary"
+          size="small"
+          (onClick)="resetLayout()"
+        />
+      </div>
+    </p-card>
+  </section>
+
+  @if (!loading()) {
+    <app-dashboard-grid
+      [widgets]="widgets()"
+      (widgetsChange)="onWidgetsChange($event)"
+      (removeWidget)="removeWidget($event)"
+      (fallbackMode)="onFallbackMode($event)"
+    />
+  } @else {
+    <p-card>
+      <p>Caricamento layout dashboard in corso...</p>
+    </p-card>
+  }
+</section>

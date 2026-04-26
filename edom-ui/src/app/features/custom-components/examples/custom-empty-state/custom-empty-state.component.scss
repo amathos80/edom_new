@@ -1,0 +1,33 @@
+.component-page {
+  max-width: 900px;
+
+  h2 {
+    margin: 0 0 0.5rem;
+  }
+
+  p {
+    margin: 0 0 1rem;
+    color: var(--p-surface-600);
+  }
+}
+
+.empty-state {
+  display: grid;
+  justify-items: center;
+  text-align: center;
+  gap: 0.5rem;
+  padding: 1rem;
+
+  i {
+    font-size: 2rem;
+    color: var(--p-primary-color);
+  }
+
+  h3 {
+    margin: 0;
+  }
+
+  p {
+    margin: 0;
+  }
+}
