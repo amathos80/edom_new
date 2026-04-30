@@ -10,6 +10,7 @@
             "args": [],
             "cwd": "${workspaceFolder}/src/eDom.Api",
             "stopAtEntry": false,
+            "requireExactSource": false,
             "serverReadyAction": {
                 "action": "openExternally",
                 "pattern": "\\bNow listening on:\\s+(https?://\\S+)"
@@ -40,6 +41,7 @@
             "type": "coreclr",
             "request": "attach",
             "processId": "${command:pickRemoteProcess}",
+            "requireExactSource": false,
             "pipeTransport": {
                 "pipeProgram": "docker",
                 "pipeArgs": ["exec", "-i", "edom-api"],

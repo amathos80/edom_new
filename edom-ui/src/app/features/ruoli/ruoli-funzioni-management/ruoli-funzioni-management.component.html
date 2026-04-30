@@ -1,0 +1,143 @@
+<p-toast></p-toast>
+
+<p-card header="Abilitazione Ruoli-Funzioni">
+  <p-table
+    #tabellaRuoliFunzioni
+    [value]="ruoli()"
+    [loading]="loadingRuoli()"
+    [paginator]="true"
+    [rows]="15"
+    [rowsPerPageOptions]="[15, 30, 50]"
+    [globalFilterFields]="['proceduraCodice', 'codice', 'descrizione']"
+    responsiveLayout="scroll"
+    dataKey="id"
+  >
+    <ng-template pTemplate="caption">
+      <div class="caption-tabella">
+        <h5 class="m-0">Elenco ruoli</h5>
+        <p-iconfield>
+          <p-inputicon styleClass="pi pi-search"></p-inputicon>
+          <input
+            pInputText
+            type="text"
+            placeholder="Cerca"
+            (input)="filtraGlobale(tabellaRuoliFunzioni, $event)"
+          />
+        </p-iconfield>
+      </div>
+    </ng-template>
+
+    <ng-template pTemplate="header">
+      <tr>
+        <th pSortableColumn="proceduraCodice">
+          Procedura
+          <p-sortIcon field="proceduraCodice"></p-sortIcon>
+        </th>
+        <th pSortableColumn="codice">
+          Codice
+          <p-sortIcon field="codice"></p-sortIcon>
+        </th>
+        <th pSortableColumn="descrizione">
+          Descrizione
+          <p-sortIcon field="descrizione"></p-sortIcon>
+        </th>
+        <th>Azioni</th>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body" let-ruolo>
+      <tr>
+        <td>{{ ruolo.proceduraCodice || ruolo.proceduraId }}</td>
+        <td>{{ ruolo.codice }}</td>
+        <td>{{ ruolo.descrizione }}</td>
+        <td>
+          <button
+            pButton
+            type="button"
+            text="true"
+            icon="pi pi-pencil"
+            label="Modifica"
+            (click)="apriModificaFunzioni(ruolo)"
+          ></button>
+        </td>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td colspan="4">Nessun ruolo disponibile.</td>
+      </tr>
+    </ng-template>
+  </p-table>
+</p-card>
+
+<p-dialog
+  [visible]="dialogVisibile()"
+  (visibleChange)="dialogVisibile.set($event)"
+  [modal]="true"
+  [draggable]="false"
+  [resizable]="false"
+  [style]="{ width: '58rem' }"
+  [header]="'Modifica Funzioni - ' + (ruoloSelezionato()?.codice || '')"
+  (onHide)="chiudiDialog()"
+>
+  <div class="dialog-meta" *ngIf="ruoloSelezionato() as ruolo">
+    <span><strong>Procedura:</strong> {{ ruolo.proceduraCodice || ruolo.proceduraId }}</span>
+    <span><strong>Descrizione:</strong> {{ ruolo.descrizione }}</span>
+  </div>
+
+  <div class="azioni">
+    <button pButton type="button" label="Espandi tutto" icon="pi pi-plus" severity="secondary" outlined="true" (click)="espandiComprimiTutto(true)"></button>
+    <button pButton type="button" label="Comprimi tutto" icon="pi pi-minus" severity="secondary" outlined="true" (click)="espandiComprimiTutto(false)"></button>
+  </div>
+
+  <div class="stato" *ngIf="loadingFunzioni()">Caricamento funzioni...</div>
+
+  <ng-container *ngIf="!loadingFunzioni()">
+    <ng-container *ngIf="alberoFunzioni().length > 0; else emptyState">
+      <ng-template #renderNodes let-nodes let-livello="livello">
+        <ul class="nodo-list" [class.nodo-list-root]="livello === 0">
+          <li class="nodo-item" *ngFor="let nodo of nodes">
+            <div class="nodo-row" [style.paddingLeft.rem]="livello * 1.1">
+              <button
+                pButton
+                type="button"
+                text="true"
+                [icon]="nodo.espanso ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"
+                class="expander"
+                *ngIf="nodo.figlie.length > 0"
+                (click)="nodo.espanso = !nodo.espanso"
+              ></button>
+              <span class="expander-placeholder" *ngIf="nodo.figlie.length === 0"></span>
+
+              <p-checkbox
+                [binary]="true"
+                [ngModel]="nodo.selezionata"
+                [indeterminate]="nodo.parziale"
+                (onChange)="toggleNodo(nodo, $event)"
+              ></p-checkbox>
+
+              <span class="nodo-label">{{ nodo.codice }}</span>
+              <span class="nodo-descrizione" *ngIf="nodo.descrizione">{{ nodo.descrizione }}</span>
+            </div>
+
+            <ng-container *ngIf="nodo.figlie.length > 0 && nodo.espanso">
+              <ng-container *ngTemplateOutlet="renderNodes; context: { $implicit: nodo.figlie, livello: livello + 1 }"></ng-container>
+            </ng-container>
+          </li>
+        </ul>
+      </ng-template>
+
+      <ng-container *ngTemplateOutlet="renderNodes; context: { $implicit: alberoFunzioni(), livello: 0 }"></ng-container>
+    </ng-container>
+  </ng-container>
+
+  <ng-template #emptyState>
+    <div class="stato">Nessuna funzione disponibile per il ruolo selezionato.</div>
+  </ng-template>
+
+  <ng-template pTemplate="footer">
+    <button pButton type="button" label="Annulla" severity="secondary" (click)="chiudiDialog()"></button>
+    <button pButton type="button" label="Salva" icon="pi pi-save" [loading]="saving()" (click)="salva()"></button>
+  </ng-template>
+</p-dialog>

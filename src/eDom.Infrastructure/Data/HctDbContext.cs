@@ -6,12 +6,18 @@ namespace eDom.Infrastructure.Data;
 public class HctDbContext(DbContextOptions<HctDbContext> options) : DbContext(options)
 {
     public DbSet<Utente> Utenti => Set<Utente>();
+    public DbSet<SistemaMessaggio> SistemiMessaggi => Set<SistemaMessaggio>();
+    public DbSet<Procedura> Procedure => Set<Procedura>();
+    public DbSet<Funzione> Funzioni => Set<Funzione>();
     public DbSet<Ruolo> Ruoli => Set<Ruolo>();
+    public DbSet<RuoloFunzione> RuoliFunzione => Set<RuoloFunzione>();
     public DbSet<Paziente> Pazienti => Set<Paziente>();
     public DbSet<AuditLog> AuditLogs => Set<AuditLog>();
     public DbSet<LogAccesso> LogAccessi => Set<LogAccesso>();
     public DbSet<Configurazione> Configurazioni => Set<Configurazione>();
     public DbSet<UserDashboardLayout> UserDashboardLayouts => Set<UserDashboardLayout>();
+    public DbSet<RefreshTokenSession> RefreshTokenSessions => Set<RefreshTokenSession>();
+    public DbSet<UserTokenState> UserTokenStates => Set<UserTokenState>();
 
     /// <summary>
     /// Quando true, AuditInterceptor non genera record per questo contesto.
@@ -55,7 +61,25 @@ public class HctDbContext(DbContextOptions<HctDbContext> options) : DbContext(op
             e.Ignore(x => x.NomeCompleto);
             e.Ignore(x => x.IsAttivo);
             e.HasMany(x => x.Ruoli).WithMany(r => r.Utenti)
-                .UsingEntity(j => j.ToTable("SI_UTENRUOL"));
+                .UsingEntity<Dictionary<string, object>>(
+                "SI_UTENRUOL",
+                right => right.HasOne<Ruolo>()
+                  .WithMany()
+                                    .HasForeignKey("UTRU_RUOL_ID")
+                  .HasPrincipalKey(r => r.Id),
+                left  => left.HasOne<Utente>()
+                 .WithMany()
+                                 .HasForeignKey("UTRU_UTEN_ID")
+                 .HasPrincipalKey(u => u.Id),
+        join =>
+        {
+            join.ToTable("SI_UTENRUOL");
+                        join.IndexerProperty<int>("UTRU_ID").HasColumnName("UTRU_ID").ValueGeneratedOnAdd();
+                        join.IndexerProperty<int>("UTRU_UTEN_ID").HasColumnName("UTRU_UTEN_ID");
+                        join.IndexerProperty<int>("UTRU_RUOL_ID").HasColumnName("UTRU_RUOL_ID");
+                        join.IndexerProperty<int?>("UTRU_PROC_ID").HasColumnName("UTRU_PROC_ID");
+            join.HasKey("UTRU_ID");
+        });
         });
 
         // ── SI_RUOLI ───────────────────────────────────────────────────────────
@@ -63,7 +87,7 @@ public class HctDbContext(DbContextOptions<HctDbContext> options) : DbContext(op
         {
             e.ToTable("SI_RUOLI");
             e.HasKey(x => x.Id);
-            e.Property(x => x.Id).HasColumnName("RUOL_ID");
+            e.Property(x => x.Id).HasColumnName("RUOL_ID").UseIdentityAlwaysColumn();
             e.Property(x => x.ProcedureId).HasColumnName("RUOL_PROC_ID");
             e.Property(x => x.Codice).HasColumnName("RUOL_CODICE").HasMaxLength(50).IsRequired();
             e.Property(x => x.Descrizione).HasColumnName("RUOL_DESCR").HasMaxLength(200);
@@ -73,6 +97,123 @@ public class HctDbContext(DbContextOptions<HctDbContext> options) : DbContext(op
             e.Property(x => x.UtenteModifica).HasColumnName("RUOL_UTMOD");
             e.Property(x => x.DataModifica).HasColumnName("RUOL_DTMOD");
             e.Property(x => x.Version).HasColumnName("RUOL_VERSION");
+
+            e.HasOne<Procedura>()
+                .WithMany()
+                .HasForeignKey(x => x.ProcedureId)
+                .HasPrincipalKey(x => x.Id)
+                .OnDelete(DeleteBehavior.Restrict);
+        });
+
+            // ── SI_SISMESS ─────────────────────────────────────────────────────────
+            modelBuilder.Entity<SistemaMessaggio>(e =>
+            {
+                e.ToTable("SI_SISMESS");
+                e.HasKey(x => x.Id);
+                e.Property(x => x.Id).HasColumnName("SISM_ID");
+                e.Property(x => x.Classe).HasColumnName("SISM_CLASSE").HasMaxLength(50).IsRequired();
+                e.Property(x => x.Nome).HasColumnName("SISM_NOME").HasMaxLength(50).IsRequired();
+                e.Property(x => x.Descrizione).HasColumnName("SISM_DESCR").HasMaxLength(2000).IsRequired();
+                e.Property(x => x.Lingua).HasColumnName("SISM_LINGUA").HasMaxLength(5).IsRequired();
+                e.Property(x => x.Custom01).HasColumnName("SISM_CUSTOM01").HasMaxLength(255);
+                e.Property(x => x.Custom02).HasColumnName("SISM_CUSTOM02").HasMaxLength(255);
+                e.Property(x => x.Custom03).HasColumnName("SISM_CUSTOM03").HasMaxLength(255);
+                e.Property(x => x.Custom04).HasColumnName("SISM_CUSTOM04").HasMaxLength(255);
+                e.Property(x => x.Custom05).HasColumnName("SISM_CUSTOM05").HasMaxLength(255);
+                e.Property(x => x.FlagAttivo).HasColumnName("SISM_F_ATTIVO");
+                e.Property(x => x.UtenteInserimento).HasColumnName("SISM_UTINS");
+                e.Property(x => x.DataInserimento).HasColumnName("SISM_DTINS");
+                e.Property(x => x.UtenteModifica).HasColumnName("SISM_UTMOD");
+                e.Property(x => x.DataModifica).HasColumnName("SISM_DTMOD");
+                e.Property(x => x.Version).HasColumnName("SISM_VERSION");
+            });
+
+        // ── SI_PROCEDURE ──────────────────────────────────────────────────────
+        modelBuilder.Entity<Procedura>(e =>
+        {
+            e.ToTable("SI_PROCEDURE");
+            e.HasKey(x => x.Id);
+            e.Property(x => x.Id).HasColumnName("PROC_ID");
+            e.Property(x => x.Codice).HasColumnName("PROC_CODICE").HasMaxLength(50).IsRequired();
+            e.Property(x => x.Descrizione).HasColumnName("PROC_DESCR").HasMaxLength(200).IsRequired();
+            e.Property(x => x.UtenteInserimento).HasColumnName("PROC_UTINS");
+            e.Property(x => x.DataInserimento).HasColumnName("PROC_DTINS");
+            e.Property(x => x.UtenteModifica).HasColumnName("PROC_UTMOD");
+            e.Property(x => x.DataModifica).HasColumnName("PROC_DTMOD");
+            e.Property(x => x.Version).HasColumnName("PROC_VERSION");
+            e.Property(x => x.DbSchema).HasColumnName("PROC_DBSCHEMA").HasMaxLength(100);
+            e.Property(x => x.DbPassword).HasColumnName("PROC_DBPWD").HasMaxLength(200);
+            e.Property(x => x.Visibile).HasColumnName("PROC_VISIBILE");
+        });
+
+        // ── SI_FUNZIONI ───────────────────────────────────────────────────────
+        modelBuilder.Entity<Funzione>(e =>
+        {
+            e.ToTable("SI_FUNZIONI");
+            e.HasKey(x => x.Id);
+            e.Property(x => x.Id).HasColumnName("FUNZ_ID");
+            e.Property(x => x.ProcedureId).HasColumnName("FUNZ_PROC_ID");
+            e.Property(x => x.Codice).HasColumnName("FUNZ_CODICE").HasMaxLength(50).IsRequired();
+            e.Property(x => x.Descrizione).HasColumnName("FUNZ_DESCR").HasMaxLength(200).IsRequired();
+            e.Property(x => x.ParentId).HasColumnName("FUNZ_PARENT");
+            e.Property(x => x.UtenteInserimento).HasColumnName("FUNZ_UTINS");
+            e.Property(x => x.DataInserimento).HasColumnName("FUNZ_DTINS");
+            e.Property(x => x.UtenteModifica).HasColumnName("FUNZ_UTMOD");
+            e.Property(x => x.DataModifica).HasColumnName("FUNZ_DTMOD");
+            e.Property(x => x.Version).HasColumnName("FUNZ_VERSION");
+            e.Property(x => x.Sort).HasColumnName("FUNZ_SORT").HasMaxLength(100);
+
+            e.HasOne(x => x.Procedura)
+                .WithMany(x => x.Funzioni)
+                .HasForeignKey(x => x.ProcedureId)
+                .HasPrincipalKey(x => x.Id)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            e.HasOne(x => x.Padre)
+                .WithMany(x => x.Figlie)
+                .HasForeignKey(x => x.ParentId)
+                .OnDelete(DeleteBehavior.Restrict);
+        });
+
+        // ── SI_RUOLFUNZ ───────────────────────────────────────────────────────
+        modelBuilder.Entity<RuoloFunzione>(e =>
+        {
+            e.ToTable("SI_RUOLFUNZ");
+            e.HasKey(x => x.Id);
+            e.Property(x => x.Id).HasColumnName("RUFU_ID").UseIdentityAlwaysColumn();
+            e.Property(x => x.RuoloId).HasColumnName("RUFU_RUOL_ID");
+            e.Property(x => x.FunzioneId).HasColumnName("RUFU_FUNZ_ID");
+            e.Property(x => x.RuoloProcedureId).HasColumnName("RUFU_RUOL_PROC_ID");
+            e.Property(x => x.FunzioneProcedureId).HasColumnName("RUFU_FUNZ_PROC_ID");
+            e.Property(x => x.UtenteInserimento).HasColumnName("RUFU_UTINS");
+            e.Property(x => x.DataInserimento).HasColumnName("RUFU_DTINS");
+            e.Property(x => x.UtenteModifica).HasColumnName("RUFU_UTMOD");
+            e.Property(x => x.DataModifica).HasColumnName("RUFU_DTMOD");
+            e.Property(x => x.Version).HasColumnName("RUFU_VERSION");
+
+            e.HasOne(x => x.Ruolo)
+                .WithMany()
+                .HasForeignKey(x => x.RuoloId)
+                .HasPrincipalKey(x => x.Id)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            e.HasOne(x => x.Funzione)
+                .WithMany(x => x.RuoliFunzione)
+                .HasForeignKey(x => x.FunzioneId)
+                .HasPrincipalKey(x => x.Id)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            e.HasOne(x => x.RuoloProcedura)
+                .WithMany()
+                .HasForeignKey(x => x.RuoloProcedureId)
+                .HasPrincipalKey(x => x.Id)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            e.HasOne(x => x.FunzioneProcedura)
+                .WithMany()
+                .HasForeignKey(x => x.FunzioneProcedureId)
+                .HasPrincipalKey(x => x.Id)
+                .OnDelete(DeleteBehavior.Restrict);
         });
 
         // ── CO_PAZIENTI ────────────────────────────────────────────────────────
@@ -82,7 +223,7 @@ public class HctDbContext(DbContextOptions<HctDbContext> options) : DbContext(op
             e.HasKey(x => x.Id);
 
             // Identificazione
-            e.Property(x => x.Id).HasColumnName("PAZI_ID");
+            e.Property(x => x.Id).HasColumnName("PAZI_ID").UseIdentityAlwaysColumn();
             e.Property(x => x.Codice).HasColumnName("PAZI_CODICE").HasMaxLength(50).IsRequired();
             e.Property(x => x.ValidFrom).HasColumnName("PAZI_VALID_FROM");
             e.Property(x => x.ValidTo).HasColumnName("PAZI_VALID_TO");
@@ -197,7 +338,7 @@ public class HctDbContext(DbContextOptions<HctDbContext> options) : DbContext(op
         {
             e.ToTable("SI_AUDIT_LOG");
             e.HasKey(x => x.Id);
-            e.Property(x => x.Id).HasColumnName("AULO_ID").ValueGeneratedOnAdd();
+            e.Property(x => x.Id).HasColumnName("AULO_ID").UseIdentityAlwaysColumn();
             e.Property(x => x.Tabella).HasColumnName("AULO_TABELLA").HasMaxLength(100).IsRequired();
             e.Property(x => x.EntitaId).HasColumnName("AULO_ENTITA_ID").HasMaxLength(50).IsRequired();
             e.Property(x => x.Operazione).HasColumnName("AULO_OPERAZIONE").HasMaxLength(10).IsRequired();
@@ -212,7 +353,7 @@ public class HctDbContext(DbContextOptions<HctDbContext> options) : DbContext(op
         {
             e.ToTable("SI_LOGACC");
             e.HasKey(x => x.Id);
-            e.Property(x => x.Id).HasColumnName("LOAC_ID").ValueGeneratedOnAdd();
+            e.Property(x => x.Id).HasColumnName("LOAC_ID").UseIdentityAlwaysColumn();
             e.Property(x => x.UtenteId).HasColumnName("LOAC_UTEN_ID");
             e.Property(x => x.Data).HasColumnName("LOAC_DATE").IsRequired();
             e.Property(x => x.IndirizzoIp).HasColumnName("LOAC_IPADDR").HasMaxLength(50);
@@ -238,11 +379,46 @@ public class HctDbContext(DbContextOptions<HctDbContext> options) : DbContext(op
         {
             e.ToTable("APP_DASH_LAYOUT");
             e.HasKey(x => x.Id);
-            e.Property(x => x.Id).HasColumnName("DASH_ID").ValueGeneratedOnAdd();
+            e.Property(x => x.Id).HasColumnName("DASH_ID").UseIdentityAlwaysColumn();
             e.Property(x => x.UserCodice).HasColumnName("DASH_USER_CODICE").HasMaxLength(100).IsRequired();
             e.Property(x => x.LayoutJson).HasColumnName("DASH_LAYOUT_JSON").IsRequired();
             e.Property(x => x.UpdatedAt).HasColumnName("DASH_UPDATED_AT").IsRequired();
             e.HasIndex(x => x.UserCodice).IsUnique().HasDatabaseName("UX_DASH_USER_CODICE");
+        });
+
+        // ── APP_REFRESH_TOKENS ───────────────────────────────────────────────
+        modelBuilder.Entity<RefreshTokenSession>(e =>
+        {
+            e.ToTable("APP_REFRESH_TOKENS");
+            e.HasKey(x => x.Id);
+
+            e.Property(x => x.Id).HasColumnName("RFTK_ID");
+            e.Property(x => x.UserId).HasColumnName("RFTK_UTEN_ID");
+            e.Property(x => x.TokenHash).HasColumnName("RFTK_TOKEN_HASH").HasMaxLength(128).IsRequired();
+            e.Property(x => x.FamilyId).HasColumnName("RFTK_FAMILY_ID");
+            e.Property(x => x.CreatedAtUtc).HasColumnName("RFTK_CREATED_UTC");
+            e.Property(x => x.ExpiresAtUtc).HasColumnName("RFTK_EXPIRES_UTC");
+            e.Property(x => x.RevokedAtUtc).HasColumnName("RFTK_REVOKED_UTC");
+            e.Property(x => x.RevokedReason).HasColumnName("RFTK_REVOKED_REASON").HasMaxLength(200);
+            e.Property(x => x.CreatedByIp).HasColumnName("RFTK_CREATED_IP").HasMaxLength(64);
+            e.Property(x => x.RevokedByIp).HasColumnName("RFTK_REVOKED_IP").HasMaxLength(64);
+            e.Property(x => x.ReplacedByTokenId).HasColumnName("RFTK_REPLACED_BY_ID");
+
+            e.HasIndex(x => x.TokenHash).IsUnique();
+            e.HasIndex(x => x.UserId);
+            e.HasIndex(x => x.FamilyId);
+            e.HasIndex(x => x.ExpiresAtUtc);
+        });
+
+        // ── APP_USER_TOKEN_STATE ─────────────────────────────────────────────
+        modelBuilder.Entity<UserTokenState>(e =>
+        {
+            e.ToTable("APP_USER_TOKEN_STATE");
+            e.HasKey(x => x.UserId);
+
+            e.Property(x => x.UserId).HasColumnName("UTST_UTEN_ID");
+            e.Property(x => x.InvalidBeforeUtc).HasColumnName("UTST_INVALID_BEFORE_UTC");
+            e.Property(x => x.UpdatedAtUtc).HasColumnName("UTST_UPDATED_UTC");
         });
     }
 }

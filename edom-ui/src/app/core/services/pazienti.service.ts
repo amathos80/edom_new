@@ -2,11 +2,12 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Paziente, PazienteSearchRequest } from '../models/paziente.model';
+import { environment } from '../../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class PazientiService {
   private readonly http = inject(HttpClient);
-  private readonly baseUrl = '/api/pazienti';
+  private readonly baseUrl = `${environment.apiUrl}/pazienti`;
 
   search(request: PazienteSearchRequest): Observable<Paziente[]> {
     let params = new HttpParams();

@@ -22,6 +22,14 @@ export const routes: Routes = [
         loadComponent: () => import('./features/pazienti/pazienti-list/pazienti-list.component').then(m => m.PazientiListComponent)
       },
       {
+        path: 'ruoli',
+        loadComponent: () => import('./features/ruoli/ruoli-management/ruoli-management.component').then(m => m.GestioneRuoliComponent)
+      },
+      {
+        path: 'ruoli-funzioni',
+        loadComponent: () => import('./features/ruoli/ruoli-funzioni-management/ruoli-funzioni-management.component').then(m => m.RuoliFunzioniManagementComponent)
+      },
+      {
         path: 'custom-components',
         loadChildren: () => import('./features/custom-components/custom-components.routes').then(m => m.CUSTOM_COMPONENTS_ROUTES)
       },

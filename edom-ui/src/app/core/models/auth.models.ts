@@ -6,9 +6,22 @@ export interface LoginRequest {
 export interface LoginResponse {
   token: string;
   expiresIn: number;
+  refreshToken: string;
+  refreshExpiresIn: number;
   username: string;
   fullName: string;
   roles: string[];
+}
+
+export interface RefreshTokenRequest {
+  refreshToken: string;
+}
+
+export interface RispostaPermessi {
+  username: string;
+  fullName: string;
+  ruoli: string[];
+  funzioni: string[];
 }
 
 export interface JwtPayload {

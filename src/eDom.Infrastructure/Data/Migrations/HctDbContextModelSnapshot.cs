@@ -17,24 +17,38 @@ namespace eDom.Infrastructure.Data.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
+                .HasDefaultSchema("HICT")
                 .HasAnnotation("ProductVersion", "10.0.7")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.HasDefaultSchema("HICT");
-
-            modelBuilder.Entity("RuoloUtente", b =>
+            modelBuilder.Entity("SI_UTENRUOL", b =>
                 {
-                    b.Property<int>("RuoliId")
-                        .HasColumnType("integer");
+                    b.Property<int>("UTRU_ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("UTRU_ID");
 
-                    b.Property<int>("UtentiId")
-                        .HasColumnType("integer");
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("UTRU_ID"));
 
-                    b.HasKey("RuoliId", "UtentiId");
+                    b.Property<int?>("UTRU_PROC_ID")
+                        .HasColumnType("integer")
+                        .HasColumnName("UTRU_PROC_ID");
 
-                    b.HasIndex("UtentiId");
+                    b.Property<int>("UTRU_RUOL_ID")
+                        .HasColumnType("integer")
+                        .HasColumnName("UTRU_RUOL_ID");
+
+                    b.Property<int>("UTRU_UTEN_ID")
+                        .HasColumnType("integer")
+                        .HasColumnName("UTRU_UTEN_ID");
+
+                    b.HasKey("UTRU_ID");
+
+                    b.HasIndex("UTRU_RUOL_ID");
+
+                    b.HasIndex("UTRU_UTEN_ID");
 
                     b.ToTable("SI_UTENRUOL", "HICT");
                 });
@@ -119,6 +133,69 @@ namespace eDom.Infrastructure.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("SI_CONFIG", "HICT");
+                });
+
+            modelBuilder.Entity("eDom.Core.Entities.Funzione", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("FUNZ_ID");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Codice")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)")
+                        .HasColumnName("FUNZ_CODICE");
+
+                    b.Property<DateTime>("DataInserimento")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("FUNZ_DTINS");
+
+                    b.Property<DateTime?>("DataModifica")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("FUNZ_DTMOD");
+
+                    b.Property<string>("Descrizione")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)")
+                        .HasColumnName("FUNZ_DESCR");
+
+                    b.Property<int?>("ParentId")
+                        .HasColumnType("integer")
+                        .HasColumnName("FUNZ_PARENT");
+
+                    b.Property<int>("ProcedureId")
+                        .HasColumnType("integer")
+                        .HasColumnName("FUNZ_PROC_ID");
+
+                    b.Property<string>("Sort")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("FUNZ_SORT");
+
+                    b.Property<int>("UtenteInserimento")
+                        .HasColumnType("integer")
+                        .HasColumnName("FUNZ_UTINS");
+
+                    b.Property<int?>("UtenteModifica")
+                        .HasColumnType("integer")
+                        .HasColumnName("FUNZ_UTMOD");
+
+                    b.Property<DateTime?>("Version")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("FUNZ_VERSION");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ParentId");
+
+                    b.HasIndex("ProcedureId");
+
+                    b.ToTable("SI_FUNZIONI", "HICT");
                 });
 
             modelBuilder.Entity("eDom.Core.Entities.LogAccesso", b =>
@@ -518,6 +595,134 @@ namespace eDom.Infrastructure.Data.Migrations
                     b.ToTable("CO_PAZIENTI", "HICT");
                 });
 
+            modelBuilder.Entity("eDom.Core.Entities.Procedura", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("PROC_ID");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Codice")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)")
+                        .HasColumnName("PROC_CODICE");
+
+                    b.Property<DateTime>("DataInserimento")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("PROC_DTINS");
+
+                    b.Property<DateTime?>("DataModifica")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("PROC_DTMOD");
+
+                    b.Property<string>("DbPassword")
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)")
+                        .HasColumnName("PROC_DBPWD");
+
+                    b.Property<string>("DbSchema")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("PROC_DBSCHEMA");
+
+                    b.Property<string>("Descrizione")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)")
+                        .HasColumnName("PROC_DESCR");
+
+                    b.Property<int>("UtenteInserimento")
+                        .HasColumnType("integer")
+                        .HasColumnName("PROC_UTINS");
+
+                    b.Property<int?>("UtenteModifica")
+                        .HasColumnType("integer")
+                        .HasColumnName("PROC_UTMOD");
+
+                    b.Property<DateTime?>("Version")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("PROC_VERSION");
+
+                    b.Property<short>("Visibile")
+                        .HasColumnType("smallint")
+                        .HasColumnName("PROC_VISIBILE");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("SI_PROCEDURE", "HICT");
+                });
+
+            modelBuilder.Entity("eDom.Core.Entities.RefreshTokenSession", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("RFTK_ID");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAtUtc")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("RFTK_CREATED_UTC");
+
+                    b.Property<string>("CreatedByIp")
+                        .HasMaxLength(64)
+                        .HasColumnType("character varying(64)")
+                        .HasColumnName("RFTK_CREATED_IP");
+
+                    b.Property<DateTime>("ExpiresAtUtc")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("RFTK_EXPIRES_UTC");
+
+                    b.Property<Guid>("FamilyId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("RFTK_FAMILY_ID");
+
+                    b.Property<int?>("ReplacedByTokenId")
+                        .HasColumnType("integer")
+                        .HasColumnName("RFTK_REPLACED_BY_ID");
+
+                    b.Property<DateTime?>("RevokedAtUtc")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("RFTK_REVOKED_UTC");
+
+                    b.Property<string>("RevokedByIp")
+                        .HasMaxLength(64)
+                        .HasColumnType("character varying(64)")
+                        .HasColumnName("RFTK_REVOKED_IP");
+
+                    b.Property<string>("RevokedReason")
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)")
+                        .HasColumnName("RFTK_REVOKED_REASON");
+
+                    b.Property<string>("TokenHash")
+                        .IsRequired()
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)")
+                        .HasColumnName("RFTK_TOKEN_HASH");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer")
+                        .HasColumnName("RFTK_UTEN_ID");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ExpiresAtUtc");
+
+                    b.HasIndex("FamilyId");
+
+                    b.HasIndex("TokenHash")
+                        .IsUnique();
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("APP_REFRESH_TOKENS", "HICT");
+                });
+
             modelBuilder.Entity("eDom.Core.Entities.Ruolo", b =>
                 {
                     b.Property<int>("Id")
@@ -569,7 +774,209 @@ namespace eDom.Infrastructure.Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ProcedureId");
+
                     b.ToTable("SI_RUOLI", "HICT");
+                });
+
+            modelBuilder.Entity("eDom.Core.Entities.RuoloFunzione", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("RUFU_ID");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("DataInserimento")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("RUFU_DTINS");
+
+                    b.Property<DateTime?>("DataModifica")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("RUFU_DTMOD");
+
+                    b.Property<int>("FunzioneId")
+                        .HasColumnType("integer")
+                        .HasColumnName("RUFU_FUNZ_ID");
+
+                    b.Property<int>("FunzioneProcedureId")
+                        .HasColumnType("integer")
+                        .HasColumnName("RUFU_FUNZ_PROC_ID");
+
+                    b.Property<int>("RuoloId")
+                        .HasColumnType("integer")
+                        .HasColumnName("RUFU_RUOL_ID");
+
+                    b.Property<int>("RuoloProcedureId")
+                        .HasColumnType("integer")
+                        .HasColumnName("RUFU_RUOL_PROC_ID");
+
+                    b.Property<int>("UtenteInserimento")
+                        .HasColumnType("integer")
+                        .HasColumnName("RUFU_UTINS");
+
+                    b.Property<int?>("UtenteModifica")
+                        .HasColumnType("integer")
+                        .HasColumnName("RUFU_UTMOD");
+
+                    b.Property<DateTime?>("Version")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("RUFU_VERSION");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FunzioneId");
+
+                    b.HasIndex("FunzioneProcedureId");
+
+                    b.HasIndex("RuoloId");
+
+                    b.HasIndex("RuoloProcedureId");
+
+                    b.ToTable("SI_RUOLFUNZ", "HICT");
+                });
+
+            modelBuilder.Entity("eDom.Core.Entities.SistemaMessaggio", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("SISM_ID");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Classe")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)")
+                        .HasColumnName("SISM_CLASSE");
+
+                    b.Property<string>("Custom01")
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)")
+                        .HasColumnName("SISM_CUSTOM01");
+
+                    b.Property<string>("Custom02")
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)")
+                        .HasColumnName("SISM_CUSTOM02");
+
+                    b.Property<string>("Custom03")
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)")
+                        .HasColumnName("SISM_CUSTOM03");
+
+                    b.Property<string>("Custom04")
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)")
+                        .HasColumnName("SISM_CUSTOM04");
+
+                    b.Property<string>("Custom05")
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)")
+                        .HasColumnName("SISM_CUSTOM05");
+
+                    b.Property<DateTime>("DataInserimento")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("SISM_DTINS");
+
+                    b.Property<DateTime?>("DataModifica")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("SISM_DTMOD");
+
+                    b.Property<string>("Descrizione")
+                        .IsRequired()
+                        .HasMaxLength(2000)
+                        .HasColumnType("character varying(2000)")
+                        .HasColumnName("SISM_DESCR");
+
+                    b.Property<short>("FlagAttivo")
+                        .HasColumnType("smallint")
+                        .HasColumnName("SISM_F_ATTIVO");
+
+                    b.Property<string>("Lingua")
+                        .IsRequired()
+                        .HasMaxLength(5)
+                        .HasColumnType("character varying(5)")
+                        .HasColumnName("SISM_LINGUA");
+
+                    b.Property<string>("Nome")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)")
+                        .HasColumnName("SISM_NOME");
+
+                    b.Property<int>("UtenteInserimento")
+                        .HasColumnType("integer")
+                        .HasColumnName("SISM_UTINS");
+
+                    b.Property<int?>("UtenteModifica")
+                        .HasColumnType("integer")
+                        .HasColumnName("SISM_UTMOD");
+
+                    b.Property<DateTime?>("Version")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("SISM_VERSION");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("SI_SISMESS", "HICT");
+                });
+
+            modelBuilder.Entity("eDom.Core.Entities.UserDashboardLayout", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("DASH_ID");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("LayoutJson")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("DASH_LAYOUT_JSON");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("DASH_UPDATED_AT");
+
+                    b.Property<string>("UserCodice")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("DASH_USER_CODICE");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserCodice")
+                        .IsUnique()
+                        .HasDatabaseName("UX_DASH_USER_CODICE");
+
+                    b.ToTable("APP_DASH_LAYOUT", "HICT");
+                });
+
+            modelBuilder.Entity("eDom.Core.Entities.UserTokenState", b =>
+                {
+                    b.Property<int>("UserId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("UTST_UTEN_ID");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("UserId"));
+
+                    b.Property<DateTime?>("InvalidBeforeUtc")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("UTST_INVALID_BEFORE_UTC");
+
+                    b.Property<DateTime>("UpdatedAtUtc")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("UTST_UPDATED_UTC");
+
+                    b.HasKey("UserId");
+
+                    b.ToTable("APP_USER_TOKEN_STATE", "HICT");
                 });
 
             modelBuilder.Entity("eDom.Core.Entities.Utente", b =>
@@ -669,19 +1076,93 @@ namespace eDom.Infrastructure.Data.Migrations
                     b.ToTable("SI_UTENTI", "HICT");
                 });
 
-            modelBuilder.Entity("RuoloUtente", b =>
+            modelBuilder.Entity("SI_UTENRUOL", b =>
                 {
                     b.HasOne("eDom.Core.Entities.Ruolo", null)
                         .WithMany()
-                        .HasForeignKey("RuoliId")
+                        .HasForeignKey("UTRU_RUOL_ID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("eDom.Core.Entities.Utente", null)
                         .WithMany()
-                        .HasForeignKey("UtentiId")
+                        .HasForeignKey("UTRU_UTEN_ID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("eDom.Core.Entities.Funzione", b =>
+                {
+                    b.HasOne("eDom.Core.Entities.Funzione", "Padre")
+                        .WithMany("Figlie")
+                        .HasForeignKey("ParentId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("eDom.Core.Entities.Procedura", "Procedura")
+                        .WithMany("Funzioni")
+                        .HasForeignKey("ProcedureId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Padre");
+
+                    b.Navigation("Procedura");
+                });
+
+            modelBuilder.Entity("eDom.Core.Entities.Ruolo", b =>
+                {
+                    b.HasOne("eDom.Core.Entities.Procedura", null)
+                        .WithMany()
+                        .HasForeignKey("ProcedureId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("eDom.Core.Entities.RuoloFunzione", b =>
+                {
+                    b.HasOne("eDom.Core.Entities.Funzione", "Funzione")
+                        .WithMany("RuoliFunzione")
+                        .HasForeignKey("FunzioneId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("eDom.Core.Entities.Procedura", "FunzioneProcedura")
+                        .WithMany()
+                        .HasForeignKey("FunzioneProcedureId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("eDom.Core.Entities.Ruolo", "Ruolo")
+                        .WithMany()
+                        .HasForeignKey("RuoloId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("eDom.Core.Entities.Procedura", "RuoloProcedura")
+                        .WithMany()
+                        .HasForeignKey("RuoloProcedureId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Funzione");
+
+                    b.Navigation("FunzioneProcedura");
+
+                    b.Navigation("Ruolo");
+
+                    b.Navigation("RuoloProcedura");
+                });
+
+            modelBuilder.Entity("eDom.Core.Entities.Funzione", b =>
+                {
+                    b.Navigation("Figlie");
+
+                    b.Navigation("RuoliFunzione");
+                });
+
+            modelBuilder.Entity("eDom.Core.Entities.Procedura", b =>
+                {
+                    b.Navigation("Funzioni");
                 });
 #pragma warning restore 612, 618
         }

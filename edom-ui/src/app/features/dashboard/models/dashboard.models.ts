@@ -16,6 +16,10 @@ export interface DashboardWidgetInstance {
   y: number;
   w: number;
   h: number;
+  minW?: number;
+  minH?: number;
+  maxW?: number;
+  maxH?: number;
   config?: Record<string, unknown>;
   datasource?: Record<string, unknown>;
   state: DashboardWidgetState;

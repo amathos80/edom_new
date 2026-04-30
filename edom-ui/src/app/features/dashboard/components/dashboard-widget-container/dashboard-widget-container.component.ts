@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, OnChanges, Output, Type, inject, signal } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges, Type, inject, signal } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { TagModule } from 'primeng/tag';
@@ -39,8 +39,15 @@ export class DashboardWidgetContainerComponent implements OnChanges {
     };
   }
 
-  ngOnChanges(): void {
-    this.loadComponent();
+  ngOnChanges(changes: SimpleChanges): void {
+    // Only reload the component when the widget type changes (not on position updates from drag/drop).
+    if (changes['widget']) {
+      const prev: DashboardWidgetInstance | undefined = changes['widget'].previousValue;
+      const curr: DashboardWidgetInstance = changes['widget'].currentValue;
+      if (!prev || prev.type !== curr.type) {
+        this.loadComponent();
+      }
+    }
   }
 
   requestRemove(): void {

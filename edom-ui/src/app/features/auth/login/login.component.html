@@ -14,14 +14,10 @@
 
       <div class="field">
         <label for="username">Utente</label>
-        <input
-          id="username"
-          pInputText
-          type="text"
+        <app-custom-textbox-input
+        [uppercase]="true"
           formControlName="username"
-          class="w-full"
-          autocomplete="username"
-          [class.ng-dirty]="form.get('username')?.touched" />
+          placeholder="Nome utente" />
         @if (form.get('username')?.touched && form.get('username')?.hasError('required')) {
           <small class="p-error">Il nome utente è obbligatorio.</small>
         }

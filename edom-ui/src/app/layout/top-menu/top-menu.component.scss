@@ -1,0 +1,48 @@
+:host {
+  display: block;
+  width: 100%;
+}
+
+::ng-deep .app-menubar {
+  border: none;
+  border-radius: 0;
+  border-bottom: 1px solid var(--p-surface-200);
+  background: var(--p-surface-0);
+  padding: 0 1rem;
+
+  // Voci top-level
+  .p-menubar-item > .p-menubar-item-link {
+    font-size: 0.875rem;
+    padding: 0.6rem 0.85rem;
+    color: var(--p-surface-700);
+    border-radius: 4px;
+
+    &:hover {
+      background: var(--p-surface-100);
+      color: var(--p-primary-color);
+    }
+  }
+
+  // Sottomenu (dropdown)
+  .p-menubar-submenu {
+    min-width: 14rem;
+    border-radius: 6px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  }
+
+  .p-menubar-submenu .p-menubar-item-link {
+    font-size: 0.85rem;
+    padding: 0.5rem 1rem;
+    color: var(--p-surface-700);
+
+    &:hover {
+      background: var(--p-primary-50);
+      color: var(--p-primary-color);
+    }
+  }
+
+  // Separatore visivo tra livelli di menu nidificati
+  .p-menubar-submenu .p-menubar-submenu {
+    border-left: 2px solid var(--p-primary-100);
+  }
+}

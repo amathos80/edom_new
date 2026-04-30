@@ -1,9 +1,13 @@
 using System.Text;
 using eDom.Application;
+using eDom.Api.Middleware;
 using eDom.Core.Interfaces;
 using eDom.Api.Services;
 using eDom.Infrastructure;
+using eDom.Infrastructure.Data;
+using System.IdentityModel.Tokens.Jwt;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi;
 using Serilog;
@@ -64,6 +68,37 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidAudience = jwtSection["Audience"],
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey))
         };
+
+        options.Events = new JwtBearerEvents
+        {
+            OnTokenValidated = async context =>
+            {
+                var uidClaim = context.Principal?.FindFirst("uid")?.Value;
+                if (!int.TryParse(uidClaim, out var userId))
+                {
+                    context.Fail("Token senza uid valido.");
+                    return;
+                }
+
+                var iatClaim = context.Principal?.FindFirst(JwtRegisteredClaimNames.Iat)?.Value;
+                if (!long.TryParse(iatClaim, out var iatUnix))
+                {
+                    context.Fail("Token senza iat valido.");
+                    return;
+                }
+
+                var issuedAt = DateTimeOffset.FromUnixTimeSeconds(iatUnix).UtcDateTime;
+                var db = context.HttpContext.RequestServices.GetRequiredService<HctDbContext>();
+                var state = await db.UserTokenStates
+                    .AsNoTracking()
+                    .FirstOrDefaultAsync(s => s.UserId == userId, context.HttpContext.RequestAborted);
+
+                if (state?.InvalidBeforeUtc is DateTime invalidBefore && issuedAt <= invalidBefore)
+                {
+                    context.Fail("Token invalidato da logout globale.");
+                }
+            }
+        };
     });
 
 builder.Services.AddAuthorization();
@@ -86,8 +121,26 @@ builder.Services.AddHealthChecks();
 
 var app = builder.Build();
 
+// Apply pending EF Core migrations only when explicitly enabled.
+// This avoids startup crashes when migration metadata is temporarily inconsistent.
+var applyMigrationsOnStartup = app.Configuration.GetValue<bool>("Database:ApplyMigrationsOnStartup");
+if (app.Environment.IsDevelopment() && applyMigrationsOnStartup)
+{
+    try
+    {
+        using var scope = app.Services.CreateScope();
+        var db = scope.ServiceProvider.GetRequiredService<HctDbContext>();
+        db.Database.Migrate();
+    }
+    catch (Exception ex)
+    {
+        Log.Warning(ex, "EF Core automatic migrations failed at startup. Start continues because Database:ApplyMigrationsOnStartup is optional.");
+    }
+}
+
 // ── Middleware pipeline ───────────────────────────────────────────────────────
 app.UseSerilogRequestLogging();
+app.UseMiddleware<ApiExceptionMiddleware>();
 
 if (app.Environment.IsDevelopment())
 {

@@ -1,13 +1,10 @@
-using System.IdentityModel.Tokens.Jwt;
 using System.Net;
-using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using eDom.Application.Mediator;
 using eDom.Core.Entities;
 using eDom.Core.Interfaces;
 using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Tokens;
 
 namespace eDom.Application.Features.Auth;
 
@@ -15,13 +12,14 @@ public sealed class LoginHandler(
     IUtenteRepository utenteRepository,
     ILogAccessoRepository logAccessoRepository,
     IConfigurazioneRepository configurazioneRepository,
+    IRepository<RefreshTokenSession> refreshTokenRepository,
     IConfiguration configuration)
     : IRequestHandler<LoginCommand, LoginResponse?>
 {
     public async Task<LoginResponse?> HandleAsync(LoginCommand cmd, CancellationToken ct = default)
     {
         var hashedPassword = HashPassword(cmd.Password);
-        var utente = await utenteRepository.GetByCodiceWithRuoliAsync(cmd.Username, ct);
+        var utente = await utenteRepository.OttieniProfiloAutorizzativoAsync(cmd.Username, ct);
 
         // Credenziali errate o utente inesistente
         if (utente is null || utente.Password != hashedPassword)
@@ -51,7 +49,7 @@ public sealed class LoginHandler(
             utente.Password == hashedDefault ||                                                         // password default "1234"
             utente.FlagCambiaPwd == 1;                                                                  // flag esplicito admin
 
-        var roles = utente.Ruoli.Select(r => r.Codice).ToList();
+        var ruoli = utente.Ruoli;
         var now = DateTime.UtcNow;
 
         // Aggiorna UTEN_LASTLOGIN (ExecuteUpdate — bypass change tracker, nessun audit record)
@@ -68,41 +66,39 @@ public sealed class LoginHandler(
             FunzioneId  = 999999
         }, ct);
 
-        var token = GenerateToken(utente.Id, utente.Codice, utente.NomeCompleto, roles);
-        int.TryParse(configuration["JwtSettings:ExpiryMinutes"], out int expiryMinutes);
-        if (expiryMinutes == 0) expiryMinutes = 60;
+        var (accessToken, accessExpiresAt, _) = AuthTokenFactory.BuildAccessToken(
+            configuration,
+            utente.Id,
+            utente.Codice,
+            utente.NomeCompleto,
+            ruoli);
 
-        return new LoginResponse(token, expiryMinutes * 60, utente.Codice, utente.NomeCompleto, roles, mustChangePassword);
-    }
+        var (refreshToken, refreshHash) = AuthTokenFactory.BuildRefreshToken();
+        var refreshExpiresAt = DateTime.UtcNow.AddHours(8);
 
-    private string GenerateToken(int userId, string username, string fullName, IList<string> roles)
-    {
-        var secret = configuration["JwtSettings:Secret"]!;
-        var issuer = configuration["JwtSettings:Issuer"]!;
-        var audience = configuration["JwtSettings:Audience"]!;
-        var expiryMinutes = int.TryParse(configuration["JwtSettings:ExpiryMinutes"], out int exp) ? exp : 60;
-
-        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secret));
-        var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-
-        var claims = new List<Claim>
+        await refreshTokenRepository.AddAsync(new RefreshTokenSession
         {
-            new("uid", userId.ToString()),
-            new(JwtRegisteredClaimNames.Sub, username),
-            new(JwtRegisteredClaimNames.UniqueName, username),
-            new(JwtRegisteredClaimNames.GivenName, fullName),
-            new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
-        };
-        claims.AddRange(roles.Select(r => new Claim(ClaimTypes.Role, r)));
+            UserId = utente.Id,
+            TokenHash = refreshHash,
+            FamilyId = Guid.NewGuid(),
+            CreatedAtUtc = DateTime.UtcNow,
+            ExpiresAtUtc = refreshExpiresAt,
+            CreatedByIp = cmd.IpAddress
+        }, ct);
+        await refreshTokenRepository.SaveChangesAsync(ct);
 
-        var token = new JwtSecurityToken(
-            issuer: issuer,
-            audience: audience,
-            claims: claims,
-            expires: DateTime.UtcNow.AddMinutes(expiryMinutes),
-            signingCredentials: creds);
+        var accessExpiresIn = (int)Math.Max(1, (accessExpiresAt - DateTime.UtcNow).TotalSeconds);
+        var refreshExpiresIn = (int)Math.Max(1, (refreshExpiresAt - DateTime.UtcNow).TotalSeconds);
 
-        return new JwtSecurityTokenHandler().WriteToken(token);
+        return new LoginResponse(
+            accessToken,
+            accessExpiresIn,
+            refreshToken,
+            refreshExpiresIn,
+            utente.Codice,
+            utente.NomeCompleto,
+            ruoli,
+            mustChangePassword);
     }
 
     private static string HashPassword(string password)

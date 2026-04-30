@@ -5,6 +5,7 @@ import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import { AuthService } from '../../../core/services/auth.service';
 import { DashboardLayout, DashboardWidgetInstance } from '../models/dashboard.models';
 import { DashboardWidgetsRegistryService } from '../registry/dashboard-widgets.registry';
+import { environment } from '../../../../environments/environment';
 
 const DASHBOARD_SCHEMA_VERSION = 1;
 const SAVE_DEBOUNCE_MS = 450;
@@ -16,7 +17,7 @@ export class DashboardLayoutService {
   private readonly registry = inject(DashboardWidgetsRegistryService);
   private readonly destroyRef = inject(DestroyRef);
 
-  private readonly baseUrl = '/api/dashboard/layout';
+  private readonly baseUrl = `${environment.apiUrl}/dashboard/layout`;
   private readonly saveQueue = signal<DashboardLayout | null>(null);
 
   private readonly _layout = signal<DashboardLayout>(this.createDefaultLayout());
@@ -142,17 +143,26 @@ export class DashboardLayoutService {
   private normalizeWidget(widget: DashboardWidgetInstance): DashboardWidgetInstance {
     const metadata = this.registry.getByType(widget.type);
 
+    const normalizedChildren = (widget.children ?? [])
+      .slice(0, 3)
+      .map(child => this.normalizeWidget(child));
+
     return {
-      ...widget,
+      id: widget.id,
+      type: widget.type,
       title: widget.title ?? metadata?.title ?? widget.type,
       state: widget.state ?? 'active',
       x: Number.isFinite(widget.x) ? widget.x : 0,
       y: Number.isFinite(widget.y) ? widget.y : 0,
       w: Number.isFinite(widget.w) ? widget.w : metadata?.defaultW ?? 3,
       h: Number.isFinite(widget.h) ? widget.h : metadata?.defaultH ?? 2,
+      minW: metadata?.minW,
+      minH: metadata?.minH,
+      maxW: metadata?.maxW,
+      maxH: metadata?.maxH,
       config: widget.config ?? {},
       datasource: widget.datasource ?? {},
-      children: (widget.children ?? []).slice(0, 3)
+      children: normalizedChildren
     };
   }
 
@@ -192,8 +202,8 @@ export class DashboardLayoutService {
   }
 
   private localKey(): string {
-    const user = this.auth.currentUser();
-    const id = user?.sub ?? user?.unique_name ?? 'anonymous';
+    const user = this.auth.utenteCorrente();
+    const id = user?.sub ?? user?.unique_name ?? 'anonimo';
     return `edom.dashboard.layout.${id}`;
   }
 

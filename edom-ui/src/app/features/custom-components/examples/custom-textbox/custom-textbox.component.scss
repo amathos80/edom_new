@@ -1,0 +1,25 @@
+.component-page {
+  max-width: 900px;
+
+  h2 {
+    margin: 0 0 0.5rem;
+  }
+
+  p {
+    margin: 0 0 1rem;
+    color: var(--p-surface-600);
+  }
+}
+
+.examples-grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+
+small {
+  display: block;
+  margin-top: 0.75rem;
+  color: var(--p-surface-500);
+  word-break: break-word;
+}

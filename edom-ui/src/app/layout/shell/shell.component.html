@@ -38,7 +38,33 @@
   <div class="main-area">
     <header class="topbar">
       <div class="topbar-end">
-        <span class="user-name">{{ auth.currentUser()?.given_name }}</span>
+        <div class="theme-controls">
+          <p-select
+            [options]="themeOptions"
+            [ngModel]="selectedTheme()"
+            (ngModelChange)="onThemeChange($event)"
+            optionLabel="label"
+            optionValue="value"
+            placeholder="Tema"
+            appendTo="body"
+            [style]="{ width: '9rem' }"
+            size="small"
+          />
+
+          <p-select
+            [options]="modeOptions"
+            [ngModel]="selectedMode()"
+            (ngModelChange)="onModeChange($event)"
+            optionLabel="label"
+            optionValue="value"
+            placeholder="Modalita"
+            appendTo="body"
+            [style]="{ width: '7.5rem' }"
+            size="small"
+          />
+        </div>
+
+        <span class="user-name">{{ auth.utenteCorrente()?.given_name }}</span>
         <p-avatar icon="pi pi-user" shape="circle" />
         <p-button
           icon="pi pi-sign-out"
@@ -49,6 +75,10 @@
         />
       </div>
     </header>
+
+    <nav class="app-nav">
+      <app-top-menu />
+    </nav>
 
     <main class="page-content">
       <router-outlet />

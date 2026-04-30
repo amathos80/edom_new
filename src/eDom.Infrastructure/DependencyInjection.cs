@@ -14,7 +14,7 @@ public static class DependencyInjection
 
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
-        var provider = configuration["DatabaseProvider"] ?? "Oracle";
+        var provider = configuration["DatabaseProvider"] ?? "PostgreSQL";
         var connectionString = configuration.GetConnectionString(provider)
             ?? throw new InvalidOperationException($"Connection string for provider '{provider}' not found.");
 
@@ -45,6 +45,7 @@ public static class DependencyInjection
         services.AddScoped<ILogAccessoRepository, LogAccessoRepository>();
         services.AddScoped<IConfigurazioneRepository, ConfigurazioneRepository>();
         services.AddScoped<IUserDashboardLayoutRepository, UserDashboardLayoutRepository>();
+        services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 
         return services;
     }

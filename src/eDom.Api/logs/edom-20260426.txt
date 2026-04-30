@@ -446,3 +446,343 @@ POSITION: 90
     File: parse_relation.c
     Line: 1428
     Routine: parserOpenTable
+2026-04-26 14:46:12.955 +00:00 [WRN] No XML encryptor configured. Key {eea46065-7242-4172-9d31-c3f9b2d86091} may be persisted to storage in unencrypted form.
+2026-04-26 14:46:12.996 +00:00 [WRN] Overriding HTTP_PORTS '8080' and HTTPS_PORTS ''. Binding to values defined by URLS instead 'http://+:5075'.
+2026-04-26 14:46:25.414 +00:00 [WRN] Overriding HTTP_PORTS '8080' and HTTPS_PORTS ''. Binding to values defined by URLS instead 'http://+:5075'.
+2026-04-26 14:47:00.964 +00:00 [INF] HTTP OPTIONS /api/auth/login responded 204 in 26.5381 ms
+2026-04-26 14:47:02.294 +00:00 [ERR] Failed executing DbCommand (58ms) [Parameters=[@codice='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT s2."UTEN_ID", s2."UTEN_CODICE", s2."UTEN_CODFISC", s2."UTEN_COGNOME", s2."UTEN_DTDISAT", s2."UTEN_DTINS", s2."UTEN_DTMOD", s2."UTEN_DTRIAT", s2."UTEN_DTSCPASS", s2."UTEN_EMAIL", s2."UTEN_F_CHPASS", s2."UTEN_F_SMCARD", s2."UTEN_MATR", s2."UTEN_NOME", s2."UTEN_PASSWD", s2."UTEN_LASTLOGIN", s2."UTEN_UTINS", s2."UTEN_UTMOD", s2."UTEN_VERSION", s3."RuoliId", s3."UtentiId", s3."RUOL_ID", s3."RUOL_CODICE", s3."RUOL_DTINS", s3."RUOL_DTMOD", s3."RUOL_DESCR", s3."RUOL_F_ADMIN", s3."RUOL_PROC_ID", s3."RUOL_UTINS", s3."RUOL_UTMOD", s3."RUOL_VERSION"
+FROM (
+    SELECT s."UTEN_ID", s."UTEN_CODICE", s."UTEN_CODFISC", s."UTEN_COGNOME", s."UTEN_DTDISAT", s."UTEN_DTINS", s."UTEN_DTMOD", s."UTEN_DTRIAT", s."UTEN_DTSCPASS", s."UTEN_EMAIL", s."UTEN_F_CHPASS", s."UTEN_F_SMCARD", s."UTEN_MATR", s."UTEN_NOME", s."UTEN_PASSWD", s."UTEN_LASTLOGIN", s."UTEN_UTINS", s."UTEN_UTMOD", s."UTEN_VERSION"
+    FROM "HICT"."SI_UTENTI" AS s
+    WHERE s."UTEN_CODICE" = @codice
+    LIMIT 1
+) AS s2
+LEFT JOIN (
+    SELECT s0."RuoliId", s0."UtentiId", s1."RUOL_ID", s1."RUOL_CODICE", s1."RUOL_DTINS", s1."RUOL_DTMOD", s1."RUOL_DESCR", s1."RUOL_F_ADMIN", s1."RUOL_PROC_ID", s1."RUOL_UTINS", s1."RUOL_UTMOD", s1."RUOL_VERSION"
+    FROM "HICT"."SI_UTENRUOL" AS s0
+    INNER JOIN "HICT"."SI_RUOLI" AS s1 ON s0."RuoliId" = s1."RUOL_ID"
+) AS s3 ON s2."UTEN_ID" = s3."UtentiId"
+ORDER BY s2."UTEN_ID", s3."RuoliId", s3."UtentiId"
+2026-04-26 14:47:02.317 +00:00 [ERR] An exception occurred while iterating over the results of a query for context type 'eDom.Infrastructure.Data.HctDbContext'.
+Npgsql.PostgresException (0x80004005): 42P01: relation "HICT.SI_UTENTI" does not exist
+
+POSITION: 901
+   at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteDbDataReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+  Exception data:
+    Severity: ERROR
+    SqlState: 42P01
+    MessageText: relation "HICT.SI_UTENTI" does not exist
+    Position: 901
+    File: parse_relation.c
+    Line: 1428
+    Routine: parserOpenTable
+Npgsql.PostgresException (0x80004005): 42P01: relation "HICT.SI_UTENTI" does not exist
+
+POSITION: 901
+   at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteDbDataReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+  Exception data:
+    Severity: ERROR
+    SqlState: 42P01
+    MessageText: relation "HICT.SI_UTENTI" does not exist
+    Position: 901
+    File: parse_relation.c
+    Line: 1428
+    Routine: parserOpenTable
+2026-04-26 14:47:02.326 +00:00 [ERR] HTTP POST /api/auth/login responded 500 in 1348.4696 ms
+Npgsql.PostgresException (0x80004005): 42P01: relation "HICT.SI_UTENTI" does not exist
+
+POSITION: 901
+   at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteDbDataReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+   at Microsoft.EntityFrameworkCore.Query.ShapedQueryCompilingExpressionVisitor.SingleOrDefaultAsync[TSource](IAsyncEnumerable`1 asyncEnumerable, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.ShapedQueryCompilingExpressionVisitor.SingleOrDefaultAsync[TSource](IAsyncEnumerable`1 asyncEnumerable, CancellationToken cancellationToken)
+   at eDom.Infrastructure.Repositories.UtenteRepository.GetByCodiceWithRuoliAsync(String codice, CancellationToken ct) in /src/eDom.Infrastructure/Repositories/UtenteRepository.cs:line 14
+   at eDom.Application.Features.Auth.LoginHandler.HandleAsync(LoginCommand cmd, CancellationToken ct) in /src/eDom.Application/Features/Auth/Login/LoginHandler.cs:line 24
+   at eDom.Api.Controllers.AuthController.Login(LoginCommand command, CancellationToken ct) in /src/eDom.Api/Controllers/AuthController.cs:line 18
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeInnerFilterAsync>g__Awaited|13_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIMiddleware.Invoke(HttpContext httpContext)
+   at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
+   at Serilog.AspNetCore.RequestLoggingMiddleware.Invoke(HttpContext httpContext)
+  Exception data:
+    Severity: ERROR
+    SqlState: 42P01
+    MessageText: relation "HICT.SI_UTENTI" does not exist
+    Position: 901
+    File: parse_relation.c
+    Line: 1428
+    Routine: parserOpenTable
+2026-04-26 14:47:02.337 +00:00 [ERR] An unhandled exception has occurred while executing the request.
+Npgsql.PostgresException (0x80004005): 42P01: relation "HICT.SI_UTENTI" does not exist
+
+POSITION: 901
+   at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteDbDataReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+   at Microsoft.EntityFrameworkCore.Query.ShapedQueryCompilingExpressionVisitor.SingleOrDefaultAsync[TSource](IAsyncEnumerable`1 asyncEnumerable, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.ShapedQueryCompilingExpressionVisitor.SingleOrDefaultAsync[TSource](IAsyncEnumerable`1 asyncEnumerable, CancellationToken cancellationToken)
+   at eDom.Infrastructure.Repositories.UtenteRepository.GetByCodiceWithRuoliAsync(String codice, CancellationToken ct) in /src/eDom.Infrastructure/Repositories/UtenteRepository.cs:line 14
+   at eDom.Application.Features.Auth.LoginHandler.HandleAsync(LoginCommand cmd, CancellationToken ct) in /src/eDom.Application/Features/Auth/Login/LoginHandler.cs:line 24
+   at eDom.Api.Controllers.AuthController.Login(LoginCommand command, CancellationToken ct) in /src/eDom.Api/Controllers/AuthController.cs:line 18
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeInnerFilterAsync>g__Awaited|13_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIMiddleware.Invoke(HttpContext httpContext)
+   at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
+   at Serilog.AspNetCore.RequestLoggingMiddleware.Invoke(HttpContext httpContext)
+   at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddlewareImpl.Invoke(HttpContext context)
+  Exception data:
+    Severity: ERROR
+    SqlState: 42P01
+    MessageText: relation "HICT.SI_UTENTI" does not exist
+    Position: 901
+    File: parse_relation.c
+    Line: 1428
+    Routine: parserOpenTable
+2026-04-26 14:53:01.202 +00:00 [WRN] Overriding HTTP_PORTS '8080' and HTTPS_PORTS ''. Binding to values defined by URLS instead 'http://+:5075'.
+2026-04-26 14:56:50.661 +00:00 [ERR] Failed executing DbCommand (26ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "MigrationId", "ProductVersion"
+FROM "HICT"."__EFMigrationsHistory"
+ORDER BY "MigrationId";
+2026-04-26 14:56:57.505 +00:00 [ERR] Failed executing DbCommand (33ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "MigrationId", "ProductVersion"
+FROM "HICT"."__EFMigrationsHistory"
+ORDER BY "MigrationId";
+2026-04-26 14:57:04.455 +00:00 [ERR] Failed executing DbCommand (31ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "MigrationId", "ProductVersion"
+FROM "HICT"."__EFMigrationsHistory"
+ORDER BY "MigrationId";
+2026-04-26 14:57:11.477 +00:00 [ERR] Failed executing DbCommand (25ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "MigrationId", "ProductVersion"
+FROM "HICT"."__EFMigrationsHistory"
+ORDER BY "MigrationId";
+2026-04-26 14:57:18.718 +00:00 [ERR] Failed executing DbCommand (29ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "MigrationId", "ProductVersion"
+FROM "HICT"."__EFMigrationsHistory"
+ORDER BY "MigrationId";
+2026-04-26 14:57:27.041 +00:00 [ERR] Failed executing DbCommand (28ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "MigrationId", "ProductVersion"
+FROM "HICT"."__EFMigrationsHistory"
+ORDER BY "MigrationId";
+2026-04-26 14:57:36.711 +00:00 [ERR] Failed executing DbCommand (27ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "MigrationId", "ProductVersion"
+FROM "HICT"."__EFMigrationsHistory"
+ORDER BY "MigrationId";
+2026-04-26 14:57:49.247 +00:00 [ERR] Failed executing DbCommand (27ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "MigrationId", "ProductVersion"
+FROM "HICT"."__EFMigrationsHistory"
+ORDER BY "MigrationId";
+2026-04-26 14:58:08.724 +00:00 [ERR] Failed executing DbCommand (33ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "MigrationId", "ProductVersion"
+FROM "HICT"."__EFMigrationsHistory"
+ORDER BY "MigrationId";
+2026-04-26 14:58:53.166 +00:00 [ERR] Failed executing DbCommand (25ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "MigrationId", "ProductVersion"
+FROM "HICT"."__EFMigrationsHistory"
+ORDER BY "MigrationId";
+2026-04-26 14:58:53.717 +00:00 [WRN] Overriding HTTP_PORTS '8080' and HTTPS_PORTS ''. Binding to values defined by URLS instead 'http://+:5075'.
+2026-04-26 15:36:51.183 +00:00 [INF] HTTP OPTIONS /api/auth/login responded 204 in 36.1649 ms
+2026-04-26 15:36:52.011 +00:00 [INF] HTTP POST /api/auth/login responded 200 in 816.5895 ms
+2026-04-26 15:36:55.945 +00:00 [INF] HTTP GET /api/pazienti responded 200 in 193.4221 ms
+2026-04-26 15:36:56.562 +00:00 [INF] HTTP GET /api/dashboard/layout responded 404 in 48.2897 ms
+2026-04-26 15:38:40.677 +00:00 [INF] HTTP PUT /api/dashboard/layout responded 200 in 39.2620 ms
+2026-04-26 15:38:45.749 +00:00 [INF] HTTP PUT /api/dashboard/layout responded 200 in 15.6675 ms
+2026-04-26 15:39:27.780 +00:00 [INF] HTTP GET /api/dashboard/layout responded 200 in 3.3622 ms
+2026-04-26 15:40:29.369 +00:00 [INF] HTTP PUT /api/dashboard/layout responded 200 in 13.9079 ms
+2026-04-26 15:42:03.429 +00:00 [INF] HTTP GET /api/dashboard/layout responded 200 in 22.1252 ms
+2026-04-26 15:42:21.011 +00:00 [INF] HTTP PUT /api/dashboard/layout responded 200 in 10.3452 ms
+2026-04-26 15:42:55.083 +00:00 [INF] HTTP GET /api/dashboard/layout responded 200 in 2.9353 ms
+2026-04-26 15:43:06.613 +00:00 [INF] HTTP GET /api/dashboard/layout responded 200 in 2.4147 ms
+2026-04-26 15:43:10.222 +00:00 [INF] HTTP GET /api/dashboard/layout responded 200 in 2.6009 ms
+2026-04-26 15:44:48.014 +00:00 [INF] HTTP GET /api/pazienti responded 200 in 9.7549 ms
+2026-04-26 15:44:49.824 +00:00 [INF] HTTP GET /api/dashboard/layout responded 200 in 3.4611 ms
+2026-04-26 15:45:50.615 +00:00 [WRN] Overriding HTTP_PORTS '8080' and HTTPS_PORTS ''. Binding to values defined by URLS instead 'http://+:5075'.
+2026-04-26 15:47:08.557 +00:00 [INF] HTTP GET /api/dashboard/layout responded 200 in 468.5705 ms
+2026-04-26 15:47:54.006 +00:00 [INF] HTTP GET /api/dashboard/layout responded 200 in 140.8336 ms
+2026-04-26 15:48:37.394 +00:00 [INF] HTTP GET /api/dashboard/layout responded 200 in 18.4436 ms
+2026-04-26 15:48:53.393 +00:00 [INF] HTTP GET /api/dashboard/layout responded 200 in 2.8535 ms
+2026-04-26 15:49:16.055 +00:00 [INF] HTTP GET /api/dashboard/layout responded 200 in 4.0540 ms
+2026-04-26 15:49:34.535 +00:00 [INF] HTTP GET /api/dashboard/layout responded 200 in 3.5148 ms
+2026-04-26 15:49:49.192 +00:00 [INF] HTTP GET /api/dashboard/layout responded 200 in 3.3692 ms
+2026-04-26 15:49:59.650 +00:00 [INF] HTTP GET /api/dashboard/layout responded 200 in 2.7899 ms
+2026-04-26 15:52:21.139 +00:00 [INF] HTTP GET /api/dashboard/layout responded 200 in 30.9198 ms
+2026-04-26 15:53:03.676 +00:00 [INF] HTTP GET /api/dashboard/layout responded 200 in 3.1548 ms
+2026-04-26 15:53:15.983 +00:00 [INF] HTTP GET /api/dashboard/layout responded 200 in 3.4877 ms
+2026-04-26 15:58:57.481 +00:00 [INF] HTTP GET /api/dashboard/layout responded 200 in 22.4707 ms
+2026-04-26 15:58:58.141 +00:00 [INF] HTTP GET /api/dashboard/layout responded 200 in 2.9539 ms
+2026-04-26 15:59:00.817 +00:00 [INF] HTTP GET /api/dashboard/layout responded 200 in 2.5936 ms
+2026-04-26 16:00:10.478 +00:00 [INF] HTTP GET /api/dashboard/layout responded 200 in 3.1174 ms
+2026-04-26 16:03:34.380 +00:00 [INF] HTTP GET /api/dashboard/layout responded 200 in 3.2324 ms
+2026-04-26 16:03:45.628 +00:00 [INF] HTTP GET /api/dashboard/layout responded 200 in 2.6774 ms
+2026-04-26 16:03:48.366 +00:00 [INF] HTTP PUT /api/dashboard/layout responded 200 in 216.8304 ms
+2026-04-26 16:03:51.393 +00:00 [INF] HTTP PUT /api/dashboard/layout responded 200 in 9.1161 ms
+2026-04-26 16:03:53.802 +00:00 [INF] HTTP PUT /api/dashboard/layout responded 200 in 11.1597 ms
+2026-04-26 16:03:55.973 +00:00 [INF] HTTP PUT /api/dashboard/layout responded 200 in 5.7386 ms
+2026-04-26 16:03:58.385 +00:00 [INF] HTTP PUT /api/dashboard/layout responded 200 in 19.8735 ms
+2026-04-26 16:03:59.624 +00:00 [INF] HTTP PUT /api/dashboard/layout responded 200 in 9.4822 ms
+2026-04-26 16:04:03.632 +00:00 [INF] HTTP PUT /api/dashboard/layout responded 200 in 6.3070 ms
+2026-04-26 16:04:05.682 +00:00 [INF] HTTP PUT /api/dashboard/layout responded 200 in 7.3583 ms
+2026-04-26 16:04:10.028 +00:00 [INF] HTTP PUT /api/dashboard/layout responded 200 in 27.1619 ms
+2026-04-26 16:04:12.124 +00:00 [INF] HTTP PUT /api/dashboard/layout responded 200 in 8.2301 ms
+2026-04-26 16:04:13.174 +00:00 [INF] HTTP PUT /api/dashboard/layout responded 200 in 8.1654 ms
+2026-04-26 16:04:15.289 +00:00 [INF] HTTP PUT /api/dashboard/layout responded 200 in 11.3906 ms
+2026-04-26 16:04:22.433 +00:00 [INF] HTTP PUT /api/dashboard/layout responded 200 in 5.5627 ms
+2026-04-26 16:04:24.257 +00:00 [INF] HTTP PUT /api/dashboard/layout responded 200 in 8.7282 ms
+2026-04-26 16:04:26.207 +00:00 [INF] HTTP PUT /api/dashboard/layout responded 200 in 8.3457 ms
+2026-04-26 16:04:27.986 +00:00 [INF] HTTP PUT /api/dashboard/layout responded 200 in 8.6674 ms
+2026-04-26 16:04:30.962 +00:00 [INF] HTTP PUT /api/dashboard/layout responded 200 in 12.0130 ms
+2026-04-26 16:04:32.320 +00:00 [INF] HTTP PUT /api/dashboard/layout responded 200 in 4.6460 ms
+2026-04-26 16:04:35.973 +00:00 [INF] HTTP PUT /api/dashboard/layout responded 200 in 64.6721 ms
+2026-04-26 16:04:47.737 +00:00 [INF] HTTP PUT /api/dashboard/layout responded 200 in 4.7727 ms
+2026-04-26 16:04:48.824 +00:00 [INF] HTTP PUT /api/dashboard/layout responded 200 in 8.2154 ms
+2026-04-26 16:04:50.157 +00:00 [INF] HTTP PUT /api/dashboard/layout responded 200 in 8.7011 ms
+2026-04-26 16:04:51.085 +00:00 [INF] HTTP PUT /api/dashboard/layout responded 200 in 7.5805 ms
+2026-04-26 16:04:51.889 +00:00 [INF] HTTP PUT /api/dashboard/layout responded 200 in 7.5368 ms
+2026-04-26 16:04:54.373 +00:00 [INF] HTTP PUT /api/dashboard/layout responded 200 in 7.7404 ms
+2026-04-26 16:04:55.640 +00:00 [INF] HTTP PUT /api/dashboard/layout responded 200 in 28.1373 ms
+2026-04-26 16:04:57.190 +00:00 [INF] HTTP PUT /api/dashboard/layout responded 200 in 8.0456 ms
+2026-04-26 16:04:59.957 +00:00 [INF] HTTP PUT /api/dashboard/layout responded 200 in 7.2365 ms
+2026-04-26 16:05:03.169 +00:00 [INF] HTTP PUT /api/dashboard/layout responded 200 in 8.0311 ms
+2026-04-26 16:05:09.397 +00:00 [INF] HTTP PUT /api/dashboard/layout responded 200 in 7.6748 ms
+2026-04-26 16:05:10.841 +00:00 [INF] HTTP PUT /api/dashboard/layout responded 200 in 11.1971 ms
+2026-04-26 16:05:18.674 +00:00 [INF] HTTP PUT /api/dashboard/layout responded 200 in 8.4071 ms
+2026-04-26 16:05:20.790 +00:00 [INF] HTTP PUT /api/dashboard/layout responded 200 in 7.7613 ms
+2026-04-26 16:05:22.607 +00:00 [INF] HTTP PUT /api/dashboard/layout responded 200 in 7.8274 ms
+2026-04-26 16:05:23.928 +00:00 [INF] HTTP PUT /api/dashboard/layout responded 200 in 7.8539 ms
+2026-04-26 16:07:06.531 +00:00 [INF] HTTP GET /api/dashboard/layout responded 200 in 2.0239 ms
+2026-04-26 16:07:13.427 +00:00 [INF] HTTP GET /api/dashboard/layout responded 200 in 1.7380 ms
+2026-04-26 16:07:42.788 +00:00 [INF] HTTP PUT /api/dashboard/layout responded 200 in 7.8639 ms
+2026-04-26 16:08:05.324 +00:00 [INF] HTTP PUT /api/dashboard/layout responded 200 in 8.0272 ms
+2026-04-26 16:08:06.622 +00:00 [INF] HTTP PUT /api/dashboard/layout responded 200 in 7.8787 ms
+2026-04-26 16:08:08.136 +00:00 [INF] HTTP PUT /api/dashboard/layout responded 200 in 4.0019 ms
+2026-04-26 16:08:09.247 +00:00 [INF] HTTP PUT /api/dashboard/layout responded 200 in 8.6175 ms
+2026-04-26 16:08:10.983 +00:00 [INF] HTTP PUT /api/dashboard/layout responded 200 in 9.1161 ms
+2026-04-26 16:08:12.048 +00:00 [INF] HTTP PUT /api/dashboard/layout responded 200 in 9.0702 ms
+2026-04-26 16:08:14.791 +00:00 [INF] HTTP PUT /api/dashboard/layout responded 200 in 8.4964 ms
+2026-04-26 16:08:15.957 +00:00 [INF] HTTP PUT /api/dashboard/layout responded 200 in 8.0920 ms
+2026-04-26 16:08:18.756 +00:00 [INF] HTTP PUT /api/dashboard/layout responded 200 in 7.8723 ms
+2026-04-26 16:08:20.456 +00:00 [INF] HTTP PUT /api/dashboard/layout responded 200 in 7.8612 ms
+2026-04-26 16:08:24.346 +00:00 [INF] HTTP PUT /api/dashboard/layout responded 200 in 8.6409 ms
+2026-04-26 16:08:26.212 +00:00 [INF] HTTP PUT /api/dashboard/layout responded 200 in 4.6324 ms
+2026-04-26 16:09:51.940 +00:00 [INF] HTTP GET /api/dashboard/layout responded 200 in 16.9833 ms
+2026-04-26 16:10:39.826 +00:00 [INF] HTTP PUT /api/dashboard/layout responded 200 in 8.4163 ms
+2026-04-26 16:10:43.428 +00:00 [INF] HTTP PUT /api/dashboard/layout responded 200 in 7.5389 ms
+2026-04-26 16:10:48.786 +00:00 [INF] HTTP PUT /api/dashboard/layout responded 200 in 8.1242 ms
+2026-04-26 16:10:51.911 +00:00 [INF] HTTP PUT /api/dashboard/layout responded 200 in 7.9180 ms
+2026-04-26 16:10:56.574 +00:00 [INF] HTTP PUT /api/dashboard/layout responded 200 in 8.3915 ms
+2026-04-26 16:11:05.438 +00:00 [INF] HTTP PUT /api/dashboard/layout responded 200 in 59.9823 ms
+2026-04-26 16:14:04.941 +00:00 [INF] HTTP GET /api/dashboard/layout responded 200 in 1.9019 ms
+2026-04-26 16:14:14.431 +00:00 [INF] HTTP PUT /api/dashboard/layout responded 200 in 4.6238 ms
+2026-04-26 16:14:23.724 +00:00 [INF] HTTP PUT /api/dashboard/layout responded 200 in 7.3420 ms
+2026-04-26 16:14:28.315 +00:00 [INF] HTTP PUT /api/dashboard/layout responded 200 in 7.4691 ms
+2026-04-26 16:15:02.743 +00:00 [INF] HTTP PUT /api/dashboard/layout responded 200 in 17.6900 ms
+2026-04-26 16:15:04.148 +00:00 [INF] HTTP PUT /api/dashboard/layout responded 200 in 7.4703 ms
+2026-04-26 16:15:05.397 +00:00 [INF] HTTP PUT /api/dashboard/layout responded 200 in 3.5068 ms
+2026-04-26 16:15:07.320 +00:00 [INF] HTTP PUT /api/dashboard/layout responded 200 in 8.4700 ms
+2026-04-26 16:15:08.896 +00:00 [INF] HTTP PUT /api/dashboard/layout responded 200 in 7.4020 ms
+2026-04-26 16:15:15.876 +00:00 [INF] HTTP PUT /api/dashboard/layout responded 200 in 7.6249 ms
+2026-04-26 16:15:19.032 +00:00 [INF] HTTP PUT /api/dashboard/layout responded 200 in 3.7365 ms
+2026-04-26 16:17:47.946 +00:00 [INF] HTTP PUT /api/dashboard/layout responded 200 in 6.7796 ms
+2026-04-26 16:18:07.118 +00:00 [INF] HTTP GET /api/dashboard/layout responded 200 in 2.1416 ms
+2026-04-26 16:35:42.534 +00:00 [INF] HTTP GET /api/dashboard/layout responded 200 in 14.3650 ms
+2026-04-26 16:35:43.791 +00:00 [INF] HTTP GET /api/dashboard/layout responded 200 in 1.8433 ms
+2026-04-26 16:36:08.720 +00:00 [INF] HTTP GET /api/dashboard/layout responded 200 in 2.1631 ms
+2026-04-26 16:37:00.918 +00:00 [INF] HTTP GET /api/dashboard/layout responded 200 in 1.6737 ms
+2026-04-26 16:37:01.823 +00:00 [INF] HTTP GET /api/pazienti responded 200 in 75.5491 ms
+2026-04-26 16:37:03.684 +00:00 [INF] HTTP GET /api/dashboard/layout responded 200 in 1.8241 ms
+2026-04-26 16:37:04.562 +00:00 [INF] HTTP GET /api/pazienti responded 200 in 5.1935 ms
+2026-04-26 16:37:07.391 +00:00 [INF] HTTP GET /api/pazienti responded 200 in 3.7362 ms
+2026-04-26 16:37:15.602 +00:00 [INF] HTTP GET /api/pazienti responded 200 in 2.0794 ms
+2026-04-26 16:37:16.370 +00:00 [INF] HTTP GET /api/pazienti responded 200 in 1.7290 ms
+2026-04-26 16:37:22.418 +00:00 [INF] HTTP GET /api/dashboard/layout responded 200 in 1.2876 ms
+2026-04-26 16:37:27.497 +00:00 [INF] HTTP GET /api/pazienti responded 200 in 4.0718 ms
+2026-04-26 16:37:33.230 +00:00 [INF] HTTP GET /api/dashboard/layout responded 200 in 1.3056 ms
+2026-04-26 16:41:17.513 +00:00 [INF] HTTP OPTIONS /api/auth/login responded 204 in 0.8262 ms
+2026-04-26 16:41:18.006 +00:00 [INF] HTTP POST /api/auth/login responded 200 in 488.7356 ms
+2026-04-26 16:42:05.296 +00:00 [INF] HTTP GET /api/dashboard/layout responded 200 in 2.7514 ms
+2026-04-26 16:42:33.804 +00:00 [INF] HTTP GET /api/dashboard/layout responded 200 in 1.9171 ms
+2026-04-26 16:44:40.348 +00:00 [INF] HTTP GET /api/pazienti responded 200 in 4.9490 ms
+2026-04-26 16:44:42.252 +00:00 [INF] HTTP GET /api/dashboard/layout responded 200 in 1.5616 ms
+2026-04-26 16:50:22.552 +00:00 [INF] HTTP GET /api/dashboard/layout responded 200 in 15.8519 ms
+2026-04-26 16:54:54.639 +00:00 [INF] HTTP PUT /api/dashboard/layout responded 200 in 64.9664 ms
+2026-04-26 16:54:55.778 +00:00 [INF] HTTP PUT /api/dashboard/layout responded 200 in 7.1300 ms
+2026-04-26 16:54:57.721 +00:00 [INF] HTTP PUT /api/dashboard/layout responded 200 in 7.6608 ms
+2026-04-26 16:54:58.889 +00:00 [INF] HTTP PUT /api/dashboard/layout responded 200 in 7.7507 ms
+2026-04-26 16:55:01.715 +00:00 [INF] HTTP PUT /api/dashboard/layout responded 200 in 7.2547 ms
+2026-04-26 20:17:38.290 +00:00 [INF] HTTP OPTIONS /api/auth/login responded 204 in 0.1353 ms
+2026-04-26 20:17:38.321 +00:00 [INF] HTTP POST /api/auth/login responded 200 in 27.8733 ms
+2026-04-26 20:17:42.834 +00:00 [INF] HTTP GET /api/dashboard/layout responded 200 in 2.1760 ms
+2026-04-26 20:17:45.395 +00:00 [INF] HTTP PUT /api/dashboard/layout responded 200 in 6.3669 ms
+2026-04-26 20:17:46.161 +00:00 [INF] HTTP PUT /api/dashboard/layout responded 200 in 7.2227 ms
+2026-04-26 20:17:47.109 +00:00 [INF] HTTP PUT /api/dashboard/layout responded 200 in 3.0610 ms
+2026-04-26 18:19:21.509 +00:00 [INF] HTTP GET /api/dashboard/layout responded 200 in 1.0935 ms
+2026-04-26 18:19:25.230 +00:00 [INF] HTTP GET /api/dashboard/layout responded 200 in 1.0277 ms
+2026-04-26 18:21:11.435 +00:00 [INF] HTTP GET /api/pazienti responded 200 in 4.8408 ms
+2026-04-26 18:21:12.223 +00:00 [INF] HTTP GET /api/dashboard/layout responded 200 in 1.5471 ms
+2026-04-26 18:21:13.546 +00:00 [INF] HTTP GET /api/pazienti responded 200 in 2.1095 ms
+2026-04-26 18:21:16.041 +00:00 [INF] HTTP GET /api/pazienti responded 200 in 1.7915 ms
+2026-04-26 18:21:17.343 +00:00 [INF] HTTP GET /api/dashboard/layout responded 200 in 1.6955 ms
+2026-04-26 19:23:59.222 +00:00 [INF] HTTP GET /api/dashboard/layout responded 200 in 11.6127 ms
+e='"Text"', CommandTimeout='30']
+ALTER TABLE "HICT"."SI_UTENRUOL" RENAME COLUMN "UtentiId" TO "UTRU_UTEN_ID";
+2026-04-26 20:55:41.968 +02:00 [ERR] Failed executing DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE "HICT"."SI_UTENRUOL" ADD CONSTRAINT "FK_SI_UTENRUOL_SI_RUOLI_UTRU_RUOL_ID" FOREIGN KEY ("UTRU_RUOL_ID") REFERENCES "HICT"."SI_RUOLI" ("RUOL_ID") ON DELETE CASCADE;

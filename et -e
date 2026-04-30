@@ -1,0 +1,7 @@
+              conname              | contype |                                         def                                         
+-----------------------------------+---------+-------------------------------------------------------------------------------------
+ FK_SI_UTENRUOL_SI_RUOLI_RuoliId   | f       | FOREIGN KEY ("RuoliId") REFERENCES "HICT"."SI_RUOLI"("RUOL_ID") ON DELETE CASCADE
+ FK_SI_UTENRUOL_SI_UTENTI_UtentiId | f       | FOREIGN KEY ("UtentiId") REFERENCES "HICT"."SI_UTENTI"("UTEN_ID") ON DELETE CASCADE
+ PK_SI_UTENRUOL                    | p       | PRIMARY KEY ("RuoliId", "UtentiId")
+(3 righe)
+

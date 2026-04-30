@@ -1,0 +1,296 @@
+2026-04-27 11:46:19.850 +00:00 [INF] HTTP PUT /api/dashboard/layout responded 401 in 4.9172 ms
+2026-04-27 11:46:20.208 +00:00 [INF] HTTP PUT /api/dashboard/layout responded 401 in 0.4820 ms
+2026-04-27 11:46:21.727 +00:00 [INF] HTTP PUT /api/dashboard/layout responded 401 in 0.3687 ms
+2026-04-27 11:46:22.085 +00:00 [INF] HTTP PUT /api/dashboard/layout responded 401 in 0.2465 ms
+2026-04-27 11:46:25.717 +00:00 [INF] HTTP PUT /api/dashboard/layout responded 401 in 0.3035 ms
+2026-04-27 11:46:26.074 +00:00 [INF] HTTP PUT /api/dashboard/layout responded 401 in 0.2690 ms
+2026-04-27 11:46:29.652 +00:00 [INF] HTTP PUT /api/dashboard/layout responded 401 in 0.1797 ms
+2026-04-27 11:46:30.009 +00:00 [INF] HTTP PUT /api/dashboard/layout responded 401 in 0.2469 ms
+2026-04-27 14:09:40.549 +02:00 [ERR] Failed executing DbCommand (5ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE "HICT"."SI_RUOLI" ADD CONSTRAINT "FK_SI_RUOLI_SI_PROCEDURE_RUOL_PROC_ID" FOREIGN KEY ("RUOL_PROC_ID") REFERENCES "HICT"."SI_PROCEDURE" ("PROC_ID") ON DELETE RESTRICT;
+2026-04-27 18:38:54.181 +02:00 [ERR] Failed executing DbCommand (5ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+
+                INSERT INTO \"HICT\".\"SI_PROCEDURE\" (\"PROC_ID\", \"PROC_CODICE\", \"PROC_DESCR\", \"PROC_UTINS\", \"PROC_DTINS\", \"PROC_VISIBILE\")
+                SELECT DISTINCT r.\"RUOL_PROC_ID\", 'LEGACY_' || r.\"RUOL_PROC_ID\", 'Migrated from legacy data', 1, NOW(), 1
+                FROM \"HICT\".\"SI_RUOLI\" r
+                WHERE r.\"RUOL_PROC_ID\" IS NOT NULL
+                  AND NOT EXISTS (
+                      SELECT 1 FROM \"HICT\".\"SI_PROCEDURE\" p WHERE p.\"PROC_ID\" = r.\"RUOL_PROC_ID\"
+                  );
+2026-04-27 18:39:21.514 +02:00 [ERR] Failed executing DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE "HICT"."SI_FUNZIONI" DROP CONSTRAINT "FK_SI_FUNZIONI_SI_UTENTI_UtenteInserimentoNavigationId";
+2026-04-27 17:26:01.948 +00:00 [WRN] Overriding HTTP_PORTS '8080' and HTTPS_PORTS ''. Binding to values defined by URLS instead 'http://+:5075'.
+2026-04-27 17:26:11.207 +00:00 [INF] HTTP OPTIONS /api/auth/login responded 204 in 17.5648 ms
+2026-04-27 17:26:11.781 +00:00 [INF] HTTP POST /api/auth/login responded 401 in 559.4950 ms
+2026-04-27 17:26:16.259 +00:00 [INF] HTTP OPTIONS /api/auth/login responded 204 in 0.9363 ms
+2026-04-27 17:26:16.331 +00:00 [INF] HTTP POST /api/auth/login responded 401 in 69.0188 ms
+2026-04-27 17:26:21.762 +00:00 [INF] HTTP OPTIONS /api/auth/login responded 204 in 0.1242 ms
+2026-04-27 17:26:21.780 +00:00 [INF] HTTP POST /api/auth/login responded 401 in 15.1647 ms
+2026-04-27 17:26:25.102 +00:00 [INF] HTTP POST /api/auth/login responded 401 in 5.3822 ms
+2026-04-27 17:27:59.941 +00:00 [INF] HTTP OPTIONS /api/auth/login responded 204 in 0.1314 ms
+2026-04-27 17:27:59.951 +00:00 [INF] HTTP POST /api/auth/login responded 401 in 6.8350 ms
+2026-04-27 17:28:17.572 +00:00 [INF] HTTP OPTIONS /api/auth/login responded 204 in 0.0614 ms
+2026-04-27 17:28:17.580 +00:00 [INF] HTTP POST /api/auth/login responded 401 in 4.3067 ms
+2026-04-27 17:29:09.104 +00:00 [WRN] Overriding HTTP_PORTS '8080' and HTTPS_PORTS ''. Binding to values defined by URLS instead 'http://+:5075'.
+2026-04-27 17:29:22.613 +00:00 [INF] HTTP OPTIONS /api/auth/login responded 204 in 16.4032 ms
+2026-04-27 17:29:23.163 +00:00 [INF] HTTP POST /api/auth/login responded 401 in 537.7944 ms
+2026-04-27 17:29:27.115 +00:00 [INF] HTTP POST /api/auth/login responded 200 in 275.6262 ms
+2026-04-27 17:29:27.121 +00:00 [INF] HTTP OPTIONS /api/auth/permissions responded 204 in 0.1654 ms
+2026-04-27 17:29:27.183 +00:00 [INF] HTTP GET /api/auth/permissions responded 200 in 58.6740 ms
+2026-04-27 17:29:27.219 +00:00 [INF] HTTP GET /api/auth/permissions responded 200 in 16.8874 ms
+2026-04-27 17:29:44.002 +00:00 [INF] HTTP GET /api/dashboard/layout responded 200 in 44.1114 ms
+2026-04-27 17:29:56.164 +00:00 [INF] HTTP GET /api/dashboard/layout responded 200 in 4.8859 ms
+2026-04-27 17:30:00.842 +00:00 [INF] HTTP GET /api/pazienti responded 200 in 39.5261 ms
+2026-04-27 17:30:03.790 +00:00 [INF] HTTP GET /api/dashboard/layout responded 200 in 23.5006 ms
+2026-04-27 17:36:41.320 +00:00 [INF] HTTP GET /api/dashboard/layout responded 200 in 26.0945 ms
+2026-04-27 17:36:47.665 +00:00 [INF] HTTP GET /api/dashboard/layout responded 200 in 2.7583 ms
+2026-04-27 17:36:55.046 +00:00 [INF] HTTP GET /api/dashboard/layout responded 200 in 2.8295 ms
+2026-04-27 17:37:10.505 +00:00 [INF] HTTP GET /api/ruoli responded 404 in 1.0164 ms
+2026-04-27 17:38:42.961 +00:00 [INF] HTTP GET /api/ruoli responded 404 in 0.6022 ms
+2026-04-27 17:38:44.846 +00:00 [INF] HTTP GET /api/ruoli responded 404 in 0.2437 ms
+2026-04-27 17:47:29.705 +00:00 [INF] HTTP GET /api/dashboard/layout responded 200 in 14.8197 ms
+2026-04-27 17:47:41.664 +00:00 [INF] HTTP GET /api/dashboard/layout responded 200 in 2.8203 ms
+2026-04-27 17:47:42.397 +00:00 [INF] HTTP GET /api/pazienti responded 200 in 5.3683 ms
+2026-04-27 17:47:44.432 +00:00 [INF] HTTP GET /api/dashboard/layout responded 200 in 2.2681 ms
+2026-04-27 17:49:13.392 +00:00 [INF] HTTP GET /api/dashboard/layout responded 200 in 1.5956 ms
+2026-04-27 17:49:19.031 +00:00 [INF] HTTP GET /api/dashboard/layout responded 200 in 2.6943 ms
+2026-04-27 17:49:55.228 +00:00 [INF] HTTP GET /api/dashboard/layout responded 200 in 2.3248 ms
+2026-04-27 17:50:02.730 +00:00 [INF] HTTP GET /api/dashboard/layout responded 200 in 2.3029 ms
+2026-04-27 17:50:12.077 +00:00 [INF] HTTP GET /api/dashboard/layout responded 200 in 2.8314 ms
+2026-04-27 17:52:41.757 +00:00 [INF] HTTP GET /api/dashboard/layout responded 200 in 11.8881 ms
+2026-04-27 17:53:54.974 +00:00 [INF] HTTP GET /api/dashboard/layout responded 200 in 2.0946 ms
+2026-04-27 17:54:14.903 +00:00 [INF] HTTP OPTIONS /api/auth/login responded 204 in 0.1244 ms
+2026-04-27 17:54:14.954 +00:00 [INF] HTTP POST /api/auth/login responded 200 in 47.1411 ms
+2026-04-27 17:54:14.959 +00:00 [INF] HTTP OPTIONS /api/auth/permessi responded 204 in 0.1011 ms
+2026-04-27 17:54:14.964 +00:00 [INF] HTTP GET /api/auth/permessi responded 404 in 0.4014 ms
+2026-04-27 17:54:15.015 +00:00 [INF] HTTP GET /api/auth/permessi responded 404 in 0.4918 ms
+2026-04-27 17:54:16.414 +00:00 [INF] HTTP GET /api/dashboard/layout responded 200 in 1.9251 ms
+2026-04-27 17:55:37.407 +00:00 [INF] HTTP OPTIONS /api/auth/permessi responded 204 in 0.2316 ms
+2026-04-27 17:55:37.412 +00:00 [INF] HTTP GET /api/auth/permessi responded 404 in 0.3932 ms
+2026-04-27 17:55:37.450 +00:00 [INF] HTTP GET /api/dashboard/layout responded 200 in 3.3943 ms
+2026-04-27 17:56:05.332 +00:00 [INF] HTTP OPTIONS /api/auth/permessi responded 204 in 0.0980 ms
+2026-04-27 17:56:05.343 +00:00 [INF] HTTP GET /api/auth/permessi responded 404 in 0.7101 ms
+2026-04-27 17:56:05.369 +00:00 [INF] HTTP GET /api/dashboard/layout responded 200 in 3.4433 ms
+2026-04-27 17:56:10.732 +00:00 [INF] HTTP OPTIONS /api/auth/permessi responded 204 in 0.3127 ms
+2026-04-27 17:56:10.740 +00:00 [INF] HTTP GET /api/auth/permessi responded 404 in 0.5188 ms
+2026-04-27 17:56:10.761 +00:00 [INF] HTTP GET /api/dashboard/layout responded 200 in 1.6650 ms
+2026-04-27 17:56:12.549 +00:00 [INF] HTTP GET /api/auth/permessi responded 404 in 0.5718 ms
+2026-04-27 17:56:12.583 +00:00 [INF] HTTP GET /api/dashboard/layout responded 200 in 2.6696 ms
+2026-04-27 17:57:10.840 +00:00 [INF] HTTP OPTIONS /api/auth/login responded 204 in 0.1274 ms
+2026-04-27 17:57:10.879 +00:00 [INF] HTTP POST /api/auth/login responded 200 in 36.9432 ms
+2026-04-27 17:57:10.885 +00:00 [INF] HTTP OPTIONS /api/auth/permessi responded 204 in 0.0610 ms
+2026-04-27 17:57:10.890 +00:00 [INF] HTTP GET /api/auth/permessi responded 404 in 0.4025 ms
+2026-04-27 17:57:10.916 +00:00 [INF] HTTP GET /api/auth/permessi responded 404 in 0.4089 ms
+2026-04-27 17:57:12.441 +00:00 [INF] HTTP GET /api/dashboard/layout responded 200 in 2.3958 ms
+2026-04-27 17:57:15.411 +00:00 [INF] HTTP GET /api/pazienti responded 200 in 5.5348 ms
+2026-04-27 17:57:15.924 +00:00 [INF] HTTP GET /api/dashboard/layout responded 200 in 1.5525 ms
+2026-04-27 17:57:17.806 +00:00 [INF] HTTP OPTIONS /api/auth/permessi responded 204 in 0.1135 ms
+2026-04-27 17:57:17.810 +00:00 [INF] HTTP GET /api/auth/permessi responded 404 in 0.4143 ms
+2026-04-27 17:57:17.830 +00:00 [INF] HTTP GET /api/dashboard/layout responded 200 in 1.2961 ms
+2026-04-27 17:57:18.932 +00:00 [INF] HTTP GET /api/auth/permessi responded 404 in 0.2365 ms
+2026-04-27 17:57:18.963 +00:00 [INF] HTTP GET /api/dashboard/layout responded 200 in 1.7592 ms
+2026-04-27 17:57:58.637 +00:00 [WRN] Overriding HTTP_PORTS '8080' and HTTPS_PORTS ''. Binding to values defined by URLS instead 'http://+:5075'.
+2026-04-27 17:58:01.269 +00:00 [INF] HTTP OPTIONS /api/auth/login responded 204 in 19.1266 ms
+2026-04-27 17:58:02.006 +00:00 [INF] HTTP POST /api/auth/login responded 200 in 726.0726 ms
+2026-04-27 17:58:02.014 +00:00 [INF] HTTP OPTIONS /api/auth/permessi responded 204 in 1.8738 ms
+2026-04-27 17:58:02.163 +00:00 [INF] HTTP GET /api/auth/permessi responded 200 in 145.5743 ms
+2026-04-27 17:58:02.177 +00:00 [INF] HTTP GET /api/auth/permessi responded 200 in 11.6924 ms
+2026-04-27 17:58:05.506 +00:00 [INF] HTTP GET /api/ruoli responded 200 in 71.2689 ms
+2026-04-27 17:58:13.861 +00:00 [INF] HTTP GET /api/ruoli responded 200 in 3.6632 ms
+2026-04-27 18:00:31.647 +00:00 [INF] HTTP GET /api/ruoli responded 200 in 15.0634 ms
+2026-04-27 18:01:38.773 +00:00 [INF] HTTP GET /api/ruoli responded 200 in 18.8676 ms
+2026-04-27 18:01:40.482 +00:00 [INF] HTTP GET /api/ruoli responded 200 in 2.6860 ms
+2026-04-27 18:01:46.448 +00:00 [INF] HTTP GET /api/ruoli responded 200 in 4.5356 ms
+2026-04-27 18:01:48.124 +00:00 [INF] HTTP GET /api/ruoli responded 200 in 1.8605 ms
+2026-04-27 18:01:51.610 +00:00 [INF] HTTP GET /api/ruoli responded 200 in 1.8895 ms
+2026-04-27 18:01:52.978 +00:00 [INF] HTTP GET /api/ruoli responded 200 in 1.6589 ms
+2026-04-27 18:01:53.920 +00:00 [INF] HTTP GET /api/ruoli responded 200 in 7.3672 ms
+2026-04-27 18:01:55.073 +00:00 [INF] HTTP GET /api/ruoli responded 200 in 1.7272 ms
+2026-04-27 18:02:01.160 +00:00 [INF] HTTP GET /api/ruoli responded 200 in 2.6084 ms
+2026-04-27 18:02:04.765 +00:00 [INF] HTTP GET /api/ruoli responded 200 in 1.7724 ms
+2026-04-27 18:14:40.145 +00:00 [INF] HTTP GET /api/ruoli/paginated responded 404 in 0.3358 ms
+2026-04-27 18:22:47.732 +00:00 [INF] HTTP GET /api/ruoli/paginated responded 404 in 0.4572 ms
+2026-04-27 18:23:13.468 +00:00 [INF] HTTP GET /api/ruoli/paginated responded 404 in 0.2558 ms
+2026-04-27 18:27:20.998 +00:00 [INF] HTTP OPTIONS /api/ruoli/paginated responded 204 in 0.2083 ms
+2026-04-27 18:27:21.009 +00:00 [INF] HTTP GET /api/ruoli/paginated responded 404 in 0.4344 ms
+2026-04-27 18:27:25.978 +00:00 [INF] HTTP GET /api/ruoli/paginated responded 404 in 0.4701 ms
+2026-04-27 18:27:34.287 +00:00 [INF] HTTP OPTIONS /api/ruoli/paginated responded 204 in 0.1328 ms
+2026-04-27 18:27:34.295 +00:00 [INF] HTTP GET /api/ruoli/paginated responded 404 in 0.6649 ms
+2026-04-27 18:28:35.400 +00:00 [INF] HTTP OPTIONS /api/ruoli/paginated responded 204 in 0.1856 ms
+2026-04-27 18:28:35.415 +00:00 [INF] HTTP GET /api/ruoli/paginated responded 404 in 2.9455 ms
+2026-04-27 18:30:09.262 +00:00 [INF] HTTP OPTIONS /api/ruoli/paginated responded 204 in 0.1039 ms
+2026-04-27 18:30:09.269 +00:00 [INF] HTTP GET /api/ruoli/paginated responded 404 in 0.7127 ms
+2026-04-27 18:30:52.731 +00:00 [INF] HTTP GET /api/ruoli/paginated responded 404 in 0.1398 ms
+2026-04-27 18:30:52.735 +00:00 [INF] HTTP GET /api/ruoli/paginated responded 404 in 0.1473 ms
+2026-04-27 18:31:06.114 +00:00 [INF] HTTP GET /health responded 200 in 3.6667 ms
+2026-04-27 18:31:08.321 +00:00 [INF] HTTP GET /swagger/v1/swagger.json responded 200 in 101.8158 ms
+2026-04-27 18:31:10.402 +00:00 [INF] HTTP GET /api/ruoli/paginated responded 404 in 0.4084 ms
+2026-04-27 18:31:19.279 +00:00 [INF] HTTP GET /swagger/v1/swagger.json responded 200 in 7.4735 ms
+2026-04-27 18:31:26.468 +00:00 [INF] HTTP GET /swagger/v1/swagger.json responded 200 in 9.9902 ms
+2026-04-27 18:31:52.263 +00:00 [WRN] Overriding HTTP_PORTS '8080' and HTTPS_PORTS ''. Binding to values defined by URLS instead 'http://+:5075'.
+2026-04-27 18:33:51.939 +00:00 [INF] HTTP OPTIONS /api/ruoli/paginated responded 204 in 22.8430 ms
+2026-04-27 18:33:52.392 +00:00 [INF] HTTP GET /api/ruoli/paginated responded 200 in 440.6898 ms
+2026-04-27 18:34:09.601 +00:00 [INF] HTTP OPTIONS /api/ruoli/paginated responded 204 in 0.8233 ms
+2026-04-27 18:34:09.669 +00:00 [INF] HTTP GET /api/ruoli/paginated responded 200 in 64.3665 ms
+2026-04-27 18:34:22.123 +00:00 [INF] HTTP OPTIONS /api/ruoli/paginated responded 204 in 0.0772 ms
+2026-04-27 18:34:22.136 +00:00 [INF] HTTP GET /api/ruoli/paginated responded 200 in 10.1708 ms
+2026-04-27 18:34:26.442 +00:00 [INF] HTTP OPTIONS /api/ruoli/paginated responded 204 in 0.0724 ms
+2026-04-27 18:34:26.448 +00:00 [INF] HTTP GET /api/ruoli/paginated responded 200 in 3.1990 ms
+2026-04-27 18:34:28.161 +00:00 [INF] HTTP OPTIONS /api/ruoli/paginated responded 204 in 0.1148 ms
+2026-04-27 18:34:28.181 +00:00 [INF] HTTP GET /api/ruoli/paginated responded 200 in 17.4293 ms
+2026-04-27 18:34:31.113 +00:00 [INF] HTTP GET /api/ruoli/paginated responded 200 in 2.8057 ms
+2026-04-27 18:34:33.886 +00:00 [INF] HTTP OPTIONS /api/ruoli/paginated responded 204 in 0.0728 ms
+2026-04-27 18:34:33.891 +00:00 [INF] HTTP GET /api/ruoli/paginated responded 200 in 2.7694 ms
+2026-04-27 18:34:37.373 +00:00 [INF] HTTP OPTIONS /api/ruoli/paginated responded 204 in 0.1508 ms
+2026-04-27 18:34:37.403 +00:00 [INF] HTTP GET /api/ruoli/paginated responded 200 in 26.4680 ms
+2026-04-27 18:34:38.340 +00:00 [INF] HTTP OPTIONS /api/ruoli/paginated responded 204 in 0.0987 ms
+2026-04-27 18:34:38.345 +00:00 [INF] HTTP GET /api/ruoli/paginated responded 200 in 2.4041 ms
+2026-04-27 18:34:41.883 +00:00 [INF] HTTP OPTIONS /api/ruoli/paginated responded 204 in 0.3771 ms
+2026-04-27 18:34:41.890 +00:00 [INF] HTTP GET /api/ruoli/paginated responded 200 in 3.3090 ms
+2026-04-27 18:34:44.178 +00:00 [INF] HTTP OPTIONS /api/ruoli/paginated responded 204 in 0.0975 ms
+2026-04-27 18:34:44.184 +00:00 [INF] HTTP GET /api/ruoli/paginated responded 200 in 2.7255 ms
+2026-04-27 18:34:49.032 +00:00 [INF] HTTP OPTIONS /api/ruoli/paginated responded 204 in 0.0690 ms
+2026-04-27 18:34:49.037 +00:00 [INF] HTTP GET /api/ruoli/paginated responded 200 in 2.4143 ms
+2026-04-27 18:47:59.636 +00:00 [INF] HTTP OPTIONS /api/ruoli/paginated responded 204 in 0.0987 ms
+2026-04-27 18:47:59.659 +00:00 [INF] HTTP GET /api/ruoli/paginated responded 200 in 20.1796 ms
+2026-04-27 18:51:00.124 +00:00 [INF] HTTP GET /swagger/v1/swagger.json responded 200 in 108.1208 ms
+2026-04-27 18:51:02.908 +00:00 [INF] HTTP GET /api/ruoli/paginated responded 401 in 2.8024 ms
+2026-04-27 18:51:53.344 +00:00 [INF] HTTP OPTIONS /api/ruoli/paginated responded 204 in 0.1437 ms
+2026-04-27 18:51:53.350 +00:00 [INF] HTTP GET /api/ruoli/paginated responded 200 in 2.5529 ms
+2026-04-27 18:51:55.746 +00:00 [INF] HTTP OPTIONS /api/ruoli/paginated responded 204 in 0.0559 ms
+2026-04-27 18:51:55.752 +00:00 [INF] HTTP GET /api/ruoli/paginated responded 200 in 2.2000 ms
+2026-04-27 18:51:56.882 +00:00 [INF] HTTP GET /api/ruoli/paginated responded 200 in 16.3700 ms
+2026-04-27 18:52:05.303 +00:00 [INF] HTTP OPTIONS /api/ruoli/paginated responded 204 in 0.1184 ms
+2026-04-27 18:52:05.309 +00:00 [INF] HTTP GET /api/ruoli/paginated responded 200 in 2.2574 ms
+2026-04-27 18:52:11.339 +00:00 [INF] HTTP OPTIONS /api/ruoli/paginated responded 204 in 0.2401 ms
+2026-04-27 18:52:11.344 +00:00 [INF] HTTP GET /api/ruoli/paginated responded 200 in 1.9590 ms
+2026-04-27 18:52:21.432 +00:00 [INF] HTTP OPTIONS /api/ruoli/paginated responded 204 in 0.0499 ms
+2026-04-27 18:52:21.438 +00:00 [INF] HTTP GET /api/ruoli/paginated responded 200 in 2.2021 ms
+2026-04-27 18:52:54.274 +00:00 [INF] HTTP OPTIONS /api/ruoli/paginated responded 204 in 0.0603 ms
+2026-04-27 18:52:54.282 +00:00 [INF] HTTP GET /api/ruoli/paginated responded 200 in 3.5157 ms
+2026-04-27 18:53:01.295 +00:00 [INF] HTTP OPTIONS /api/ruoli/paginated responded 204 in 0.0474 ms
+2026-04-27 18:53:01.315 +00:00 [INF] HTTP GET /api/ruoli/paginated responded 200 in 16.5629 ms
+2026-04-27 18:53:07.154 +00:00 [INF] HTTP OPTIONS /api/ruoli/paginated responded 204 in 0.0613 ms
+2026-04-27 18:53:07.161 +00:00 [INF] HTTP GET /api/ruoli/paginated responded 200 in 2.8664 ms
+2026-04-27 18:53:10.173 +00:00 [INF] HTTP GET /api/ruoli/paginated responded 200 in 2.7750 ms
+2026-04-27 18:54:26.004 +00:00 [INF] HTTP OPTIONS /api/ruoli/paginated responded 204 in 0.0721 ms
+2026-04-27 18:54:26.019 +00:00 [INF] HTTP GET /api/ruoli/paginated responded 200 in 4.7988 ms
+2026-04-27 18:54:31.865 +00:00 [INF] HTTP OPTIONS /api/ruoli/paginated responded 204 in 0.0645 ms
+2026-04-27 18:54:31.876 +00:00 [INF] HTTP GET /api/ruoli/paginated responded 200 in 6.8890 ms
+2026-04-27 18:57:09.550 +00:00 [INF] HTTP OPTIONS /api/ruoli/paginated responded 204 in 0.0452 ms
+2026-04-27 18:57:09.557 +00:00 [INF] HTTP GET /api/ruoli/paginated responded 200 in 2.9988 ms
+2026-04-27 18:57:18.072 +00:00 [INF] HTTP OPTIONS /api/ruoli/paginated responded 204 in 0.0584 ms
+2026-04-27 18:57:18.078 +00:00 [INF] HTTP GET /api/ruoli/paginated responded 200 in 2.3273 ms
+2026-04-27 18:57:33.474 +00:00 [INF] HTTP OPTIONS /api/ruoli/paginated responded 204 in 0.0498 ms
+2026-04-27 18:57:33.482 +00:00 [INF] HTTP GET /api/ruoli/paginated responded 200 in 3.5840 ms
+2026-04-27 18:58:09.025 +00:00 [INF] HTTP OPTIONS /api/ruoli/paginated responded 204 in 0.0576 ms
+2026-04-27 18:58:09.040 +00:00 [INF] HTTP GET /api/ruoli/paginated responded 200 in 11.6313 ms
+2026-04-27 18:59:22.106 +00:00 [INF] HTTP OPTIONS /api/ruoli/paginated responded 204 in 0.0565 ms
+2026-04-27 18:59:22.114 +00:00 [INF] HTTP GET /api/ruoli/paginated responded 200 in 3.7823 ms
+2026-04-27 18:59:54.212 +00:00 [INF] HTTP OPTIONS /api/ruoli/paginated responded 204 in 0.0668 ms
+2026-04-27 18:59:54.222 +00:00 [INF] HTTP GET /api/ruoli/paginated responded 200 in 4.7669 ms
+2026-04-27 19:09:44.700 +00:00 [INF] HTTP OPTIONS /api/auth/login responded 204 in 0.0832 ms
+2026-04-27 19:09:45.112 +00:00 [INF] HTTP POST /api/auth/login responded 200 in 407.4214 ms
+2026-04-27 19:09:45.123 +00:00 [INF] HTTP OPTIONS /api/auth/permessi responded 204 in 0.0507 ms
+2026-04-27 19:09:45.150 +00:00 [INF] HTTP GET /api/auth/permessi responded 200 in 24.2031 ms
+2026-04-27 19:09:49.556 +00:00 [INF] HTTP OPTIONS /api/ruoli/paginated responded 204 in 0.1311 ms
+2026-04-27 19:09:49.562 +00:00 [INF] HTTP GET /api/ruoli/paginated responded 200 in 3.2910 ms
+2026-04-27 19:09:54.541 +00:00 [INF] HTTP OPTIONS /api/ruoli/paginated responded 204 in 0.0373 ms
+2026-04-27 19:09:54.547 +00:00 [INF] HTTP GET /api/ruoli/paginated responded 200 in 1.8302 ms
+2026-04-27 19:10:01.299 +00:00 [INF] HTTP OPTIONS /api/ruoli/paginated responded 204 in 0.0367 ms
+2026-04-27 19:10:01.305 +00:00 [INF] HTTP GET /api/ruoli/paginated responded 200 in 1.9259 ms
+2026-04-27 19:10:51.801 +00:00 [INF] HTTP OPTIONS /api/ruoli/paginated responded 204 in 0.0382 ms
+2026-04-27 19:10:51.817 +00:00 [INF] HTTP GET /api/ruoli/paginated responded 200 in 3.5400 ms
+2026-04-27 19:10:57.155 +00:00 [INF] HTTP OPTIONS /api/ruoli/paginated responded 204 in 0.1436 ms
+2026-04-27 19:10:57.161 +00:00 [INF] HTTP GET /api/ruoli/paginated responded 200 in 2.2816 ms
+2026-04-27 19:14:24.890 +00:00 [INF] HTTP OPTIONS /api/ruoli/paginated responded 204 in 1.7067 ms
+2026-04-27 19:14:24.896 +00:00 [INF] HTTP GET /api/ruoli/paginated responded 200 in 1.9842 ms
+2026-04-27 19:14:57.055 +00:00 [INF] HTTP OPTIONS /api/ruoli/paginated responded 204 in 0.0908 ms
+2026-04-27 19:14:57.085 +00:00 [INF] HTTP GET /api/ruoli/paginated responded 200 in 18.4498 ms
+2026-04-27 19:15:03.319 +00:00 [INF] HTTP OPTIONS /api/ruoli/paginated responded 204 in 0.0286 ms
+2026-04-27 19:15:03.324 +00:00 [INF] HTTP GET /api/ruoli/paginated responded 200 in 2.1715 ms
+2026-04-27 19:15:44.403 +00:00 [INF] HTTP OPTIONS /api/ruoli/paginated responded 204 in 0.0314 ms
+2026-04-27 19:15:44.410 +00:00 [INF] HTTP GET /api/ruoli/paginated responded 200 in 2.7438 ms
+2026-04-27 19:15:49.292 +00:00 [INF] HTTP OPTIONS /api/ruoli/paginated responded 204 in 0.0742 ms
+2026-04-27 19:15:49.298 +00:00 [INF] HTTP GET /api/ruoli/paginated responded 200 in 3.3917 ms
+2026-04-27 19:16:06.655 +00:00 [INF] HTTP GET /api/ruoli/paginated responded 401 in 0.4250 ms
+2026-04-27 19:22:37.136 +00:00 [INF] HTTP GET /api/ruoli/paginated responded 200 in 13.8508 ms
+Transport.Sockets.SocketConnectionListener.Bind()
+   --- End of inner exception stack trace ---
+   at Microsoft.AspNetCore.Server.Kestrel.Transport.Sockets.SocketConnectionListener.Bind()
+   at Microsoft.AspNetCore.Server.Kestrel.Transport.Sockets.SocketTransportFactory.BindAsync(EndPoint endpoint, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Infrastructure.TransportManager.BindAsync(EndPoint endPoint, ConnectionDelegate connectionDelegate, EndpointConfig endpointConfig, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.KestrelServerImpl.<>c__DisplayClass28_0`1.<<StartAsync>g__OnBind|0>d.MoveNext()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.AddressBinder.BindEndpointAsync(ListenOptions endpoint, AddressBindContext context, CancellationToken cancellationToken)
+   --- End of inner exception stack trace ---
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.AddressBinder.BindEndpointAsync(ListenOptions endpoint, AddressBindContext context, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.LocalhostListenOptions.BindAsync(AddressBindContext context, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.AddressBinder.AddressesStrategy.BindAsync(AddressBindContext context, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.KestrelServerImpl.BindAsync(CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.KestrelServerImpl.StartAsync[TContext](IHttpApplication`1 application, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Hosting.GenericWebHostService.StartAsync(CancellationToken cancellationToken)
+   at Microsoft.Extensions.Hosting.Internal.Host.<StartAsync>b__14_1(IHostedService service, CancellationToken token)
+   at Microsoft.Extensions.Hosting.Internal.Host.ForeachService[T](IEnumerable`1 services, CancellationToken token, Boolean concurrent, Boolean abortOnFirstException, List`1 exceptions, Func`3 operation)
+2026-04-27 19:37:36.124 +00:00 [WRN] Overriding HTTP_PORTS '8080' and HTTPS_PORTS ''. Binding to values defined by URLS instead 'http://+:5075'.
+2026-04-27 21:40:32.681 +02:00 [ERR] Hosting failed to start
+System.IO.IOException: Failed to bind to address http://127.0.0.1:5075: address already in use.
+ ---> Microsoft.AspNetCore.Connections.AddressInUseException: Address already in use
+ ---> System.Net.Sockets.SocketException (98): Address already in use
+   at System.Net.Sockets.Socket.UpdateStatusAfterSocketErrorAndThrowException(SocketError error, Boolean disconnectOnFailure, String callerName)
+   at System.Net.Sockets.Socket.DoBind(EndPoint endPointSnapshot, SocketAddress socketAddress)
+   at System.Net.Sockets.Socket.Bind(EndPoint localEP)
+   at Microsoft.AspNetCore.Server.Kestrel.Transport.Sockets.SocketTransportOptions.CreateDefaultBoundListenSocket(EndPoint endpoint)
+   at Microsoft.AspNetCore.Server.Kestrel.Transport.Sockets.SocketConnectionListener.Bind()
+   --- End of inner exception stack trace ---
+   at Microsoft.AspNetCore.Server.Kestrel.Transport.Sockets.SocketConnectionListener.Bind()
+   at Microsoft.AspNetCore.Server.Kestrel.Transport.Sockets.SocketTransportFactory.BindAsync(EndPoint endpoint, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Infrastructure.TransportManager.BindAsync(EndPoint endPoint, ConnectionDelegate connectionDelegate, EndpointConfig endpointConfig, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.KestrelServerImpl.<>c__DisplayClass28_0`1.<<StartAsync>g__OnBind|0>d.MoveNext()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.AddressBinder.BindEndpointAsync(ListenOptions endpoint, AddressBindContext context, CancellationToken cancellationToken)
+   --- End of inner exception stack trace ---
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.AddressBinder.BindEndpointAsync(ListenOptions endpoint, AddressBindContext context, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.LocalhostListenOptions.BindAsync(AddressBindContext context, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.AddressBinder.AddressesStrategy.BindAsync(AddressBindContext context, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.KestrelServerImpl.BindAsync(CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.KestrelServerImpl.StartAsync[TContext](IHttpApplication`1 application, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Hosting.GenericWebHostService.StartAsync(CancellationToken cancellationToken)
+   at Microsoft.Extensions.Hosting.Internal.Host.<StartAsync>b__14_1(IHostedService service, CancellationToken token)
+   at Microsoft.Extensions.Hosting.Internal.Host.ForeachService[T](IEnumerable`1 services, CancellationToken token, Boolean concurrent, Boolean abortOnFirstException, List`1 exceptions, Func`3 operation)
+2026-04-27 19:43:48.361 +00:00 [WRN] Overriding HTTP_PORTS '8080' and HTTPS_PORTS ''. Binding to values defined by URLS instead 'http://+:5075'.
+2026-04-27 19:47:06.929 +00:00 [INF] HTTP GET /api/ruoli/paginated responded 200 in 174551.2575 ms
+2026-04-27 22:00:37.437 +00:00 [INF] HTTP GET /api/ruoli/paginated responded 200 in 1038994.0706 ms
+2026-04-27 22:00:41.183 +00:00 [INF] HTTP GET /api/ruoli/paginated responded 401 in 17.8698 ms
+2026-04-27 22:00:55.436 +00:00 [INF] HTTP OPTIONS /api/auth/login responded 204 in 1.7565 ms
+2026-04-27 22:00:55.962 +00:00 [INF] HTTP POST /api/auth/login responded 200 in 520.9461 ms
+2026-04-27 22:00:55.971 +00:00 [INF] HTTP OPTIONS /api/auth/permessi responded 204 in 0.2110 ms
+2026-04-27 22:00:56.009 +00:00 [INF] HTTP GET /api/auth/permessi responded 200 in 32.6994 ms
+2026-04-27 22:00:58.332 +00:00 [INF] HTTP OPTIONS /api/dashboard/layout responded 204 in 0.1771 ms
+2026-04-27 22:00:58.384 +00:00 [INF] HTTP GET /api/dashboard/layout responded 200 in 38.7971 ms
+2026-04-27 22:01:05.691 +00:00 [INF] HTTP OPTIONS /api/ruoli/paginated responded 204 in 0.1828 ms
+2026-04-27 22:01:51.493 +00:00 [INF] HTTP GET /api/ruoli/paginated responded 200 in 45772.2264 ms
+2026-04-27 22:01:59.095 +00:00 [INF] HTTP OPTIONS /api/ruoli/paginated responded 204 in 0.1055 ms
+2026-04-27 22:03:57.302 +00:00 [INF] HTTP GET /api/ruoli/paginated responded 200 in 118204.1329 ms
+2026-04-27 22:04:10.092 +00:00 [INF] HTTP OPTIONS /api/ruoli/paginated responded 204 in 0.0840 ms
+2026-04-27 22:04:22.196 +00:00 [INF] HTTP GET /api/ruoli/paginated responded 200 in 12100.8446 ms
+2026-04-27 22:04:31.042 +00:00 [INF] HTTP OPTIONS /api/ruoli/paginated responded 204 in 0.0632 ms
+2026-04-27 22:04:37.175 +00:00 [INF] HTTP GET /api/ruoli/paginated responded 200 in 6129.9061 ms
+2026-04-27 22:04:59.904 +00:00 [INF] HTTP OPTIONS /api/ruoli/paginated responded 204 in 0.2470 ms
+2026-04-27 22:04:59.910 +00:00 [INF] HTTP GET /api/ruoli/paginated responded 200 in 2.4871 ms
+2026-04-27 22:25:08.001 +00:00 [INF] HTTP OPTIONS /api/ruoli/paginated responded 204 in 0.1045 ms
+2026-04-27 22:25:08.016 +00:00 [INF] HTTP GET /api/ruoli/paginated responded 200 in 11.9080 ms
+2026-04-27 22:26:36.799 +00:00 [INF] HTTP OPTIONS /api/ruoli/paginated responded 204 in 0.1020 ms
+2026-04-27 22:26:36.805 +00:00 [INF] HTTP GET /api/ruoli/paginated responded 200 in 2.2572 ms
+2026-04-27 22:26:37.280 +00:00 [INF] HTTP OPTIONS /api/ruoli/paginated responded 204 in 0.2026 ms
+2026-04-27 22:26:37.293 +00:00 [INF] HTTP GET /api/ruoli/paginated responded 200 in 10.1148 ms
+2026-04-27 22:26:38.464 +00:00 [INF] HTTP GET /api/ruoli/paginated responded 200 in 2.2946 ms
+2026-04-27 22:26:40.238 +00:00 [INF] HTTP GET /api/ruoli/paginated responded 200 in 2.2071 ms
+2026-04-27 22:26:42.095 +00:00 [INF] HTTP OPTIONS /api/ruoli/paginated responded 204 in 0.1139 ms
+2026-04-27 22:26:42.104 +00:00 [INF] HTTP GET /api/ruoli/paginated responded 200 in 4.3554 ms
+2026-04-27 22:26:45.483 +00:00 [INF] HTTP OPTIONS /api/ruoli/paginated responded 204 in 0.1231 ms
+2026-04-27 22:26:45.488 +00:00 [INF] HTTP GET /api/ruoli/paginated responded 200 in 2.0340 ms
+2026-04-27 22:27:12.712 +00:00 [INF] HTTP OPTIONS /api/ruoli/paginated responded 204 in 0.1385 ms
+2026-04-27 22:27:12.720 +00:00 [INF] HTTP GET /api/ruoli/paginated responded 200 in 3.4255 ms
+2026-04-27 22:27:14.622 +00:00 [INF] HTTP GET /api/ruoli/paginated responded 200 in 2.1903 ms
+2026-04-27 23:21:56.302 +00:00 [WRN] Overriding HTTP_PORTS '8080' and HTTPS_PORTS ''. Binding to values defined by URLS instead 'http://+:5075'.

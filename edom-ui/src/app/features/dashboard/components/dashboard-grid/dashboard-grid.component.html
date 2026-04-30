@@ -19,6 +19,10 @@
         [attr.gs-y]="widget.y"
         [attr.gs-w]="widget.w"
         [attr.gs-h]="widget.h"
+        [attr.gs-min-w]="widget.minW ?? null"
+        [attr.gs-min-h]="widget.minH ?? null"
+        [attr.gs-max-w]="widget.maxW ?? null"
+        [attr.gs-max-h]="widget.maxH ?? null"
       >
         <div class="grid-stack-item-content widget-shell">
           <app-dashboard-widget-container

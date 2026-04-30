@@ -1,4 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
+using eDom.Application.Validation;
 
 namespace eDom.Application.Mediator;
 
@@ -7,12 +8,16 @@ namespace eDom.Application.Mediator;
 /// Risolve l'handler corrispondente al tipo di request tramite DI
 /// ed invoca HandleAsync senza dipendere da librerie esterne.
 /// </summary>
-public sealed class Mediator(IServiceProvider serviceProvider) : IMediator
+public sealed class Mediator(
+    IServiceProvider serviceProvider,
+    IRequestValidationEngine validationEngine) : IMediator
 {
-    public Task<TResponse> SendAsync<TResponse>(IRequest<TResponse> request, CancellationToken ct = default)
+    public async Task<TResponse> SendAsync<TResponse>(IRequest<TResponse> request, CancellationToken ct = default)
     {
+        await validationEngine.ValidateAsync(request, ct);
+
         var handlerType = typeof(IRequestHandler<,>).MakeGenericType(request.GetType(), typeof(TResponse));
         dynamic handler = serviceProvider.GetRequiredService(handlerType);
-        return handler.HandleAsync((dynamic)request, ct);
+        return await handler.HandleAsync((dynamic)request, ct);
     }
 }

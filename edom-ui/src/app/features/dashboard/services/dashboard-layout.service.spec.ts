@@ -4,6 +4,7 @@ import { provideHttpClientTesting, HttpTestingController } from '@angular/common
 import { DashboardLayoutService } from './dashboard-layout.service';
 import { AuthService } from '../../../core/services/auth.service';
 import { DashboardWidgetsRegistryService } from '../registry/dashboard-widgets.registry';
+import { environment } from '../../../../environments/environment';
 
 describe('DashboardLayoutService', () => {
   let service: DashboardLayoutService;
@@ -63,7 +64,7 @@ describe('DashboardLayoutService', () => {
       expect(layout.widgets[0].id).toBe('w1');
     });
 
-    const req = httpMock.expectOne('/api/dashboard/layout');
+    const req = httpMock.expectOne(`${environment.apiUrl}/dashboard/layout`);
     req.flush({}, { status: 500, statusText: 'Server error' });
   });
 
@@ -73,7 +74,7 @@ describe('DashboardLayoutService', () => {
       expect(layout.widgets[0].state).toBe('active');
     });
 
-    const req = httpMock.expectOne('/api/dashboard/layout');
+    const req = httpMock.expectOne(`${environment.apiUrl}/dashboard/layout`);
     req.flush({
       schemaVersion: 0,
       updatedAt: '2026-04-26T10:00:00.000Z',

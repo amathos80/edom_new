@@ -1,0 +1,26 @@
+<section class="component-page">
+  <h2>Custom Textbox</h2>
+  <p>
+    Wrapper PrimeNG InputText con prop <strong>uppercase</strong> per forzare il testo in
+    maiuscolo durante la digitazione.
+  </p>
+
+  <div class="examples-grid">
+    <p-card header="Textbox standard">
+      <app-custom-textbox-input
+        [(ngModel)]="normalValue"
+        placeholder="Digita liberamente"
+      />
+      <small>Valore corrente: {{ normalValue || '-' }}</small>
+    </p-card>
+
+    <p-card header="Textbox uppercase">
+      <app-custom-textbox-input
+        [(ngModel)]="uppercaseValue"
+        placeholder="Digita in uppercase"
+        [uppercase]="true"
+      />
+      <small>Valore corrente: {{ uppercaseValue || '-' }}</small>
+    </p-card>
+  </div>
+</section>

@@ -1,4 +1,5 @@
 using eDom.Core.Entities;
+using eDom.Core.Models;
 
 namespace eDom.Core.Interfaces;
 
@@ -6,6 +7,7 @@ public interface IUtenteRepository : IRepository<Utente>
 {
     Task<Utente?> GetByCodiceAsync(string codice, CancellationToken ct = default);
     Task<Utente?> GetByCodiceWithRuoliAsync(string codice, CancellationToken ct = default);
+    Task<ProfiloAutorizzativoUtente?> OttieniProfiloAutorizzativoAsync(string codice, CancellationToken ct = default);
     /// <summary>
     /// Aggiorna UTEN_LASTLOGIN tramite ExecuteUpdateAsync (senza passare per il change tracker
     /// e quindi senza generare record di audit).

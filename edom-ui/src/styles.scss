@@ -1,1 +1,16 @@
-/* You can add global styles to this file, and also import other style files */
+/* PrimeNG Icons */
+@import 'primeicons/primeicons.css';
+
+/* Global Layout Fix - Prevent double scrollbars */
+html,
+body {
+  height: 100%;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+}
+
+app-root {
+  display: block;
+  height: 100%;
+}

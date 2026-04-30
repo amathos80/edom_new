@@ -1,0 +1,74 @@
+.caption-tabella {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.dialog-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
+  color: #3a4752;
+  font-size: 0.9rem;
+}
+
+.azioni {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0.5rem 0 0.75rem;
+}
+
+.stato {
+  color: #5f6368;
+  font-size: 0.95rem;
+  padding: 0.25rem 0 0.75rem;
+}
+
+.nodo-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.nodo-list-root {
+  border: 1px solid #d7dee4;
+  border-radius: 6px;
+  padding: 0.5rem;
+  background: #fafbfc;
+}
+
+.nodo-item {
+  margin: 0.15rem 0;
+}
+
+.nodo-row {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  min-height: 2rem;
+}
+
+.expander {
+  width: 1.5rem;
+  height: 1.5rem;
+  padding: 0;
+}
+
+.expander-placeholder {
+  display: inline-block;
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.nodo-label {
+  font-weight: 600;
+  color: #2f3b45;
+}
+
+.nodo-descrizione {
+  color: #63707b;
+  font-size: 0.88rem;
+}

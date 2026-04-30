@@ -1,0 +1,202 @@
+<p-toast></p-toast>
+
+<p-card header="Gestione Ruoli">
+  <p-toolbar styleClass="mb-4">
+    <ng-template #start>
+      <button pButton label="Nuovo" icon="pi pi-plus" class="mr-2" (click)="apriCreazione()"></button>
+      <button
+        pButton
+        label="Elimina selezionati"
+        icon="pi pi-trash"
+        severity="danger"
+        outlined="true"
+        (click)="eliminaSelezionati()"
+        [disabled]="ruoliSelezionati.length === 0"
+      ></button>
+      <button
+        pButton
+        label="Reimposta filtri"
+        icon="pi pi-refresh"
+        severity="secondary"
+        outlined="true"
+        (click)="pulisciFiltri(tabellaRuoli)"
+      ></button>
+    </ng-template>
+  </p-toolbar>
+
+  <div class="filtri-tabella">
+    <p-checkbox
+      [(ngModel)]="filtriAggiuntivi.soloAmministratore"
+      binary="true"
+      inputId="solo-admin"
+      (onChange)="tabellaRuoli?.reset()"
+    ></p-checkbox>
+    <label for="solo-admin">Solo amministratori</label>
+  </div>
+
+  <p-table
+    #tabellaRuoli
+    [value]="ruoli()"
+    [loading]="caricamento()"
+    [lazy]="true"
+    [paginator]="true"
+    [rows]="10"
+    [totalRecords]="totaleRuoli()"
+    [rowsPerPageOptions]="[10, 20, 50]"
+    [globalFilterFields]="['codice', 'descrizione', 'proceduraId']"
+    [(selection)]="ruoliSelezionati"
+    dataKey="id"
+    responsiveLayout="scroll"
+    (onLazyLoad)="onLazyLoad($event)"
+  >
+    <ng-template pTemplate="caption">
+      <div class="caption-tabella">
+        <h5 class="m-0">Elenco ruoli ({{ totaleRuoli() }} totali)</h5>
+        <p-iconfield>
+          <p-inputicon styleClass="pi pi-search"></p-inputicon>
+          <input
+            pInputText
+            type="text"
+            placeholder="Ricerca globale"
+            (input)="filtraGlobale(tabellaRuoli, $event)"
+          />
+        </p-iconfield>
+      </div>
+    </ng-template>
+
+    <ng-template pTemplate="header">
+      <tr>
+        <th style="width: 3rem"><p-tableHeaderCheckbox></p-tableHeaderCheckbox></th>
+         <th pSortableColumn="proceduraId">
+          Procedura
+          <p-sortIcon field="proceduraId"></p-sortIcon>
+          
+          <p-columnFilter field="proceduraId" display="menu" type="numeric"></p-columnFilter>
+        </th>
+        <th pSortableColumn="codice">
+          Codice
+          <p-sortIcon field="codice"></p-sortIcon>
+          <p-columnFilter field="codice" display="menu" type="text"></p-columnFilter>
+        </th>
+         <th pSortableColumn="descrizione">
+          Descrizione
+          <p-sortIcon field="descrizione"></p-sortIcon>
+          <p-columnFilter field="descrizione" display="menu" type="text"></p-columnFilter>
+        </th>
+        <!-- <th pSortableColumn="id">
+          Id
+          <p-sortIcon field="id"></p-sortIcon>
+          <p-columnFilter field="id" display="menu" type="numeric" [showOperator]="false"></p-columnFilter>
+        </th>
+        
+       
+       
+        <th pSortableColumn="flagAmministratore">
+          Amministratore
+          <p-sortIcon field="flagAmministratore"></p-sortIcon>
+          <p-columnFilter field="flagAmministratore" display="menu" type="boolean"></p-columnFilter>
+        </th>
+        <th pSortableColumn="dataInserimento">
+          Creato il
+          <p-sortIcon field="dataInserimento"></p-sortIcon>
+          <p-columnFilter field="dataInserimento" display="menu" type="date"></p-columnFilter>
+        </th> -->
+        <th>Azioni</th>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body" let-r>
+      <tr>
+        <td><p-tableCheckbox [value]="r"></p-tableCheckbox></td>
+           <td>{{ r.proceduraCodice || r.proceduraId }}</td>
+           <td>{{ r.codice }}</td>
+        <td>{{ r.descrizione }}</td>
+        <!-- <td>{{ r.id }}</td>
+        
+     
+        <td>
+          <p-tag [value]="r.flagAmministratore ? 'Si' : 'No'" [severity]="r.flagAmministratore ? 'success' : 'secondary'"></p-tag>
+        </td> -->
+        <!-- <td>{{ r.dataInserimento | date: 'dd/MM/yyyy HH:mm' }}</td> -->
+        <td class="actions">
+          <button pButton text icon="pi pi-eye" (click)="apriDettaglio(r)"></button>
+          <button pButton text icon="pi pi-pencil" (click)="apriModifica(r)"></button>
+          <button pButton text severity="danger" icon="pi pi-trash" (click)="elimina(r)"></button>
+        </td>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td colspan="8">Nessun ruolo trovato.</td>
+      </tr>
+    </ng-template>
+  </p-table>
+</p-card>
+
+<p-dialog
+  [visible]="dialogVisibile()"
+  (visibleChange)="dialogVisibile.set($event)"
+  [modal]="true"
+  [draggable]="false"
+  [resizable]="false"
+  [style]="{ width: '40rem' }"
+  [header]="modalitaDialog() === 'crea' ? 'Crea ruolo' : (modalitaDialog() === 'modifica' ? 'Modifica ruolo' : 'Dettaglio ruolo')"
+>
+  <form [formGroup]="formRuolo" class="form-ruolo" (ngSubmit)="salva()">
+    <div class="field">
+      <label for="proceduraId">Id procedura</label>
+      <p-select
+        inputId="proceduraId"
+        formControlName="proceduraId"
+        [options]="procedure()"
+        optionLabel="descrizione"
+        optionValue="id"
+        [filter]="true"
+        filterBy="codice,descrizione"
+        placeholder="Seleziona procedura"
+        appendTo="body"
+        [loading]="caricamentoProcedure()"
+      >
+        <ng-template let-procedura pTemplate="item">
+          <div>{{ procedura.codice }} - {{ procedura.descrizione }}</div>
+        </ng-template>
+      </p-select>
+      @if (formValidation.getFieldError(formRuolo, 'proceduraId'); as err) {
+        <small class="error-text">{{ err }}</small>
+      }
+    </div>
+
+    <div class="field">
+      <label for="codice">Codice</label>
+      <input id="codice" pInputText type="text" formControlName="codice" />
+      @if (formValidation.getFieldError(formRuolo, 'codice'); as err) {
+        <small class="error-text">{{ err }}</small>
+      }
+    </div>
+
+    <div class="field">
+      <label for="descrizione">Descrizione</label>
+      <input id="descrizione" pInputText type="text" formControlName="descrizione" />
+      @if (formValidation.getFieldError(formRuolo, 'descrizione'); as err) {
+        <small class="error-text">{{ err }}</small>
+      }
+    </div>
+
+    @if (formRuolo.errors?.['api']) {
+      <div class="form-error">
+        {{ formRuolo.errors?.['api'] }}
+      </div>
+    }
+
+    <div class="checkbox-field">
+      <p-checkbox inputId="flagAmministratore" binary="true" formControlName="flagAmministratore"></p-checkbox>
+      <label for="flagAmministratore">Ruolo amministratore</label>
+    </div>
+
+    <div class="dialog-actions">
+      <button pButton type="button" label="Annulla" severity="secondary" (click)="dialogVisibile.set(false)"></button>
+      <button pButton type="submit" label="Salva" [disabled]="modalitaDialog() === 'dettaglio'"></button>
+    </div>
+  </form>
+</p-dialog>

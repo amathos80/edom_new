@@ -1,0 +1,622 @@
+{
+  "menu": [
+    {
+      "text": "Sistema",
+      "name": "Sistema",
+      "icon": "pi pi-cog",
+      "permissions": "SISTEMA",
+      "children": [
+        {
+          "text": "Ruoli",
+          "name": "Ruoli",
+          "icon": "pi pi-shield",
+          "permissions": "RUOLI",
+          "children": [
+            {
+              "text": "Gestione Ruoli",
+              "name": "MainRuoli",
+              "permissions": "RUOLI",
+              "navigateUrl": "~/Views/Ruoli.aspx",
+              "routerLink": "/app/ruoli",
+              "codiceProcedura": 1
+            },
+            {
+              "text": "Ricerca / Stampa",
+              "name": "VisualizzaStampa",
+              "permissions": "RUOLI_VIS",
+              "navigateUrl": "~/Views/Ruoli/MainRicercaStampa.aspx",
+              "codiceProcedura": 1
+            },
+            {
+              "text": "Abil. Ruoli-Funzioni",
+              "name": "RuoliFunzioni",
+              "permissions": "RUOLI_RUFU",
+              "routerLink": "/app/ruoli-funzioni",
+              "navigateUrl": "~/Views/RuoliFunzioni.aspx",
+              "codiceProcedura": 1
+            }
+          ]
+        },
+        {
+          "text": "Gruppi",
+          "name": "Gruppi",
+          "icon": "pi pi-users",
+          "permissions": "GRUPPI",
+          "children": [
+            {
+              "text": "Ricerca / Stampa",
+              "name": "GruppiVisualizzaStampa",
+              "permissions": "GRUPPI_VIS",
+              "navigateUrl": "~/Views/Gruppi/MainRicercaStampa.aspx",
+              "codiceProcedura": 1
+            },
+            {
+              "text": "Gestione Gruppi",
+              "name": "MainGruppi",
+              "permissions": "GRUPPI",
+              "navigateUrl": "~/Views/Gruppi/MainGruppi.aspx",
+              "codiceProcedura": 1
+            },
+            {
+              "text": "Prova esterno (GET)",
+              "name": "EsternoGet",
+              "permissions": "GRUPPI",
+              "externalUrl": "http://localhost?p1={p1}&p2={p2}&p3={p3}",
+              "target": "_blank",
+              "method": "GET",
+              "codiceProcedura": 1
+            },
+            {
+              "text": "Prova esterno (POST)",
+              "name": "EsternoPost",
+              "permissions": "GRUPPI",
+              "externalUrl": "http://localhost:5278?p1={p1}&p2={p2}&p3={p3}",
+              "target": "_blank",
+              "method": "POST",
+              "codiceProcedura": 1
+            }
+          ]
+        },
+        {
+          "text": "Utenti",
+          "name": "Utenti",
+          "icon": "pi pi-user",
+          "permissions": "UTENTI",
+          "children": [
+            {
+              "text": "Gestione Utenti",
+              "name": "MainUtenti",
+              "permissions": "UTENTI",
+              "navigateUrl": "~/Views/Utenti.aspx",
+              "codiceProcedura": 1
+            },
+            {
+              "text": "Abil. Utenti-Ruoli-Gruppi",
+              "name": "MainUtentiRuoliGruppi",
+              "permissions": "UTENTI_MOD",
+              "navigateUrl": "~/Views/Utenti/MainUtentiRuoliGruppi.aspx",
+              "codiceProcedura": 1
+            },
+            {
+              "text": "Ricerca / Stampa",
+              "name": "UtentiVisualizzaStampa",
+              "permissions": "UTENTI_VIS",
+              "navigateUrl": "~/Views/Utenti/MainRicercaStampa.aspx",
+              "codiceProcedura": 1
+            }
+          ]
+        },
+        {
+          "text": "Log Storico",
+          "name": "StoricoLog",
+          "icon": "pi pi-history",
+          "permissions": "LOG_STORICO",
+          "navigateUrl": "~/Views/StoricoLog.aspx"
+        }
+      ]
+    },
+    {
+      "text": "Tabelle",
+      "name": "Tabelle",
+      "icon": "pi pi-table",
+      "permissions": "TABCOM",
+      "children": [
+        {
+          "text": "Ass. Domiciliare",
+          "name": "AssDom",
+          "permissions": "SS_TABUVM",
+          "children": [
+            {
+              "text": "Commissioni",
+              "name": "TabelleCommissioni",
+              "permissions": "SS_TABUVM",
+              "children": [
+                {
+                  "text": "Gestione",
+                  "name": "Commissioni",
+                  "permissions": "SS_TABUVM",
+                  "navigateUrl": "~/Views/Commissioni.aspx"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "text": "Tabelle Comuni",
+          "name": "TabelleComuni",
+          "permissions": "TABCOM",
+          "children": [
+            {
+              "text": "Presidi",
+              "name": "TabellePresidi",
+              "permissions": "CO_PRESIDI",
+              "children": [
+                {
+                  "text": "Gestione Presidi",
+                  "name": "MainPresidi",
+                  "permissions": "CO_PRESIDI",
+                  "navigateUrl": "~/Views/Presidi/MainPresidi.aspx",
+                  "codiceProcedura": 999
+                }
+              ]
+            },
+            {
+              "text": "Reparti",
+              "name": "TabelleReparti",
+              "permissions": "CO_REPARTI",
+              "children": [
+                {
+                  "text": "Gestione Reparti",
+                  "name": "MainReparti",
+                  "permissions": "CO_REPARTI",
+                  "navigateUrl": "~/Views/Reparti/MainReparti.aspx",
+                  "codiceProcedura": 999
+                }
+              ]
+            },
+            {
+              "text": "Centri di costo",
+              "name": "TabelleCentridiCosto",
+              "permissions": "CO_CENTRICOSTO",
+              "children": [
+                {
+                  "text": "Gestione Centri di costo",
+                  "name": "MainCentridiCosto",
+                  "permissions": "CO_CENTRICOSTO",
+                  "navigateUrl": "~/Views/CdC/MainCentridiCosto.aspx",
+                  "codiceProcedura": 999
+                }
+              ]
+            },
+            {
+              "text": "Medici",
+              "name": "TabelleMedici",
+              "permissions": "CO_MEDICI",
+              "children": [
+                {
+                  "text": "Gestione Medici",
+                  "name": "MainMedici",
+                  "permissions": "CO_MEDICI",
+                  "navigateUrl": "~/Views/Medici/MainMedici.aspx",
+                  "codiceProcedura": 999
+                }
+              ]
+            },
+            {
+              "text": "Personale",
+              "name": "TabellePersonale",
+              "permissions": "CO_PERSONALE",
+              "children": [
+                {
+                  "text": "Gestione Personale",
+                  "name": "MainPersonale",
+                  "permissions": "CO_PERSONALE",
+                  "navigateUrl": "~/Views/Personale.aspx",
+                  "codiceProcedura": 999
+                }
+              ]
+            },
+            {
+              "text": "Consultori",
+              "name": "TabelleConsultori",
+              "permissions": "CO_CONSULTORI",
+              "children": [
+                {
+                  "text": "Gestione Consultori",
+                  "name": "MainConsultori",
+                  "permissions": "CO_CONSULTORI",
+                  "navigateUrl": "~/Views/Consultori/MainConsultori.aspx",
+                  "codiceProcedura": 999
+                }
+              ]
+            },
+            {
+              "text": "Pazienti",
+              "name": "TabellePazienti",
+              "icon": "pi pi-user-edit",
+              "permissions": "CO_PAZIENTI",
+              "children": [
+                {
+                  "text": "Gestione",
+                  "name": "MainPazienti",
+                  "permissions": "CO_PAZIENTI",
+                  "navigateUrl": "~/Views/Pazienti.aspx",
+                  "routerLink": "/app/pazienti",
+                  "codiceProcedura": 999
+                }
+              ]
+            },
+            {
+              "text": "Territorio",
+              "name": "TabelleTerritorio",
+              "permissions": "CO_TERRITORIO",
+              "children": [
+                {
+                  "text": "Gestione Comuni",
+                  "name": "MainComuni",
+                  "permissions": "CO_COMUNI",
+                  "navigateUrl": "~/Views/Comuni/MainComuni.aspx",
+                  "codiceProcedura": 999
+                },
+                {
+                  "text": "Gestione Provincie",
+                  "name": "MainProvincie",
+                  "permissions": "CO_PROVINCIE",
+                  "navigateUrl": "~/Views/Provincie/MainProvincie.aspx",
+                  "codiceProcedura": 999
+                },
+                {
+                  "text": "Gestione Asl",
+                  "name": "MainAsl",
+                  "permissions": "CO_ASL",
+                  "navigateUrl": "~/Views/Asl/MainAsl.aspx",
+                  "codiceProcedura": 999
+                },
+                {
+                  "text": "Gestione Regioni",
+                  "name": "MainRegioni",
+                  "permissions": "CO_REGIONI",
+                  "navigateUrl": "~/Views/Regioni/MainRegioni.aspx",
+                  "codiceProcedura": 999
+                },
+                {
+                  "text": "Gestione Stati",
+                  "name": "MainStati",
+                  "permissions": "CO_STATI",
+                  "navigateUrl": "~/Views/Stati/MainStati.aspx",
+                  "codiceProcedura": 999
+                }
+              ]
+            },
+            {
+              "text": "Tab. generiche",
+              "name": "TabelleGeneriche",
+              "permissions": "CO_TABGEN",
+              "children": [
+                {
+                  "text": "Gestione",
+                  "name": "TabelleGeneriche",
+                  "permissions": "CO_TABGEN",
+                  "navigateUrl": "~/Views/TabelleGeneriche.aspx",
+                  "codiceProcedura": 2
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "text": "Richieste medico curante",
+      "name": "RichiesteMedico",
+      "icon": "pi pi-file-edit",
+      "permissions": "SOCIOSAN",
+      "children": [
+        {
+          "text": "Cure Domiciliari",
+          "name": "RichiesteADI",
+          "permissions": "SS_MMGAD01",
+          "navigateUrl": "~/Views/RichiesteMMG.aspx",
+          "codiceProcedura": 3
+        },
+        {
+          "text": "Integrazione C.P.",
+          "name": "RichiesteCP",
+          "permissions": "SS_CPSEGMED",
+          "navigateUrl": "~/Views/CPSegnalazione.aspx",
+          "codiceProcedura": 3
+        },
+        {
+          "text": "Schede valutazione C.P.",
+          "name": "SchedeValCP",
+          "permissions": "SS_CPSEGMED",
+          "navigateUrl": "~/Views/SchedeValCP.aspx",
+          "codiceProcedura": 3
+        }
+      ]
+    },
+    {
+      "text": "P.U.A.",
+      "name": "Pua",
+      "icon": "pi pi-sitemap",
+      "permissions": "SOCIOSAN",
+      "children": [
+        {
+          "text": "Gestione",
+          "name": "MainPua",
+          "permissions": "SS_PUA",
+          "navigateUrl": "~/Views/Pua.aspx",
+          "codiceProcedura": 3
+        },
+        {
+          "text": "Stampa",
+          "name": "StampaReportPUA",
+          "permissions": "SS_PUA",
+          "navigateUrl": "~/Views/Stampe/StampaReportPUA.aspx",
+          "codiceProcedura": 3
+        }
+      ]
+    },
+    {
+      "text": "Assistenza Domiciliare",
+      "name": "AssDomiciliare",
+      "icon": "pi pi-home",
+      "permissions": "SOCIOSAN",
+      "children": [
+        {
+          "text": "Casi Complessi",
+          "name": "Uvm",
+          "permissions": "SS_VALUVM",
+          "children": [
+            {
+              "text": "In Attesa",
+              "name": "InAttesa",
+              "permissions": "SS_VALUVM",
+              "navigateUrl": "~/Views/Segnalazioni.aspx",
+              "codiceProcedura": 3
+            },
+            {
+              "text": "Valutazione UVM",
+              "name": "ValutazioneUvm",
+              "permissions": "SS_VALUVM",
+              "navigateUrl": "~/Views/AccettazioneUvm.aspx",
+              "codiceProcedura": 3
+            },
+            {
+              "text": "Rivalutazioni Straord. UVM",
+              "name": "AccStr",
+              "permissions": "SS_VALUVM",
+              "navigateUrl": "~/Views/AccettazioneUvm.aspx",
+              "externalParams": { "IsStr": "1" },
+              "codiceProcedura": 3
+            }
+          ]
+        },
+        {
+          "text": "Casi Semplici",
+          "name": "CasiSemplici",
+          "permissions": "SS_VALUVM",
+          "navigateUrl": "~/Views/CasiSemplici.aspx",
+          "codiceProcedura": 3
+        },
+        {
+          "text": "Cartella Assistito",
+          "name": "SelPazienteCartella",
+          "permissions": "SS_VALUVM",
+          "navigateUrl": "~/Views/Casi.aspx",
+          "codiceProcedura": 3
+        },
+        {
+          "text": "Flussi SIAD",
+          "name": "FlussiSiad",
+          "permissions": "SS_SIAD_ELAB",
+          "navigateUrl": "~/Views/CreaFlussiSiad.aspx",
+          "codiceProcedura": 3
+        }
+      ]
+    },
+    {
+      "text": "Stampe",
+      "name": "Stampe",
+      "icon": "pi pi-print",
+      "permissions": "SOCIOSAN",
+      "children": [
+        {
+          "text": "Casi trattati in un periodo",
+          "name": "StampaAssistitiSelezione",
+          "permissions": "SS_STAMPE_001",
+          "navigateUrl": "~/Views/Stampe/StampaAssistitiSelezione.aspx",
+          "codiceProcedura": 3
+        },
+        {
+          "text": "Pazienti acquisiti in un periodo",
+          "name": "StampaAssistitiAcqSelezione",
+          "permissions": "SS_STAMPE_002",
+          "navigateUrl": "~/Views/Stampe/StampaAssistitiAcqSelezione.aspx",
+          "codiceProcedura": 3
+        },
+        {
+          "text": "FLS21",
+          "name": "StampaFLS21",
+          "permissions": "SS_STAMPE_004",
+          "navigateUrl": "~/Views/Stampe/StampaFLS21.aspx",
+          "codiceProcedura": 3
+        },
+        {
+          "text": "Preventivo Costi",
+          "name": "CostiPreventivi",
+          "permissions": "SS_STAMPE_005",
+          "children": [
+            {
+              "text": "Stampa",
+              "name": "StampaCostiPreventivi",
+              "navigateUrl": "~/Views/Stampe/StampaCostiPreventivi.aspx"
+            },
+            {
+              "text": "Ricalcola",
+              "name": "RicalcolaCostiPreventivi",
+              "navigateUrl": "~/Views/RicalcolaCostiPreventivi.aspx"
+            }
+          ]
+        },
+        {
+          "text": "Consuntivo Costi",
+          "name": "StampaCostiConsuntivi",
+          "permissions": "SS_STAMPE_006",
+          "children": [
+            {
+              "text": "Stampa",
+              "name": "StampaCostiConsuntivi",
+              "navigateUrl": "~/Views/Stampe/StampaCostiConsuntivi.aspx"
+            },
+            {
+              "text": "Ricalcola",
+              "name": "RicalcolaCostiConsuntivi",
+              "navigateUrl": "~/Views/RicalcolaCostiConsuntivi.aspx"
+            }
+          ]
+        },
+        {
+          "text": "Accessi",
+          "name": "StampaAccessi",
+          "permissions": "SS_STAMPE_003",
+          "navigateUrl": "~/Views/Stampe/StampaAccessi.aspx",
+          "codiceProcedura": 3
+        },
+        {
+          "text": "Statistiche e varie",
+          "name": "Statistiche",
+          "permissions": "SS_STAMPE_007",
+          "children": [
+            {
+              "text": "Varie",
+              "name": "StatisticheVarie",
+              "permissions": "SS_STAMPE_007",
+              "children": [
+                {
+                  "text": "Codici fiscali errati",
+                  "name": "StampaCodiciFiscErrati",
+                  "permissions": "SS_STAMPE_007_001",
+                  "navigateUrl": "~/Views/Stampe/StampaCodiciFiscErrati.aspx",
+                  "codiceProcedura": 3
+                }
+              ]
+            },
+            {
+              "text": "Casi trattati in un periodo",
+              "name": "StampaCasiTrattatiPeriodoTotali",
+              "permissions": "SS_STAMPE_007_001",
+              "navigateUrl": "~/Views/Pivots/StampaCasiTrattatiPeriodoTotali.aspx",
+              "codiceProcedura": 3
+            },
+            {
+              "text": "Pazienti acquisiti in un periodo",
+              "name": "StampaAcqPerTotali",
+              "permissions": "SS_STAMPE_007_002",
+              "navigateUrl": "~/Views/Pivots/StampaAcqSelezioneTotali.aspx",
+              "codiceProcedura": 3
+            },
+            {
+              "text": "PUA",
+              "name": "PivotReportPUA",
+              "permissions": "SS_STAMPE_007_006",
+              "navigateUrl": "~/Views/Pivots/PivotReportPUA.aspx",
+              "codiceProcedura": 3
+            },
+            {
+              "text": "UVM",
+              "name": "ReportUVM",
+              "permissions": "SS_STAMPE_007_007",
+              "navigateUrl": "~/Views/Pivots/ReportUvm.aspx",
+              "codiceProcedura": 3
+            },
+            {
+              "text": "Accessi",
+              "name": "PivotAccessi",
+              "permissions": "SS_STAMPE_007_003",
+              "navigateUrl": "~/Views/Pivots/PivotAccessi.aspx",
+              "codiceProcedura": 3
+            },
+            {
+              "text": "Preventivo Costi",
+              "name": "PivotCostiPreventivi",
+              "permissions": "SS_STAMPE_007_004",
+              "navigateUrl": "~/Views/Pivots/PivotCostiPreventivi.aspx",
+              "codiceProcedura": 3
+            },
+            {
+              "text": "Consuntivo Costi",
+              "name": "PivotCostiCons",
+              "permissions": "SS_STAMPE_007_005",
+              "navigateUrl": "~/Views/Pivots/PivotCostiConsuntivi.aspx",
+              "codiceProcedura": 3
+            },
+            {
+              "text": "Casi Siad trattati in un periodo",
+              "name": "StampaCasiSiad",
+              "permissions": "SS_STAMPE_007_001",
+              "navigateUrl": "~/Views/Pivots/StampaCasiSiad.aspx",
+              "codiceProcedura": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "text": "Erogatore",
+      "name": "ErogatorePai",
+      "icon": "pi pi-briefcase",
+      "permissions": "SS_ADIPAI_EROGATORE",
+      "children": [
+        {
+          "text": "Erogatori",
+          "name": "GruppoErogatori",
+          "permissions": "SS_ADIPAI_EROGATORE",
+          "children": [
+            {
+              "text": "Gestione PAI",
+              "name": "ErogatoriPai",
+              "permissions": "SS_ADIPAI_EROGATORE",
+              "navigateUrl": "~/Views/Erogatore/Erogatori.aspx",
+              "codiceProcedura": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "text": "Ass. Primavera",
+      "name": "AssistenzaPrimavera",
+      "icon": "pi pi-briefcase",
+      "permissions": "SS_ADIPAI_PRIMAVERA",
+      "children": [
+        {
+          "text": "Ass. Primavera",
+          "name": "GruppoPrimavera",
+          "permissions": "SS_ADIPAI_PRIMAVERA",
+          "children": [
+            {
+              "text": "Cartella Assistito",
+              "name": "SelPazienteCartellaPrimavera",
+              "permissions": "SS_ADIPAI_PRIMAVERA",
+              "navigateUrl": "~/Views/Casi.aspx",
+              "codiceProcedura": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "text": "Info",
+      "name": "Info",
+      "icon": "pi pi-info-circle",
+      "children": [
+        {
+          "text": "Informazioni",
+          "name": "Informazioni",
+          "codiceProcedura": 3
+        }
+      ]
+    }
+  ]
+}

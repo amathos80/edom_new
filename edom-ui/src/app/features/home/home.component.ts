@@ -13,7 +13,7 @@ export class HomeComponent {
   readonly auth = inject(AuthService);
 
   get nomeUtente(): string {
-    const u = this.auth.currentUser();
+    const u = this.auth.utenteCorrente();
     return u ? `${u.given_name}` : '';
   }
 }

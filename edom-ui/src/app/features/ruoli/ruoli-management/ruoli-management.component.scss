@@ -1,0 +1,56 @@
+.filtri-tabella {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.caption-tabella {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.actions {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.form-ruolo {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.field {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.error-text {
+  color: #c62828;
+  font-size: 0.8rem;
+}
+
+.form-error {
+  color: #c62828;
+  font-size: 0.9rem;
+}
+
+.field p-select {
+  width: 100%;
+}
+
+.checkbox-field {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
