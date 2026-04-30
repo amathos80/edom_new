@@ -87,6 +87,7 @@
               "text": "Gestione Utenti",
               "name": "MainUtenti",
               "permissions": "UTENTI",
+              "routerLink": "/app/utenti",
               "navigateUrl": "~/Views/Utenti.aspx",
               "codiceProcedura": 1
             },

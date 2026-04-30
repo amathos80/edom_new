@@ -30,6 +30,10 @@ export const routes: Routes = [
         loadComponent: () => import('./features/ruoli/ruoli-funzioni-management/ruoli-funzioni-management.component').then(m => m.RuoliFunzioniManagementComponent)
       },
       {
+        path: 'utenti',
+        loadComponent: () => import('./features/utenti/utenti-management/utenti-management.component').then(m => m.UtentiManagementComponent)
+      },
+      {
         path: 'custom-components',
         loadChildren: () => import('./features/custom-components/custom-components.routes').then(m => m.CUSTOM_COMPONENTS_ROUTES)
       },

@@ -1,0 +1,153 @@
+<p-toast></p-toast>
+
+<p-card header="Gestione Utenti">
+  <p-toolbar styleClass="mb-4">
+    <ng-template #start>
+      <button pButton label="Nuovo" icon="pi pi-plus" (click)="apriCreazione()"></button>
+    </ng-template>
+  </p-toolbar>
+
+  <p-table
+    #tabellaUtenti
+    [value]="utenti()"
+    [loading]="loading()"
+    [paginator]="true"
+    [rows]="15"
+    [rowsPerPageOptions]="[15, 30, 50]"
+    [globalFilterFields]="['codice', 'cognome', 'nome', 'codiceFiscale', 'email', 'stato']"
+    responsiveLayout="scroll"
+    dataKey="id"
+  >
+    <ng-template pTemplate="caption">
+      <div class="caption-tabella">
+        <h5 class="m-0">Elenco utenti</h5>
+        <p-iconfield>
+          <p-inputicon styleClass="pi pi-search"></p-inputicon>
+          <input pInputText type="text" placeholder="Cerca" (input)="filtraGlobale(tabellaUtenti, $event)" />
+        </p-iconfield>
+      </div>
+    </ng-template>
+
+    <ng-template pTemplate="header">
+      <tr>
+        <th pSortableColumn="codice">Codice <p-sortIcon field="codice"></p-sortIcon><p-columnFilter field="codice" display="menu" type="text"></p-columnFilter></th>
+        <th pSortableColumn="cognome">Cognome <p-sortIcon field="cognome"></p-sortIcon><p-columnFilter field="cognome" display="menu" type="text"></p-columnFilter></th>
+        <th pSortableColumn="nome">Nome <p-sortIcon field="nome"></p-sortIcon><p-columnFilter field="nome" display="menu" type="text"></p-columnFilter></th>
+        <th pSortableColumn="codiceFiscale">Codice fiscale <p-sortIcon field="codiceFiscale"></p-sortIcon><p-columnFilter field="codiceFiscale" display="menu" type="text"></p-columnFilter></th>
+        <th pSortableColumn="email">Email <p-sortIcon field="email"></p-sortIcon><p-columnFilter field="email" display="menu" type="text"></p-columnFilter></th>
+        <th pSortableColumn="dataScadenzaPasswordDate">Data scadenza password <p-sortIcon field="dataScadenzaPasswordDate"></p-sortIcon><p-columnFilter field="dataScadenzaPasswordDate" display="menu" type="date"></p-columnFilter></th>
+        <th pSortableColumn="dataDisattivazioneDate">Data disattivazione <p-sortIcon field="dataDisattivazioneDate"></p-sortIcon><p-columnFilter field="dataDisattivazioneDate" display="menu" type="date"></p-columnFilter></th>
+        <th pSortableColumn="dataRiattivazioneDate">Data riattivazione <p-sortIcon field="dataRiattivazioneDate"></p-sortIcon><p-columnFilter field="dataRiattivazioneDate" display="menu" type="date"></p-columnFilter></th>
+        <th pSortableColumn="ultimoLoginDate">Data ultimo accesso <p-sortIcon field="ultimoLoginDate"></p-sortIcon><p-columnFilter field="ultimoLoginDate" display="menu" type="date"></p-columnFilter></th>
+        <th pSortableColumn="stato">Stato <p-sortIcon field="stato"></p-sortIcon><p-columnFilter field="stato" display="menu" type="text"></p-columnFilter></th>
+        <th>Azioni</th>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body" let-u>
+      <tr>
+        <td>{{ u.codice }}</td>
+        <td>{{ u.cognome }}</td>
+        <td>{{ u.nome }}</td>
+        <td>{{ u.codiceFiscale || '-' }}</td>
+        <td>{{ u.email || '-' }}</td>
+        <td>{{ u.dataScadenzaPasswordDate ? (u.dataScadenzaPasswordDate | date: 'dd/MM/yyyy') : '-' }}</td>
+        <td>{{ u.dataDisattivazioneDate ? (u.dataDisattivazioneDate | date: 'dd/MM/yyyy') : '-' }}</td>
+        <td>{{ u.dataRiattivazioneDate ? (u.dataRiattivazioneDate | date: 'dd/MM/yyyy') : '-' }}</td>
+        <td>{{ u.ultimoLoginDate ? (u.ultimoLoginDate | date: 'dd/MM/yyyy') : '-' }}</td>
+        <td>
+          <p-tag [value]="u.stato || 'Attivo'" [severity]="u.dataDisattivazione ? 'danger' : 'success'"></p-tag>
+        </td>
+        <td>
+          <button pButton type="button" text="true" icon="pi pi-pencil" label="Modifica" (click)="apriModifica(u)"></button>
+          <button pButton type="button" text="true" severity="danger" icon="pi pi-trash" (click)="elimina(u)"></button>
+        </td>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td colspan="11">Nessun utente disponibile.</td>
+      </tr>
+    </ng-template>
+  </p-table>
+</p-card>
+
+<p-dialog
+  [visible]="dialogVisibile()"
+  (visibleChange)="dialogVisibile.set($event)"
+  [modal]="true"
+  [draggable]="false"
+  [resizable]="false"
+  [style]="{ width: '44rem' }"
+  [header]="modalitaDialog() === 'crea' ? 'Nuovo Utente' : ('Modifica Utente - ' + (utenteSelezionato()?.codice || ''))"
+  (onHide)="chiudiDialog()"
+>
+  <form [formGroup]="formUtente" class="form-utente" (ngSubmit)="salva()">
+    <div class="field-grid">
+      <div class="field">
+        <label for="codice">Codice</label>
+        <input id="codice" pInputText type="text" formControlName="codice" />
+        @if (formValidation.getFieldError(formUtente, 'codice'); as err) {
+          <small class="error-text">{{ err }}</small>
+        }
+      </div>
+
+      <div class="field">
+        <label for="matricola">Matricola</label>
+        <input id="matricola" pInputText type="text" formControlName="matricola" />
+      </div>
+
+      <div class="field field-full">
+        <label for="codiceFiscale">Codice fiscale</label>
+        <input id="codiceFiscale" pInputText type="text" formControlName="codiceFiscale" />
+      </div>
+
+      <div class="field">
+        <label for="cognome">Cognome</label>
+        <input id="cognome" pInputText type="text" formControlName="cognome" />
+        @if (formValidation.getFieldError(formUtente, 'cognome'); as err) {
+          <small class="error-text">{{ err }}</small>
+        }
+      </div>
+
+      <div class="field">
+        <label for="nome">Nome</label>
+        <input id="nome" pInputText type="text" formControlName="nome" />
+        @if (formValidation.getFieldError(formUtente, 'nome'); as err) {
+          <small class="error-text">{{ err }}</small>
+        }
+      </div>
+
+      <div class="field field-full">
+        <label for="email">Email</label>
+        <input id="email" pInputText type="text" formControlName="email" />
+      </div>
+    </div>
+
+    <div class="checks">
+      <div class="check-item">
+        <p-checkbox inputId="flagSmartCard" binary="true" formControlName="flagSmartCard"></p-checkbox>
+        <label for="flagSmartCard">Accesso Smart Card</label>
+      </div>
+      <div class="check-item">
+        <p-checkbox inputId="flagCambiaPwd" binary="true" formControlName="flagCambiaPwd"></p-checkbox>
+        <label for="flagCambiaPwd">Forza cambio password</label>
+      </div>
+      <div class="check-item">
+        <p-checkbox inputId="disattivo" binary="true" formControlName="disattivo"></p-checkbox>
+        <label for="disattivo">Utente disattivato</label>
+      </div>
+    </div>
+
+    <div class="azioni-speciali">
+      <button pButton type="button" severity="warn" outlined="true" icon="pi pi-key" label="Reset password" (click)="resetPassword()" [disabled]="modalitaDialog() === 'crea'"></button>
+      <button pButton type="button" severity="secondary" outlined="true" icon="pi pi-refresh" label="Riattiva" (click)="riattiva()" [disabled]="modalitaDialog() === 'crea'"></button>
+    </div>
+
+    <div class="dialog-actions">
+      <button pButton type="button" label="Annulla" severity="secondary" (click)="chiudiDialog()"></button>
+      <button pButton type="submit" label="Salva" icon="pi pi-save" [loading]="saving()"></button>
+    </div>
+  </form>
+</p-dialog>

@@ -332,3 +332,80 @@ DETAIL: Detail redacted as it may contain sensitive data. Specify 'Include Error
 2026-04-30 08:51:23.181 +00:00 [INF] HTTP GET /api/procedure responded 200 in 6.6025 ms
 2026-04-30 08:51:23.190 +00:00 [INF] HTTP OPTIONS /api/ruoli/paginated responded 204 in 0.0675 ms
 2026-04-30 08:51:23.200 +00:00 [INF] HTTP GET /api/ruoli/paginated responded 200 in 6.3094 ms
+2026-04-30 08:54:28.270 +00:00 [INF] HTTP OPTIONS /api/auth/login responded 204 in 0.1052 ms
+2026-04-30 08:54:28.327 +00:00 [INF] HTTP POST /api/auth/login responded 200 in 54.0171 ms
+2026-04-30 08:54:28.335 +00:00 [INF] HTTP OPTIONS /api/auth/permessi responded 204 in 0.0475 ms
+2026-04-30 08:54:28.344 +00:00 [INF] HTTP GET /api/auth/permessi responded 200 in 6.7227 ms
+2026-04-30 08:54:45.008 +00:00 [INF] HTTP OPTIONS /api/dashboard/layout responded 204 in 0.0476 ms
+2026-04-30 08:54:45.020 +00:00 [INF] HTTP GET /api/dashboard/layout responded 200 in 5.8529 ms
+2026-04-30 08:56:29.968 +00:00 [INF] HTTP OPTIONS /api/dashboard/layout responded 204 in 2.6023 ms
+2026-04-30 08:56:29.977 +00:00 [INF] HTTP GET /api/dashboard/layout responded 200 in 5.2091 ms
+2026-04-30 09:10:40.942 +00:00 [WRN] Overriding HTTP_PORTS '8080' and HTTPS_PORTS ''. Binding to values defined by URLS instead 'http://+:5075'.
+2026-04-30 09:10:46.215 +00:00 [INF] HTTP OPTIONS /api/auth/login responded 204 in 14.2542 ms
+2026-04-30 09:10:47.883 +00:00 [INF] HTTP POST /api/auth/login responded 200 in 1655.9406 ms
+2026-04-30 09:10:47.892 +00:00 [INF] HTTP OPTIONS /api/auth/permessi responded 204 in 0.7829 ms
+2026-04-30 09:10:48.086 +00:00 [INF] HTTP GET /api/auth/permessi responded 200 in 190.8529 ms
+2026-04-30 09:10:53.822 +00:00 [INF] HTTP OPTIONS /api/utenti responded 204 in 0.1693 ms
+2026-04-30 09:10:53.849 +00:00 [INF] HTTP GET /api/utenti responded 404 in 23.6118 ms
+2026-04-30 12:32:04.702 +00:00 [INF] HTTP GET /api/utenti responded 404 in 0.1868 ms
+
+2026-04-30 14:31:45.462 +02:00 [INF] HTTP GET /swagger/v1/swagger.json responded 200 in 156.7296 ms
+2026-04-30 14:31:49.054 +02:00 [INF] HTTP GET /api/utenti responded 401 in 26.3663 ms
+2026-04-30 12:32:56.136 +00:00 [WRN] Overriding HTTP_PORTS '8080' and HTTPS_PORTS ''. Binding to values defined by URLS instead 'http://+:5075'.
+2026-04-30 12:34:30.169 +00:00 [INF] HTTP OPTIONS /api/auth/login responded 204 in 19.1414 ms
+2026-04-30 12:34:31.829 +00:00 [INF] HTTP POST /api/auth/login responded 200 in 1647.4625 ms
+2026-04-30 12:34:31.838 +00:00 [INF] HTTP OPTIONS /api/auth/permessi responded 204 in 0.8945 ms
+2026-04-30 12:34:32.035 +00:00 [INF] HTTP GET /api/auth/permessi responded 200 in 193.8840 ms
+2026-04-30 12:34:35.696 +00:00 [INF] HTTP OPTIONS /api/utenti responded 204 in 0.1210 ms
+2026-04-30 12:34:35.784 +00:00 [INF] HTTP GET /api/utenti responded 200 in 85.1714 ms
+2026-04-30 12:42:26.277 +00:00 [INF] HTTP GET /api/utenti responded 401 in 6.3301 ms
+2026-04-30 12:50:03.764 +00:00 [INF] HTTP OPTIONS /api/auth/login responded 204 in 0.1145 ms
+2026-04-30 12:50:03.810 +00:00 [INF] HTTP POST /api/auth/login responded 200 in 42.6383 ms
+2026-04-30 12:50:03.817 +00:00 [INF] HTTP OPTIONS /api/auth/permessi responded 204 in 0.0966 ms
+2026-04-30 12:50:03.835 +00:00 [INF] HTTP GET /api/auth/permessi responded 200 in 15.3653 ms
+2026-04-30 12:50:08.468 +00:00 [INF] HTTP OPTIONS /api/utenti responded 204 in 0.0910 ms
+2026-04-30 12:50:08.485 +00:00 [INF] HTTP GET /api/utenti responded 200 in 13.5682 ms
+2026-04-30 12:50:28.222 +00:00 [INF] HTTP OPTIONS /api/utenti responded 204 in 0.0837 ms
+2026-04-30 12:50:28.238 +00:00 [INF] HTTP GET /api/utenti responded 200 in 11.8588 ms
+2026-04-30 12:50:30.280 +00:00 [INF] HTTP GET /api/utenti responded 200 in 6.6115 ms
+2026-04-30 11:03:55.567 +00:00 [INF] HTTP OPTIONS /api/utenti responded 204 in 0.0608 ms
+2026-04-30 11:03:55.573 +00:00 [INF] HTTP GET /api/utenti responded 401 in 2.5917 ms
+2026-04-30 11:03:55.836 +00:00 [INF] HTTP OPTIONS /api/auth/refresh responded 204 in 0.1221 ms
+2026-04-30 11:03:55.859 +00:00 [WRN] The query uses a row limiting operator ('Skip'/'Take') without an 'OrderBy' operator. This may lead to unpredictable results. If the 'Distinct' operator is used after 'OrderBy', then make sure to use the 'OrderBy' operator after 'Distinct' as the ordering would otherwise get erased.
+2026-04-30 11:03:55.965 +00:00 [INF] HTTP POST /api/auth/refresh responded 200 in 126.1422 ms
+2026-04-30 11:03:56.338 +00:00 [INF] HTTP GET /api/utenti responded 200 in 8.6865 ms
+ncellationToken cancellationToken)
+   --- End of inner exception stack trace ---
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.AddressBinder.BindEndpointAsync(ListenOptions endpoint, AddressBindContext context, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.LocalhostListenOptions.BindAsync(AddressBindContext context, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.AddressBinder.AddressesStrategy.BindAsync(AddressBindContext context, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.KestrelServerImpl.BindAsync(CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.KestrelServerImpl.StartAsync[TContext](IHttpApplication`1 application, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Hosting.GenericWebHostService.StartAsync(CancellationToken cancellationToken)
+   at Microsoft.Extensions.Hosting.Internal.Host.<StartAsync>b__14_1(IHostedService service, CancellationToken token)
+   at Microsoft.Extensions.Hosting.Internal.Host.ForeachService[T](IEnumerable`1 services, CancellationToken token, Boolean concurrent, Boolean abortOnFirstException, List`1 exceptions, Func`3 operation)
+2026-04-30 14:43:19.617 +02:00 [ERR] Hosting failed to start
+System.IO.IOException: Failed to bind to address http://127.0.0.1:5075: address already in use.
+ ---> Microsoft.AspNetCore.Connections.AddressInUseException: Address already in use
+ ---> System.Net.Sockets.SocketException (98): Address already in use
+   at System.Net.Sockets.Socket.UpdateStatusAfterSocketErrorAndThrowException(SocketError error, Boolean disconnectOnFailure, String callerName)
+   at System.Net.Sockets.Socket.DoBind(EndPoint endPointSnapshot, SocketAddress socketAddress)
+   at System.Net.Sockets.Socket.Bind(EndPoint localEP)
+   at Microsoft.AspNetCore.Server.Kestrel.Transport.Sockets.SocketTransportOptions.CreateDefaultBoundListenSocket(EndPoint endpoint)
+   at Microsoft.AspNetCore.Server.Kestrel.Transport.Sockets.SocketConnectionListener.Bind()
+   --- End of inner exception stack trace ---
+   at Microsoft.AspNetCore.Server.Kestrel.Transport.Sockets.SocketConnectionListener.Bind()
+   at Microsoft.AspNetCore.Server.Kestrel.Transport.Sockets.SocketTransportFactory.BindAsync(EndPoint endpoint, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Infrastructure.TransportManager.BindAsync(EndPoint endPoint, ConnectionDelegate connectionDelegate, EndpointConfig endpointConfig, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.KestrelServerImpl.<>c__DisplayClass28_0`1.<<StartAsync>g__OnBind|0>d.MoveNext()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.AddressBinder.BindEndpointAsync(ListenOptions endpoint, AddressBindContext context, CancellationToken cancellationToken)
+   --- End of inner exception stack trace ---
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.AddressBinder.BindEndpointAsync(ListenOptions endpoint, AddressBindContext context, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.LocalhostListenOptions.BindAsync(AddressBindContext context, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.AddressBinder.AddressesStrategy.BindAsync(AddressBindContext context, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.KestrelServerImpl.BindAsync(CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.KestrelServerImpl.StartAsync[TContext](IHttpApplication`1 application, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Hosting.GenericWebHostService.StartAsync(CancellationToken cancellationToken)
+   at Microsoft.Extensions.Hosting.Internal.Host.<StartAsync>b__14_1(IHostedService service, CancellationToken token)
+   at Microsoft.Extensions.Hosting.Internal.Host.ForeachService[T](IEnumerable`1 services, CancellationToken token, Boolean concurrent, Boolean abortOnFirstException, List`1 exceptions, Func`3 operation)

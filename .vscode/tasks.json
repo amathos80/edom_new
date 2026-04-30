@@ -33,7 +33,7 @@
                 "watch",
                 "run",
                 "--project",
-                "${workspaceFolder}/eDom.slnx"
+                "${workspaceFolder}/src/eDom.Api/eDom.Api.csproj"
             ],
             "problemMatcher": "$msCompile"
         },
