@@ -59,13 +59,22 @@ public class UtentiController(IMediator mediator) : ControllerBase
             string.IsNullOrWhiteSpace(request.PasswordNuova))
         {
             Log.Warning("UtentiController.CambiaPassword bad request due empty passwords. RouteId={RouteId}", id);
-            return BadRequest("Password non può essere vuota.");
+            return ValidationProblem(new Dictionary<string, string[]>
+            {
+                [nameof(request.PasswordAttuale)] = ["La password attuale è obbligatoria."],
+                [nameof(request.PasswordNuova)] = ["La nuova password è obbligatoria."]
+            });
         }
 
         var result = await mediator.SendAsync(
             new CambiaPasswordUtenteCommand(id, request.PasswordAttuale, request.PasswordNuova), ct);
         Log.Information("UtentiController.CambiaPassword mediator result. RouteId={RouteId} Result={Result}", id, result);
-        return result ? NoContent() : BadRequest("Password attuale non corretta.");
+        return result
+            ? NoContent()
+            : ValidationProblem(new Dictionary<string, string[]>
+            {
+                [nameof(request.PasswordAttuale)] = ["Password attuale non corretta."]
+            });
     }
 
     [HttpPost("{id:int}/riattiva")]

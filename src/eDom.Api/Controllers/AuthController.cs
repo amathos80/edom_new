@@ -56,7 +56,10 @@ public class AuthController(IMediator mediator) : ControllerBase
     {
         var result = await mediator.SendAsync(command, ct);
         if (!result.Success)
-            return BadRequest(new { message = result.Error });
+            return ValidationProblem(new Dictionary<string, string[]>
+            {
+                [nameof(command.CurrentPassword)] = [result.Error]
+            });
         return Ok(result);
     }
 
