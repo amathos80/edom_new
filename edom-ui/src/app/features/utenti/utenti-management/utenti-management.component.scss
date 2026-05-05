@@ -1,24 +1,31 @@
-.caption-tabella {
+.caption-left {
   display: flex;
-  justify-content: space-between;
   align-items: center;
   gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.preset-vista {
+  display: inline-flex;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+}
+
+
+.mobile-only {
+  display: none;
 }
 
 .form-utente {
   display: grid;
-  gap: 0.9rem;
+  gap: 0.55rem;
 }
 
 .field-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0.75rem;
-}
-
-.field {
-  display: grid;
-  gap: 0.35rem;
+  row-gap: 0.4rem;
+  column-gap: 0.5rem;
 }
 
 .field-full {
@@ -28,36 +35,35 @@
 .checks {
   display: flex;
   flex-wrap: wrap;
-  gap: 1rem;
+  gap: 0.55rem;
 }
 
 .check-item {
   display: flex;
   align-items: center;
-  gap: 0.45rem;
+  gap: 0.35rem;
 }
 
 .azioni-speciali {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.5rem;
-  margin-top: 0.25rem;
+  gap: 0.4rem;
+  margin-top: 0;
 }
 
 .dialog-actions {
   display: flex;
   justify-content: flex-end;
   gap: 0.5rem;
-  margin-top: 0.5rem;
-}
-
-.error-text {
-  color: #c62828;
-  font-size: 0.8rem;
+  margin-top: 0.25rem;
 }
 
 @media (max-width: 820px) {
   .field-grid {
     grid-template-columns: 1fr;
+  }
+
+  .mobile-only {
+    display: inline-flex;
   }
 }

@@ -1,16 +1,13 @@
-import { Component, OnInit, inject, signal } from '@angular/core';
-import { DatePipe } from '@angular/common';
+import { Component, OnInit, computed, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { finalize, take } from 'rxjs';
 
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
 import { CheckboxModule } from 'primeng/checkbox';
 import { DialogModule } from 'primeng/dialog';
-import { IconFieldModule } from 'primeng/iconfield';
-import { InputIconModule } from 'primeng/inputicon';
 import { InputTextModule } from 'primeng/inputtext';
 import { MessageService } from 'primeng/api';
-import { Table, TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
 import { ToastModule } from 'primeng/toast';
 import { ToolbarModule } from 'primeng/toolbar';
@@ -18,26 +15,45 @@ import { ToolbarModule } from 'primeng/toolbar';
 import { FormValidationHelperService } from '../../../core/services/form-validation-helper.service';
 import { AggiornaUtenteRequest, CreaUtenteRequest, Utente } from '../../../core/models/utente.model';
 import { UtentiService } from '../../../core/services/utenti.service';
+import { SmartTableComponent } from '../../../core/components/smart-table/smart-table.component';
+import { SmartTableColumn } from '../../../core/components/smart-table/smart-table.model';
+import { SmartTableActionsTemplateDirective, SmartTableCellTemplateDirective } from '../../../core/components/smart-table/smart-table.templates';
+import { FormFieldComponent } from '../../../core/components/form-field/form-field.component';
+import { CambioPasswordDialogComponent } from './cambio-password-dialog/cambio-password-dialog.component';
 
 type ModalitaDialog = 'crea' | 'modifica';
+type VistaTabella = 'operativa' | 'sicurezza' | 'anagrafica' | 'custom';
+type ColonnaKey =
+  | 'codice'
+  | 'nominativo'
+  | 'cognome'
+  | 'nome'
+  | 'codiceFiscale'
+  | 'email'
+  | 'dataScadenzaPasswordDate'
+  | 'dataDisattivazioneDate'
+  | 'dataRiattivazioneDate'
+  | 'ultimoLoginDate'
+  | 'stato';
 
 @Component({
   selector: 'app-utenti-management',
   standalone: true,
   imports: [
     ReactiveFormsModule,
-    DatePipe,
     ButtonModule,
     CardModule,
     CheckboxModule,
     DialogModule,
-    IconFieldModule,
-    InputIconModule,
     InputTextModule,
-    TableModule,
+    FormFieldComponent,
+    SmartTableComponent,
+    SmartTableCellTemplateDirective,
+    SmartTableActionsTemplateDirective,
     TagModule,
     ToastModule,
-    ToolbarModule
+    ToolbarModule,
+    CambioPasswordDialogComponent
   ],
   providers: [MessageService],
   templateUrl: './utenti-management.component.html',
@@ -54,8 +70,62 @@ export class UtentiManagementComponent implements OnInit {
   readonly dialogVisibile = signal(false);
   readonly modalitaDialog = signal<ModalitaDialog>('crea');
 
+  readonly dialogCambioPasswordVisibile = signal(false);
+  readonly savingCambioPassword = signal(false);
+
   readonly utenti = signal<Utente[]>([]);
   readonly utenteSelezionato = signal<Utente | null>(null);
+
+  readonly tutteLeColonne: SmartTableColumn[] = [
+    { key: 'codice', field: 'codice', header: 'Codice', filterType: 'text' },
+    { key: 'nominativo', field: 'nominativo', header: 'Cognome e Nome', filterType: 'text' },
+    { key: 'cognome', field: 'cognome', header: 'Cognome', filterType: 'text' },
+    { key: 'nome', field: 'nome', header: 'Nome', filterType: 'text' },
+    { key: 'codiceFiscale', field: 'codiceFiscale', header: 'Cod. fiscale', fullHeader: 'Codice fiscale', filterType: 'text' },
+    { key: 'email', field: 'email', header: 'Email', filterType: 'text' },
+    {
+      key: 'dataScadenzaPasswordDate',
+      field: 'dataScadenzaPasswordDate',
+      header: 'Scad. pwd',
+      fullHeader: 'Data scadenza password',
+      filterType: 'date'
+    },
+    {
+      key: 'dataDisattivazioneDate',
+      field: 'dataDisattivazioneDate',
+      header: 'Disattivato il',
+      fullHeader: 'Data disattivazione',
+      filterType: 'date'
+    },
+    {
+      key: 'dataRiattivazioneDate',
+      field: 'dataRiattivazioneDate',
+      header: 'Riattivato il',
+      fullHeader: 'Data riattivazione',
+      filterType: 'date'
+    },
+    {
+      key: 'ultimoLoginDate',
+      field: 'ultimoLoginDate',
+      header: 'Ultimo accesso',
+      fullHeader: 'Data ultimo accesso',
+      filterType: 'date'
+    },
+    { key: 'stato', field: 'stato', header: 'Stato', filterType: 'text' }
+  ];
+
+  readonly colonneSemprePresenti: ColonnaKey[] = ['codice', 'nominativo', 'stato'];
+
+  private readonly presetColonne: Record<Exclude<VistaTabella, 'custom'>, ColonnaKey[]> = {
+    operativa: ['codice', 'nominativo', 'email', 'stato', 'ultimoLoginDate'],
+    sicurezza: ['codice', 'nominativo', 'email', 'dataScadenzaPasswordDate', 'ultimoLoginDate', 'stato'],
+    anagrafica: ['codice', 'cognome', 'nome', 'codiceFiscale', 'email', 'stato']
+  };
+
+  readonly presetAttivo = signal<VistaTabella>('operativa');
+  readonly colonneVisibili = signal<ColonnaKey[]>(this.presetColonne.operativa);
+  readonly colonneSelezionate = computed(() => this.colonneVisibili());
+  readonly campiFiltroGlobale = this.tutteLeColonne.map((c) => c.field);
 
   readonly formUtente = this.fb.nonNullable.group({
     codice: ['', [Validators.required, Validators.maxLength(50)]],
@@ -75,20 +145,28 @@ export class UtentiManagementComponent implements OnInit {
 
   caricaUtenti(): void {
     this.loading.set(true);
-    this.utentiService.cerca({}).subscribe({
+    this.utentiService.cerca({}).pipe(
+      take(1),
+      finalize(() => this.loading.set(false))
+    ).subscribe({
       next: (items) => {
-        this.utenti.set(items.map((u) => ({
-          ...u,
-          dataScadenzaPasswordDate: this.toDateOnly(u.dataScadenzaPassword),
-          dataDisattivazioneDate: this.toDateOnly(u.dataDisattivazione),
-          dataRiattivazioneDate: this.toDateOnly(u.dataRiattivazione),
-          ultimoLoginDate: this.toDateOnly(u.ultimoLogin),
-          stato: u.dataDisattivazione ? 'Disattivato' : 'Attivo'
-        })));
-        this.loading.set(false);
+        try {
+          const normalizedItems = this.normalizeUtentiResponse(items);
+          this.utenti.set(normalizedItems.map((u) => ({
+            ...u,
+            nominativo: [u.cognome, u.nome].filter(Boolean).join(' '),
+            dataScadenzaPasswordDate: this.toDateOnly(u.dataScadenzaPassword),
+            dataDisattivazioneDate: this.toDateOnly(u.dataDisattivazione),
+            dataRiattivazioneDate: this.toDateOnly(u.dataRiattivazione),
+            ultimoLoginDate: this.toDateOnly(u.ultimoLogin),
+            stato: u.dataDisattivazione ? 'Disattivato' : 'Attivo'
+          })));
+        } catch {
+          this.utenti.set([]);
+          this.msg.add({ severity: 'error', summary: 'Errore', detail: 'Formato risposta utenti non valido.' });
+        }
       },
       error: () => {
-        this.loading.set(false);
         this.msg.add({ severity: 'error', summary: 'Errore', detail: 'Impossibile caricare gli utenti.' });
       }
     });
@@ -231,6 +309,22 @@ export class UtentiManagementComponent implements OnInit {
     });
   }
 
+  apriCambioPassword(): void {
+    if (!this.utenteSelezionato()) {
+      return;
+    }
+    this.dialogCambioPasswordVisibile.set(true);
+  }
+
+  chiudiCambioPassword(): void {
+    this.dialogCambioPasswordVisibile.set(false);
+  }
+
+  onPasswordCambiata(): void {
+    this.dialogCambioPasswordVisibile.set(false);
+    this.caricaUtenti();
+  }
+
   riattiva(): void {
     const utente = this.utenteSelezionato();
     if (!utente) {
@@ -249,9 +343,44 @@ export class UtentiManagementComponent implements OnInit {
     });
   }
 
-  filtraGlobale(tabella: Table, event: Event): void {
-    const valore = (event.target as HTMLInputElement).value;
-    tabella.filterGlobal(valore, 'contains');
+  applicaPreset(vista: Exclude<VistaTabella, 'custom'>): void {
+    this.presetAttivo.set(vista);
+    this.colonneVisibili.set([...this.presetColonne[vista]]);
+  }
+
+  aggiornaColonne(colonne: string[] | null | undefined): void {
+    const nuovaLista = this.tutteLeColonne
+      .map((c) => c.key as ColonnaKey)
+      .filter((key) => (colonne ?? []).includes(key));
+
+    this.colonneVisibili.set(nuovaLista);
+
+    const presetTrovato = (Object.entries(this.presetColonne) as [Exclude<VistaTabella, 'custom'>, ColonnaKey[]][])
+      .find(([, preset]) => this.stesseColonne(preset, nuovaLista));
+
+    this.presetAttivo.set(presetTrovato?.[0] ?? 'custom');
+  }
+
+  private stesseColonne(left: ColonnaKey[], right: ColonnaKey[]): boolean {
+    if (left.length !== right.length) {
+      return false;
+    }
+
+    const rightSet = new Set(right);
+    return left.every((item) => rightSet.has(item));
+  }
+
+  private normalizeUtentiResponse(items: unknown): Utente[] {
+    if (Array.isArray(items)) {
+      return items as Utente[];
+    }
+
+    const wrappedItems = (items as { items?: unknown })?.items;
+    if (Array.isArray(wrappedItems)) {
+      return wrappedItems as Utente[];
+    }
+
+    return [];
   }
 
   private toDateOnly(value?: string | null): Date | null {

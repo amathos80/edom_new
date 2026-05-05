@@ -1,0 +1,90 @@
+<div class="smart-table-scroll-wrapper">
+<p-table
+  #tabella
+  [value]="value"
+  [loading]="loading"
+  [paginator]="true"
+  [rows]="rows"
+  [rowsPerPageOptions]="rowsPerPageOptions"
+  [globalFilterFields]="globalFilterFields"
+  [dataKey]="dataKey"
+  [tableStyle]="tableStyle()"
+>
+  <ng-template pTemplate="caption">
+    <div class="smart-caption">
+      <div class="smart-caption-left">
+        <ng-content select="[smartTableCaptionLeft]"></ng-content>
+      </div>
+
+      <div class="smart-caption-right">
+        <ng-content select="[smartTableCaptionRight]"></ng-content>
+
+        @if (showColumnSelector) {
+          <p-multiSelect
+            [options]="selectorOptions()"
+            optionLabel="label"
+            optionValue="value"
+            [ngModel]="internalVisibleKeys()"
+            (ngModelChange)="updateVisibleColumns($event)"
+            [showToggleAll]="false"
+            [selectedItemsLabel]="'{0} colonne visibili'"
+            [placeholder]="columnSelectorLabel"
+            styleClass="colonne-select"
+          ></p-multiSelect>
+        }
+
+        @if (showGlobalSearch) {
+          <p-iconfield>
+            <p-inputicon styleClass="pi pi-search"></p-inputicon>
+            <input pInputText type="text" [placeholder]="globalSearchPlaceholder" (input)="filterGlobale(tabella, $event)" />
+          </p-iconfield>
+        }
+      </div>
+    </div>
+  </ng-template>
+
+  <ng-template pTemplate="header">
+    <tr>
+      @for (col of effectiveVisibleColumns(); track col.key) {
+        <th [pSortableColumn]="col.field" [pTooltip]="col.fullHeader || col.header" tooltipPosition="top">
+          {{ col.header }}
+          <p-sortIcon [field]="col.field"></p-sortIcon>
+          @if (col.filterType) {
+            <p-columnFilter [field]="col.field" display="menu" [type]="col.filterType"></p-columnFilter>
+          }
+        </th>
+      }
+
+      @if (shouldRenderActionsColumn()) {
+        <th class="col-actions">{{ actionsHeader }}</th>
+      }
+    </tr>
+  </ng-template>
+
+  <ng-template pTemplate="body" let-row>
+    <tr>
+      @for (col of effectiveVisibleColumns(); track col.key) {
+        <td>
+          @if (getCellTemplate(col.key); as tpl) {
+            <ng-container *ngTemplateOutlet="tpl.template; context: { $implicit: row, row: row, column: col }"></ng-container>
+          } @else {
+            {{ formatCellValue(row, col) }}
+          }
+        </td>
+      }
+
+      @if (shouldRenderActionsColumn()) {
+        <td class="actions-cell">
+          <ng-container *ngTemplateOutlet="actionsTemplate!.template; context: { $implicit: row, row: row }"></ng-container>
+        </td>
+      }
+    </tr>
+  </ng-template>
+
+  <ng-template pTemplate="emptymessage">
+    <tr>
+      <td [attr.colspan]="emptyStateColspan()">{{ emptyMessage }}</td>
+    </tr>
+  </ng-template>
+</p-table>
+</div>

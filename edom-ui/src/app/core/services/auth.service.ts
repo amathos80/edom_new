@@ -123,9 +123,16 @@ export class AuthService {
   }
 
   private salvaSessione(res: LoginResponse): void {
-    localStorage.setItem(this.CHIAVE_TOKEN, res.token);
-    localStorage.setItem(this.CHIAVE_REFRESH_TOKEN, res.refreshToken);
-    this._utente.set(this.decodificaToken(res.token));
+    const accessToken = (res as any).token ?? (res as any).Token;
+    const refreshToken = (res as any).refreshToken ?? (res as any).RefreshToken;
+
+    if (!accessToken || !refreshToken) {
+      throw new Error('Risposta autenticazione non valida: token mancanti.');
+    }
+
+    localStorage.setItem(this.CHIAVE_TOKEN, accessToken);
+    localStorage.setItem(this.CHIAVE_REFRESH_TOKEN, refreshToken);
+    this._utente.set(this.decodificaToken(accessToken));
   }
 
   private decodificaToken(token: string): JwtPayload | null {

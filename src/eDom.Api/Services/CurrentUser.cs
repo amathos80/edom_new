@@ -1,4 +1,5 @@
 using System.Security.Claims;
+using System.IdentityModel.Tokens.Jwt;
 using eDom.Core.Interfaces;
 
 namespace eDom.Api.Services;
@@ -10,5 +11,7 @@ public sealed class CurrentUser(IHttpContextAccessor accessor) : ICurrentUser
 
     public string? Username =>
         accessor.HttpContext?.User.FindFirstValue(ClaimTypes.Name)
-        ?? accessor.HttpContext?.User.FindFirstValue("unique_name");
+        ?? accessor.HttpContext?.User.FindFirstValue("unique_name")
+        ?? accessor.HttpContext?.User.FindFirstValue(JwtRegisteredClaimNames.Sub)
+        ?? accessor.HttpContext?.User.FindFirstValue("sub");
 }

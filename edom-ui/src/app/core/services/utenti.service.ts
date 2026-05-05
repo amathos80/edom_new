@@ -5,6 +5,11 @@ import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { AggiornaUtenteRequest, CreaUtenteRequest, RicercaUtenteRequest, Utente } from '../models/utente.model';
 
+export interface CambiaPasswordRequest {
+  passwordAttuale: string;
+  passwordNuova: string;
+}
+
 @Injectable({ providedIn: 'root' })
 export class UtentiService {
   private readonly http = inject(HttpClient);
@@ -33,6 +38,10 @@ export class UtentiService {
 
   resetPassword(id: number): Observable<void> {
     return this.http.post<void>(`${this.urlBase}/${id}/reset-password`, {});
+  }
+
+  cambiaPassword(id: number, data: CambiaPasswordRequest): Observable<void> {
+    return this.http.post<void>(`${this.urlBase}/${id}/cambio-password`, data);
   }
 
   riattiva(id: number): Observable<void> {

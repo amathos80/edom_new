@@ -2,6 +2,7 @@ using eDom.Application.Features.Utenti;
 using eDom.Application.Mediator;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Serilog;
 
 namespace eDom.Api.Controllers;
 
@@ -44,6 +45,27 @@ public class UtentiController(IMediator mediator) : ControllerBase
     {
         var updated = await mediator.SendAsync(new ResetPasswordUtenteCommand(id), ct);
         return updated ? NoContent() : NotFound();
+    }
+
+    [HttpPost("{id:int}/cambio-password")]
+    public async Task<IActionResult> CambiaPassword(int id, [FromBody] CambiaPasswordRequest request, CancellationToken ct)
+    {
+        Log.Information("UtentiController.CambiaPassword called. RouteId={RouteId} HasPasswordAttuale={HasPasswordAttuale} HasPasswordNuova={HasPasswordNuova}",
+            id,
+            !string.IsNullOrWhiteSpace(request.PasswordAttuale),
+            !string.IsNullOrWhiteSpace(request.PasswordNuova));
+
+        if (string.IsNullOrWhiteSpace(request.PasswordAttuale) ||
+            string.IsNullOrWhiteSpace(request.PasswordNuova))
+        {
+            Log.Warning("UtentiController.CambiaPassword bad request due empty passwords. RouteId={RouteId}", id);
+            return BadRequest("Password non può essere vuota.");
+        }
+
+        var result = await mediator.SendAsync(
+            new CambiaPasswordUtenteCommand(id, request.PasswordAttuale, request.PasswordNuova), ct);
+        Log.Information("UtentiController.CambiaPassword mediator result. RouteId={RouteId} Result={Result}", id, result);
+        return result ? NoContent() : BadRequest("Password attuale non corretta.");
     }
 
     [HttpPost("{id:int}/riattiva")]

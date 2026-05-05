@@ -35,7 +35,14 @@ export class LoginComponent {
 
     const { username, password } = this.form.value;
     this.auth.login({ username: username!, password: password! }).subscribe({
-      next: () => this.router.navigate(['/dashboard']),
+      next: (response) => {
+        if (response.mustChangePassword) {
+          localStorage.setItem('must_change_password', 'true');
+          this.router.navigate(['/forced-password-change']);
+        } else {
+          this.router.navigate(['/dashboard']);
+        }
+      },
       error: (err) => {
         this.errorMessage.set(err.status === 401 ? 'Credenziali non valide.' : 'Errore di connessione. Riprovare.');
         this.loading.set(false);

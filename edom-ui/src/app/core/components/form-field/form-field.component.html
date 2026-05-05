@@ -1,0 +1,9 @@
+<div class="form-field" [class.has-error]="!!error">
+  <label [attr.for]="forId">{{ label }}</label>
+
+  <div class="form-field-control">
+    <ng-content></ng-content>
+  </div>
+
+  <small class="form-field-error" [class.visible]="!!error" aria-live="polite">{{ error || '\u00A0' }}</small>
+</div>

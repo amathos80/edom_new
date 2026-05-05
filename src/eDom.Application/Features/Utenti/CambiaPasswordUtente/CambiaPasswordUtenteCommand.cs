@@ -6,5 +6,8 @@ using eDom.Core.Interfaces;
 
 namespace eDom.Application.Features.Utenti;
 
-public sealed record ResetPasswordUtenteCommand(int UtenteId) : IRequest<bool>;
+public sealed record CambiaPasswordUtenteCommand(
+    int UtenteId,
+    string PasswordAttuale,
+    string PasswordNuova) : IRequest<bool>;
 

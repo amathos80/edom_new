@@ -58,6 +58,8 @@ var secretKey = jwtSection["Secret"] ?? throw new InvalidOperationException("Jwt
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
+        options.IncludeErrorDetails = true;
+
         options.TokenValidationParameters = new TokenValidationParameters
         {
             ValidateIssuer = true,
@@ -66,11 +68,37 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidateIssuerSigningKey = true,
             ValidIssuer = jwtSection["Issuer"],
             ValidAudience = jwtSection["Audience"],
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey))
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey)),
+            ClockSkew = TimeSpan.FromSeconds(30)
         };
 
         options.Events = new JwtBearerEvents
         {
+            OnMessageReceived = context =>
+            {
+                var hasAuthHeader = context.Request.Headers.TryGetValue("Authorization", out var authHeader);
+                var authPreview = hasAuthHeader
+                    ? authHeader.ToString()[..Math.Min(authHeader.ToString().Length, 24)]
+                    : "<none>";
+
+                Log.Information(
+                    "JWT message received. Path={Path} HasAuthorizationHeader={HasAuthorizationHeader} AuthorizationPreview={AuthorizationPreview}",
+                    context.HttpContext.Request.Path,
+                    hasAuthHeader,
+                    authPreview);
+
+                return Task.CompletedTask;
+            },
+
+            OnAuthenticationFailed = context =>
+            {
+                Log.Warning(context.Exception,
+                    "JWT authentication failed. Path={Path} Message={Message}",
+                    context.HttpContext.Request.Path,
+                    context.Exception.Message);
+                return Task.CompletedTask;
+            },
+
             OnTokenValidated = async context =>
             {
                 var uidClaim = context.Principal?.FindFirst("uid")?.Value;
@@ -93,10 +121,54 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                     .AsNoTracking()
                     .FirstOrDefaultAsync(s => s.UserId == userId, context.HttpContext.RequestAborted);
 
-                if (state?.InvalidBeforeUtc is DateTime invalidBefore && issuedAt <= invalidBefore)
+                if (state?.InvalidBeforeUtc is DateTime invalidBefore)
                 {
-                    context.Fail("Token invalidato da logout globale.");
+                    // `iat` is second-based while DB timestamps can include milliseconds and unspecified kind.
+                    var invalidBeforeUtc = invalidBefore.Kind switch
+                    {
+                        DateTimeKind.Utc => invalidBefore,
+                        DateTimeKind.Local => invalidBefore.ToUniversalTime(),
+                        _ => DateTime.SpecifyKind(invalidBefore, DateTimeKind.Utc)
+                    };
+
+                    // `iat` has second precision. Normalize DB cutoff to second precision too,
+                    // otherwise tokens issued in the same second as logout can be rejected.
+                    var invalidBeforeSecond = new DateTime(
+                        invalidBeforeUtc.Year,
+                        invalidBeforeUtc.Month,
+                        invalidBeforeUtc.Day,
+                        invalidBeforeUtc.Hour,
+                        invalidBeforeUtc.Minute,
+                        invalidBeforeUtc.Second,
+                        DateTimeKind.Utc);
+
+                    // Reject only tokens issued before the normalized invalidation second.
+                    if (issuedAt < invalidBeforeSecond)
+                    {
+                        context.Fail("Token invalidato da logout globale.");
+                        return;
+                    }
                 }
+
+                Log.Information(
+                    "JWT token validated. Path={Path} UserId={UserId} IssuedAtUtc={IssuedAtUtc}",
+                    context.HttpContext.Request.Path,
+                    userId,
+                    issuedAt);
+            },
+
+            OnChallenge = context =>
+            {
+                if (!string.IsNullOrWhiteSpace(context.ErrorDescription))
+                {
+                    Log.Warning(
+                        "JWT challenge: Path={Path} Error={Error} Description={Description}",
+                        context.HttpContext.Request.Path,
+                        context.Error,
+                        context.ErrorDescription);
+                }
+
+                return Task.CompletedTask;
             }
         };
     });

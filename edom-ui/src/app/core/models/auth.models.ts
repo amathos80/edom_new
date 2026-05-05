@@ -11,6 +11,7 @@ export interface LoginResponse {
   username: string;
   fullName: string;
   roles: string[];
+  mustChangePassword: boolean;
 }
 
 export interface RefreshTokenRequest {
@@ -32,4 +33,10 @@ export interface JwtPayload {
   exp: number;
   iss: string;
   aud: string;
+  uid: string;
+}
+
+export interface CambiaPasswordRequest {
+  passwordAttuale: string;
+  passwordNuova: string;
 }

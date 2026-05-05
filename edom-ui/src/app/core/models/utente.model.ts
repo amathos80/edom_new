@@ -16,6 +16,7 @@ export interface Utente {
   dataRiattivazioneDate?: Date | null;
   dataScadenzaPasswordDate?: Date | null;
   ultimoLoginDate?: Date | null;
+  nominativo?: string;
   dataInserimento: string;
   dataModifica?: string | null;
   stato?: string;

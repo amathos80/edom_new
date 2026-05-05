@@ -10,6 +10,24 @@ public sealed class OttieniPermessiHandler(
 {
     public async Task<RispostaPermessi?> HandleAsync(OttieniPermessiCommand cmd, CancellationToken ct = default)
     {
+        // Prefer stable numeric id from token when available.
+        if (currentUser.Id is int userId)
+        {
+            var utente = await utenteRepository.GetByIdAsync(userId, ct);
+            if (utente is not null)
+            {
+                var profiloById = await utenteRepository.OttieniProfiloAutorizzativoAsync(utente.Codice, ct);
+                if (profiloById is not null)
+                {
+                    return new RispostaPermessi(
+                        profiloById.Codice,
+                        profiloById.NomeCompleto,
+                        profiloById.Ruoli,
+                        profiloById.Funzioni);
+                }
+            }
+        }
+
         var username = currentUser.Username;
         if (string.IsNullOrWhiteSpace(username))
             return null;

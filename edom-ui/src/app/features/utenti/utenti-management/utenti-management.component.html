@@ -7,70 +7,37 @@
     </ng-template>
   </p-toolbar>
 
-  <p-table
-    #tabellaUtenti
+  <app-smart-table
     [value]="utenti()"
     [loading]="loading()"
-    [paginator]="true"
-    [rows]="15"
-    [rowsPerPageOptions]="[15, 30, 50]"
-    [globalFilterFields]="['codice', 'cognome', 'nome', 'codiceFiscale', 'email', 'stato']"
-    responsiveLayout="scroll"
-    dataKey="id"
+    [columns]="tutteLeColonne"
+    [requiredColumnKeys]="colonneSemprePresenti"
+    [visibleColumnKeys]="colonneSelezionate()"
+    (visibleColumnKeysChange)="aggiornaColonne($event)"
+    [globalFilterFields]="campiFiltroGlobale"
+    [showGlobalSearch]="true"
+    [emptyMessage]="'Nessun utente disponibile.'"
+    [dataKey]="'id'"
   >
-    <ng-template pTemplate="caption">
-      <div class="caption-tabella">
-        <h5 class="m-0">Elenco utenti</h5>
-        <p-iconfield>
-          <p-inputicon styleClass="pi pi-search"></p-inputicon>
-          <input pInputText type="text" placeholder="Cerca" (input)="filtraGlobale(tabellaUtenti, $event)" />
-        </p-iconfield>
+    <div smartTableCaptionLeft class="caption-left">
+      <h5 class="m-0">Elenco utenti</h5>
+      <div class="preset-vista" role="group" aria-label="Preset vista tabella">
+        <button pButton type="button" size="small" [outlined]="presetAttivo() !== 'operativa'" label="Operativa" (click)="applicaPreset('operativa')"></button>
+        <button pButton type="button" size="small" [outlined]="presetAttivo() !== 'sicurezza'" label="Sicurezza" (click)="applicaPreset('sicurezza')"></button>
+        <button pButton type="button" size="small" [outlined]="presetAttivo() !== 'anagrafica'" label="Anagrafica" (click)="applicaPreset('anagrafica')"></button>
       </div>
+    </div>
+
+    <ng-template appSmartTableCell="stato" let-u>
+      <p-tag [value]="u.stato || 'Attivo'" [severity]="u.dataDisattivazione ? 'danger' : 'success'"></p-tag>
     </ng-template>
 
-    <ng-template pTemplate="header">
-      <tr>
-        <th pSortableColumn="codice">Codice <p-sortIcon field="codice"></p-sortIcon><p-columnFilter field="codice" display="menu" type="text"></p-columnFilter></th>
-        <th pSortableColumn="cognome">Cognome <p-sortIcon field="cognome"></p-sortIcon><p-columnFilter field="cognome" display="menu" type="text"></p-columnFilter></th>
-        <th pSortableColumn="nome">Nome <p-sortIcon field="nome"></p-sortIcon><p-columnFilter field="nome" display="menu" type="text"></p-columnFilter></th>
-        <th pSortableColumn="codiceFiscale">Codice fiscale <p-sortIcon field="codiceFiscale"></p-sortIcon><p-columnFilter field="codiceFiscale" display="menu" type="text"></p-columnFilter></th>
-        <th pSortableColumn="email">Email <p-sortIcon field="email"></p-sortIcon><p-columnFilter field="email" display="menu" type="text"></p-columnFilter></th>
-        <th pSortableColumn="dataScadenzaPasswordDate">Data scadenza password <p-sortIcon field="dataScadenzaPasswordDate"></p-sortIcon><p-columnFilter field="dataScadenzaPasswordDate" display="menu" type="date"></p-columnFilter></th>
-        <th pSortableColumn="dataDisattivazioneDate">Data disattivazione <p-sortIcon field="dataDisattivazioneDate"></p-sortIcon><p-columnFilter field="dataDisattivazioneDate" display="menu" type="date"></p-columnFilter></th>
-        <th pSortableColumn="dataRiattivazioneDate">Data riattivazione <p-sortIcon field="dataRiattivazioneDate"></p-sortIcon><p-columnFilter field="dataRiattivazioneDate" display="menu" type="date"></p-columnFilter></th>
-        <th pSortableColumn="ultimoLoginDate">Data ultimo accesso <p-sortIcon field="ultimoLoginDate"></p-sortIcon><p-columnFilter field="ultimoLoginDate" display="menu" type="date"></p-columnFilter></th>
-        <th pSortableColumn="stato">Stato <p-sortIcon field="stato"></p-sortIcon><p-columnFilter field="stato" display="menu" type="text"></p-columnFilter></th>
-        <th>Azioni</th>
-      </tr>
+    <ng-template appSmartTableActions let-u>
+      <button pButton type="button" text="true" icon="pi pi-pencil" label="Modifica" (click)="apriModifica(u)"></button>
+      <button pButton type="button" text="true" severity="danger" icon="pi pi-trash" (click)="elimina(u)"></button>
+      <button pButton type="button" text="true" icon="pi pi-ellipsis-v" class="mobile-only" (click)="apriModifica(u)"></button>
     </ng-template>
-
-    <ng-template pTemplate="body" let-u>
-      <tr>
-        <td>{{ u.codice }}</td>
-        <td>{{ u.cognome }}</td>
-        <td>{{ u.nome }}</td>
-        <td>{{ u.codiceFiscale || '-' }}</td>
-        <td>{{ u.email || '-' }}</td>
-        <td>{{ u.dataScadenzaPasswordDate ? (u.dataScadenzaPasswordDate | date: 'dd/MM/yyyy') : '-' }}</td>
-        <td>{{ u.dataDisattivazioneDate ? (u.dataDisattivazioneDate | date: 'dd/MM/yyyy') : '-' }}</td>
-        <td>{{ u.dataRiattivazioneDate ? (u.dataRiattivazioneDate | date: 'dd/MM/yyyy') : '-' }}</td>
-        <td>{{ u.ultimoLoginDate ? (u.ultimoLoginDate | date: 'dd/MM/yyyy') : '-' }}</td>
-        <td>
-          <p-tag [value]="u.stato || 'Attivo'" [severity]="u.dataDisattivazione ? 'danger' : 'success'"></p-tag>
-        </td>
-        <td>
-          <button pButton type="button" text="true" icon="pi pi-pencil" label="Modifica" (click)="apriModifica(u)"></button>
-          <button pButton type="button" text="true" severity="danger" icon="pi pi-trash" (click)="elimina(u)"></button>
-        </td>
-      </tr>
-    </ng-template>
-
-    <ng-template pTemplate="emptymessage">
-      <tr>
-        <td colspan="11">Nessun utente disponibile.</td>
-      </tr>
-    </ng-template>
-  </p-table>
+  </app-smart-table>
 </p-card>
 
 <p-dialog
@@ -85,44 +52,29 @@
 >
   <form [formGroup]="formUtente" class="form-utente" (ngSubmit)="salva()">
     <div class="field-grid">
-      <div class="field">
-        <label for="codice">Codice</label>
+      <app-form-field label="Codice" forId="codice" [error]="formValidation.getFieldError(formUtente, 'codice')">
         <input id="codice" pInputText type="text" formControlName="codice" />
-        @if (formValidation.getFieldError(formUtente, 'codice'); as err) {
-          <small class="error-text">{{ err }}</small>
-        }
-      </div>
+      </app-form-field>
 
-      <div class="field">
-        <label for="matricola">Matricola</label>
+      <app-form-field label="Matricola" forId="matricola">
         <input id="matricola" pInputText type="text" formControlName="matricola" />
-      </div>
+      </app-form-field>
 
-      <div class="field field-full">
-        <label for="codiceFiscale">Codice fiscale</label>
+      <app-form-field class="field-full" label="Codice fiscale" forId="codiceFiscale">
         <input id="codiceFiscale" pInputText type="text" formControlName="codiceFiscale" />
-      </div>
+      </app-form-field>
 
-      <div class="field">
-        <label for="cognome">Cognome</label>
+      <app-form-field label="Cognome" forId="cognome" [error]="formValidation.getFieldError(formUtente, 'cognome')">
         <input id="cognome" pInputText type="text" formControlName="cognome" />
-        @if (formValidation.getFieldError(formUtente, 'cognome'); as err) {
-          <small class="error-text">{{ err }}</small>
-        }
-      </div>
+      </app-form-field>
 
-      <div class="field">
-        <label for="nome">Nome</label>
+      <app-form-field label="Nome" forId="nome" [error]="formValidation.getFieldError(formUtente, 'nome')">
         <input id="nome" pInputText type="text" formControlName="nome" />
-        @if (formValidation.getFieldError(formUtente, 'nome'); as err) {
-          <small class="error-text">{{ err }}</small>
-        }
-      </div>
+      </app-form-field>
 
-      <div class="field field-full">
-        <label for="email">Email</label>
+      <app-form-field class="field-full" label="Email" forId="email">
         <input id="email" pInputText type="text" formControlName="email" />
-      </div>
+      </app-form-field>
     </div>
 
     <div class="checks">
@@ -141,7 +93,7 @@
     </div>
 
     <div class="azioni-speciali">
-      <button pButton type="button" severity="warn" outlined="true" icon="pi pi-key" label="Reset password" (click)="resetPassword()" [disabled]="modalitaDialog() === 'crea'"></button>
+      <button pButton type="button" severity="warn" outlined="true" icon="pi pi-key" label="Cambio password" (click)="apriCambioPassword()" [disabled]="modalitaDialog() === 'crea'"></button>
       <button pButton type="button" severity="secondary" outlined="true" icon="pi pi-refresh" label="Riattiva" (click)="riattiva()" [disabled]="modalitaDialog() === 'crea'"></button>
     </div>
 
@@ -150,4 +102,24 @@
       <button pButton type="submit" label="Salva" icon="pi pi-save" [loading]="saving()"></button>
     </div>
   </form>
+</p-dialog>
+
+<p-dialog
+  [visible]="dialogCambioPasswordVisibile()"
+  (visibleChange)="dialogCambioPasswordVisibile.set($event)"
+  [modal]="true"
+  [draggable]="false"
+  [resizable]="false"
+  [style]="{ width: '32rem' }"
+  header="Cambio Password"
+  (onHide)="chiudiCambioPassword()"
+>
+  @if (utenteSelezionato(); as utente) {
+    <app-cambio-password-dialog
+      [utenteId]="utente.id"
+      [saving]="savingCambioPassword()"
+      (passwordCambiata)="onPasswordCambiata()"
+      (annullaClicked)="chiudiCambioPassword()"
+    ></app-cambio-password-dialog>
+  }
 </p-dialog>
