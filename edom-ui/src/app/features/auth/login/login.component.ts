@@ -2,16 +2,16 @@ import { Component, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
-import { PasswordModule } from 'primeng/password';
 import { CardModule } from 'primeng/card';
 import { MessageModule } from 'primeng/message';
 import { AuthService } from '../../../core/services/auth.service';
 import { CustomTextboxInputComponent } from "../../custom-components/components/custom-textbox/custom-textbox.component";
+import { CustomPasswordInputComponent } from '../../custom-components/components/custom-password/custom-password.component';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [ReactiveFormsModule, ButtonModule, PasswordModule, CardModule, MessageModule, CustomTextboxInputComponent],
+  imports: [ReactiveFormsModule, ButtonModule, CardModule, MessageModule, CustomTextboxInputComponent, CustomPasswordInputComponent],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })

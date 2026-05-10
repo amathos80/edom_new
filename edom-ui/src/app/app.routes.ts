@@ -27,6 +27,18 @@ export const routes: Routes = [
         loadComponent: () => import('./features/pazienti/pazienti-list/pazienti-list.component').then(m => m.PazientiListComponent)
       },
       {
+        path: 'pua',
+        loadComponent: () => import('./features/pua/pua-management/pua-management.component').then(m => m.PuaManagementComponent)
+      },
+      {
+        path: 'pua/new',
+        loadComponent: () => import('./features/pua/pua-edit/pua-edit.component').then(m => m.PuaEditComponent)
+      },
+      {
+        path: 'pua/:id',
+        loadComponent: () => import('./features/pua/pua-edit/pua-edit.component').then(m => m.PuaEditComponent)
+      },
+      {
         path: 'ruoli',
         loadComponent: () => import('./features/ruoli/ruoli-management/ruoli-management.component').then(m => m.GestioneRuoliComponent)
       },

@@ -1,0 +1,55 @@
+<div
+  class="custom-select-wrapper"
+  [ngStyle]="inputStyle"
+  [class]="inputStyleClass"
+>
+  <p-select
+    [ngModel]="value"
+    [ngModelOptions]="{ standalone: true }"
+    (ngModelChange)="handleModelChange($event)"
+    [options]="effectiveOptions"
+    [optionLabel]="optionLabel"
+    [optionValue]="optionValue"
+    [optionDisabled]="optionDisabled"
+    [optionGroupLabel]="optionGroupLabel"
+    [optionGroupChildren]="optionGroupChildren"
+    [group]="group"
+    [filter]="filter"
+    [filterBy]="filterBy"
+    [filterMatchMode]="filterMatchMode"
+    [placeholder]="placeholder"
+    [appendTo]="appendTo"
+    [loading]="loading"
+    [disabled]="isDisabled"
+    [readonly]="readonly"
+    [editable]="editable"
+    [showClear]="showClear"
+    [checkmark]="checkmark"
+    [variant]="variant"
+    [size]="size"
+    [fluid]="fluid"
+    [invalid]="effectiveInvalid"
+    [styleClass]="styleClass"
+    [scrollHeight]="scrollHeight"
+    [virtualScroll]="virtualScroll"
+    [virtualScrollItemSize]="virtualScrollItemSize"
+    [autofocus]="autofocus"
+    [autoOptionFocus]="autoOptionFocus"
+    [autofocusFilter]="autofocusFilter"
+    [resetFilterOnHide]="resetFilterOnHide"
+    [emptyMessage]="emptyMessage"
+    [emptyFilterMessage]="emptyFilterMessage"
+    [tabindex]="tabindex ?? undefined"
+    [name]="name"
+    [inputId]="inputId || undefined"
+    (onBlur)="handleBlur($event)"
+    (onFocus)="handleFocus($event)"
+    (onChange)="handleChange($event)"
+  >
+    <ng-content></ng-content>
+  </p-select>
+
+  @if (activeErrorMessage) {
+    <small class="p-error validation-error-text">{{ activeErrorMessage }}</small>
+  }
+</div>

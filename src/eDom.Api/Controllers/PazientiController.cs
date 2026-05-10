@@ -24,10 +24,24 @@ public class PazientiController(IMediator mediator) : ControllerBase
         return result is null ? NotFound() : Ok(result);
     }
 
+    [HttpGet("{id:int}/pua-data")]
+    public async Task<IActionResult> GetPuaData(int id, CancellationToken ct)
+    {
+        var result = await mediator.SendAsync(new GetPazientePuaDataQuery(id), ct);
+        return result is null ? NotFound() : Ok(result);
+    }
+
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] CreatePazienteCommand command, CancellationToken ct)
     {
         var created = await mediator.SendAsync(command, ct);
+        return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
+    }
+
+    [HttpPost("from-assistito/{assistitoId}")]
+    public async Task<IActionResult> CreateFromAssistito(string assistitoId, CancellationToken ct)
+    {
+        var created = await mediator.SendAsync(new CreatePazienteFromAssistitoCommand(assistitoId), ct);
         return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
     }
 

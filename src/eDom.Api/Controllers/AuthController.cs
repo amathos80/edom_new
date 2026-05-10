@@ -56,10 +56,10 @@ public class AuthController(IMediator mediator) : ControllerBase
     {
         var result = await mediator.SendAsync(command, ct);
         if (!result.Success)
-            return ValidationProblem(new Dictionary<string, string[]>
+            return ValidationProblem(new ValidationProblemDetails(new Dictionary<string, string[]>
             {
-                [nameof(command.CurrentPassword)] = [result.Error]
-            });
+                [nameof(command.NewPassword)] = [result.Error]
+            }));
         return Ok(result);
     }
 

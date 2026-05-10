@@ -1,12 +1,12 @@
 <section class="component-page">
   <h2>Custom Textbox</h2>
   <p>
-    Wrapper PrimeNG InputText con prop <strong>uppercase</strong> per forzare il testo in
-    maiuscolo durante la digitazione.
+    Wrapper PrimeNG InputText con supporto completo alle prop visuali, validazioni dichiarative
+    e validazioni custom/remote (Approccio C).
   </p>
 
   <div class="examples-grid">
-    <p-card header="Textbox standard">
+    <p-card header="Textbox standard (template-driven)">
       <app-custom-textbox-input
         [(ngModel)]="normalValue"
         placeholder="Digita liberamente"
@@ -14,13 +14,59 @@
       <small>Valore corrente: {{ normalValue || '-' }}</small>
     </p-card>
 
-    <p-card header="Textbox uppercase">
+    <p-card header="Textbox uppercase (template-driven)">
       <app-custom-textbox-input
         [(ngModel)]="uppercaseValue"
         placeholder="Digita in uppercase"
         [uppercase]="true"
       />
       <small>Valore corrente: {{ uppercaseValue || '-' }}</small>
+    </p-card>
+
+    <p-card header="Approccio C: built-in + remote (email)">
+      <app-custom-textbox-input
+        [formControl]="emailControl"
+        type="email"
+        placeholder="es. utente@dominio.it"
+        [required]="true"
+        [email]="true"
+        [maxLength]="200"
+        customValidationType="emailUnique"
+        [customValidationMap]="customValidationMap"
+      />
+
+      @if (hasError(emailControl, 'required')) {
+        <p-message severity="error" size="small" variant="simple">Email obbligatoria.</p-message>
+      }
+      @if (hasError(emailControl, 'email')) {
+        <p-message severity="error" size="small" variant="simple">Formato email non valido.</p-message>
+      }
+      @if (hasError(emailControl, 'emailExists')) {
+        <p-message severity="error" size="small" variant="simple">Email gia presente (simulazione remote).</p-message>
+      }
+    </p-card>
+
+    <p-card header="Approccio C: uppercase + pattern + remote (CF)">
+      <app-custom-textbox-input
+        [formControl]="codiceFiscaleControl"
+        placeholder="Codice fiscale"
+        [required]="true"
+        [uppercase]="true"
+        [pattern]="'^[A-Z0-9]{16}$'"
+        [maxLength]="16"
+        customValidationType="codiceFiscaleUnique"
+        [customValidationMap]="customValidationMap"
+      />
+
+      @if (hasError(codiceFiscaleControl, 'required')) {
+        <p-message severity="error" size="small" variant="simple">Codice fiscale obbligatorio.</p-message>
+      }
+      @if (hasError(codiceFiscaleControl, 'pattern')) {
+        <p-message severity="error" size="small" variant="simple">Formato codice fiscale non valido (16 caratteri).</p-message>
+      }
+      @if (hasError(codiceFiscaleControl, 'cfExists')) {
+        <p-message severity="error" size="small" variant="simple">Codice fiscale gia presente (simulazione remote).</p-message>
+      }
     </p-card>
   </div>
 </section>

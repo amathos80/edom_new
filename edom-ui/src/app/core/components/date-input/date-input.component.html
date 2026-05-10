@@ -1,0 +1,9 @@
+<p-datepicker
+  [ngModel]="dateValue"
+  (ngModelChange)="onDateChange($event)"
+  (onBlur)="onInputBlur($event)"
+  dateFormat="dd/mm/yy"
+  [showIcon]="true"
+  [disabled]="disabled"
+  styleClass="w-full">
+</p-datepicker>

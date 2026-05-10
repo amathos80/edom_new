@@ -45,6 +45,10 @@
   gap: 0.25rem;
 }
 
+:host ::ng-deep .p-datatable-tbody > tr.row-dblclick-enabled {
+  cursor: pointer;
+}
+
 @media (max-width: 820px) {
   .smart-caption {
     align-items: stretch;

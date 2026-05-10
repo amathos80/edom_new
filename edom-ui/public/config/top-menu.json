@@ -346,6 +346,7 @@
           "text": "Gestione",
           "name": "MainPua",
           "permissions": "SS_PUA",
+          "routerLink": "/app/pua",
           "navigateUrl": "~/Views/Pua.aspx",
           "codiceProcedura": 3
         },

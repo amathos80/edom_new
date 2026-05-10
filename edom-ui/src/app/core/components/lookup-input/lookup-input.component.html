@@ -1,0 +1,58 @@
+<div class="lookup-input-wrapper">
+  @if (label) {
+    <label class="lookup-label">{{ label }}</label>
+  }
+
+  <p-inputgroup>
+    <app-custom-textbox-input
+      type="text"
+      [disabled]="false"
+      [readonly]="true"
+      [placeholder]="placeholder"
+      [ngModel]="value"
+      (ngModelChange)="onInput($event)"
+      (blur)="onBlur()"
+    />
+    <p-inputgroup-addon>
+      <button
+        pButton
+        type="button"
+        icon="pi pi-search"
+        [disabled]="disabled"
+        [attr.aria-label]="searchButtonAriaLabel"
+        (click)="openDialog()"
+      ></button>
+    </p-inputgroup-addon>
+    <p-inputgroup-addon>
+      <button
+        pButton
+        type="button"
+        icon="pi pi-times"
+        severity="secondary"
+        [disabled]="disabled || readonly || !value"
+        [attr.aria-label]="clearButtonAriaLabel"
+        (click)="clearValue()"
+      ></button>
+    </p-inputgroup-addon>
+  </p-inputgroup>
+</div>
+
+<p-dialog
+  [visible]="dialogVisible()"
+  (visibleChange)="dialogVisible.set($event)"
+  [modal]="true"
+  [draggable]="false"
+  [resizable]="false"
+  [style]="{ width: '70rem', maxWidth: '96vw', height: '80vh' }"
+  [header]="dialogTitle"
+  (onHide)="closeDialog()"
+>
+  @if (dialogContent) {
+    <ng-container
+      [ngTemplateOutlet]="dialogContent.templateRef"
+      [ngTemplateOutletContext]="{ close: closeDialog.bind(this), value: value }"
+    ></ng-container>
+  } @else {
+    <p class="dialog-empty">Nessun contenuto impostato per la ricerca.</p>
+  }
+</p-dialog>

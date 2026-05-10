@@ -1,0 +1,23 @@
+.lookup-input-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.lookup-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.dialog-empty {
+  margin: 0;
+  color: var(--text-color-secondary, #6b7280);
+}
+
+// Il dialog content deve essere un flex container per passare l'altezza al figlio
+:host ::ng-deep .p-dialog-content {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  padding-bottom: 0;
+}

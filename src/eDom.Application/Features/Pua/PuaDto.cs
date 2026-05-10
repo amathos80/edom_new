@@ -1,0 +1,26 @@
+namespace eDom.Application.Features.Pua;
+
+public record PuaDto(
+    int Id,
+    int NumeroPuaId,
+    int Numero,
+    DateTime Data,
+    int AreaInterventoId,
+    int PazienteId,
+    string PazienteCognome,
+    string PazienteNome,
+    string? PazienteCodiceFiscale,
+    int AccessoId,
+    string? AccessoNote,
+    int? MotivoId,
+    string? MotivoNote,
+    int RichiestaId,
+    string? RichiestaAltro,
+    int EsitoId,
+    string? EsitoNote,
+    bool Urgente,
+    int OrigineId,
+    DateTime DataAvvio,
+    DateTime? DataChiusura,
+    int? MotivoChiusuraId,
+    bool Attivo);

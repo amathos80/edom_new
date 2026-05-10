@@ -1,5 +1,4 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
-import { DatePipe } from '@angular/common';
 import { AbstractControl, FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
 
@@ -15,7 +14,6 @@ import { Table, TableModule, TableLazyLoadEvent } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
 import { ToastModule } from 'primeng/toast';
 import { ToolbarModule } from 'primeng/toolbar';
-import { SelectModule } from 'primeng/select';
 
 import { RuoliService } from '../../../core/services/ruoli.service';
 import { ProcedureService } from '../../../core/services/procedure.service';
@@ -25,6 +23,7 @@ import { LazyLoadProvider } from '../../../core/providers/lazy-load.provider';
 import { AggiornaRuoloRequest, CreaRuoloRequest, Ruolo } from '../../../core/models/ruolo.model';
 import { CondizioneFiltro } from '../../../core/models/pagination.model';
 import { Procedura } from '../../../core/models/procedura.model';
+import { CustomSelectInputComponent } from '../../custom-components/components/custom-select/custom-select.component';
 
 type ModalitaDialog = 'crea' | 'modifica' | 'dettaglio';
 
@@ -34,7 +33,6 @@ type ModalitaDialog = 'crea' | 'modifica' | 'dettaglio';
   imports: [
     FormsModule,
     ReactiveFormsModule,
-    DatePipe,
     ButtonModule,
     CardModule,
     CheckboxModule,
@@ -46,7 +44,7 @@ type ModalitaDialog = 'crea' | 'modifica' | 'dettaglio';
     TagModule,
     ToastModule,
     ToolbarModule,
-    SelectModule,
+    CustomSelectInputComponent,
   ],
   providers: [MessageService],
   templateUrl: './ruoli-management.component.html',

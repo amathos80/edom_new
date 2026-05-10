@@ -146,7 +146,7 @@
   <form [formGroup]="formRuolo" class="form-ruolo" (ngSubmit)="salva()">
     <div class="field">
       <label for="proceduraId">Id procedura</label>
-      <p-select
+      <app-custom-select-input
         inputId="proceduraId"
         formControlName="proceduraId"
         [options]="procedure()"
@@ -161,7 +161,7 @@
         <ng-template let-procedura pTemplate="item">
           <div>{{ procedura.codice }} - {{ procedura.descrizione }}</div>
         </ng-template>
-      </p-select>
+      </app-custom-select-input>
       @if (formValidation.getFieldError(formRuolo, 'proceduraId'); as err) {
         <small class="error-text">{{ err }}</small>
       }

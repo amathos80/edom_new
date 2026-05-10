@@ -23,7 +23,7 @@ export const CUSTOM_COMPONENT_ENTRIES: CustomComponentEntry[] = [
   {
     path: 'textbox',
     title: 'Custom Textbox',
-    description: 'InputText PrimeNG con prop uppercase per forzare il testo in maiuscolo.',
+    description: 'InputText PrimeNG esteso con validazioni dichiarative, custom e remote.',
     loadComponent: () =>
       import('./examples/custom-textbox/custom-textbox.component').then(
         m => m.CustomTextboxComponent

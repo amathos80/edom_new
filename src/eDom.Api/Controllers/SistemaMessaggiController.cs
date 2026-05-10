@@ -11,6 +11,7 @@ namespace eDom.Api.Controllers;
 public class SistemaMessaggiController(IMediator mediator) : ControllerBase
 {
     [HttpGet]
+    [AllowAnonymous]
     public async Task<IActionResult> Search(
         [FromQuery] string? classe,
         [FromQuery] string? nome,

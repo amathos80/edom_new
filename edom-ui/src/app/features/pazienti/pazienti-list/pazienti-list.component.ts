@@ -47,7 +47,7 @@ export class PazientiListComponent implements OnInit {
       attivo: this.filter.attivo
     };
     this.svc.search(req).subscribe({
-      next: data => { this.pazienti.set(data); this.loading.set(false); },
+      next: data => { this.pazienti.set(data.items); this.loading.set(false); },
       error: () => {
         this.msg.add({ severity: 'error', summary: 'Errore', detail: 'Impossibile caricare i pazienti' });
         this.loading.set(false);

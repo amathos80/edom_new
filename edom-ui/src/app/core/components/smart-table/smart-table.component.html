@@ -62,7 +62,10 @@
   </ng-template>
 
   <ng-template pTemplate="body" let-row>
-    <tr>
+    <tr
+      [class.row-dblclick-enabled]="enableRowDoubleClick"
+      (dblclick)="onRowDoubleClick(row)"
+    >
       @for (col of effectiveVisibleColumns(); track col.key) {
         <td>
           @if (getCellTemplate(col.key); as tpl) {

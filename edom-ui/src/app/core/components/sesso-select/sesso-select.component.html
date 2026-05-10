@@ -1,0 +1,11 @@
+<app-custom-select-input
+  [options]="options"
+  [ngModel]="value"
+  (ngModelChange)="onValueChange($event)"
+  optionLabel="label"
+  optionValue="value"
+  [disabled]="disabled"
+  placeholder="Seleziona..."
+  styleClass="w-full"
+  [showEmptyOption]="true"
+></app-custom-select-input>

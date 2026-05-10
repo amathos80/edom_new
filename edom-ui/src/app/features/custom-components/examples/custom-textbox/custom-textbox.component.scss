@@ -17,6 +17,11 @@
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
 }
 
+p-message {
+  display: block;
+  margin-top: 0.5rem;
+}
+
 small {
   display: block;
   margin-top: 0.75rem;

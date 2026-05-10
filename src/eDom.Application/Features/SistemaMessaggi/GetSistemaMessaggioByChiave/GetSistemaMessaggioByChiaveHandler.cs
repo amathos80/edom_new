@@ -4,20 +4,12 @@ using eDom.Core.Interfaces;
 
 namespace eDom.Application.Features.SistemaMessaggi;
 
-public sealed class GetSistemaMessaggioByChiaveHandler(IRepository<SistemaMessaggio> repository)
+public sealed class GetSistemaMessaggioByChiaveHandler(ISistemaMessaggioRepository repository)
     : IRequestHandler<GetSistemaMessaggioByChiaveQuery, SistemaMessaggioDto?>
 {
     public async Task<SistemaMessaggioDto?> HandleAsync(GetSistemaMessaggioByChiaveQuery query, CancellationToken ct = default)
     {
-        var messaggi = await repository.GetAllAsync(
-            filter: m =>
-                m.Classe == query.Classe &&
-                m.Nome == query.Nome &&
-                m.Lingua == query.Lingua,
-            take: 1,
-            ct: ct);
-
-        var messaggio = messaggi.FirstOrDefault();
+        var messaggio = await repository.GetByKeyAsync(query.Classe, query.Nome, query.Lingua, ct);
         if (messaggio is null)
         {
             return null;

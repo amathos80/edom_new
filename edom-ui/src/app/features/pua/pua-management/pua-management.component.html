@@ -1,0 +1,32 @@
+<p-toast></p-toast>
+
+<p-card header="Punto Unico di Accesso - Gestione">
+  <p-toolbar styleClass="mb-3">
+    <ng-template #start>
+      <button pButton label="Nuovo" icon="pi pi-plus" (click)="createNew()"></button>
+    </ng-template>
+  </p-toolbar>
+
+  <app-smart-table
+    [value]="rows()"
+    [loading]="loading()"
+    [columns]="columns"
+    [visibleColumnKeys]="visibleColumnKeys"
+    [showGlobalSearch]="true"
+    [globalFilterFields]="globalFilterFields"
+    [emptyMessage]="'Nessuna pratica PUA disponibile.'"
+    [dataKey]="'id'"
+    [enableRowDoubleClick]="true"
+    (rowDoubleClick)="openEdit($event)"
+  >
+    <div smartTableCaptionLeft class="caption-left">
+      <h5 class="m-0">Elenco pratiche PUA</h5>
+      <span class="hint">Doppio click sulla riga per modificare.</span>
+    </div>
+
+    <ng-template appSmartTableActions let-row>
+      <button pButton type="button" text="true" icon="pi pi-pencil" label="Modifica" (click)="openEdit(row)"></button>
+      <button pButton type="button" text="true" severity="danger" icon="pi pi-trash" (click)="deleteRow(row)"></button>
+    </ng-template>
+  </app-smart-table>
+</p-card>

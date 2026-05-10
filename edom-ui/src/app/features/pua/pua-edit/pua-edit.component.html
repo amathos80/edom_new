@@ -1,0 +1,404 @@
+<p-toast></p-toast>
+<p-confirmdialog></p-confirmdialog>
+
+<p-card [header]="editMode() ? ('Punto Unico di Accesso - #' + puaId()) : 'Punto Unico di Accesso - Nuova Pratica'">
+  <form [formGroup]="form" class="pua-form" (ngSubmit)="save()">
+    <p-tabs [value]="activeTab()" (valueChange)="setTab($event)">
+      <p-tablist>
+        <p-tab value="dati-generali">Dati Generali</p-tab>
+        <p-tab value="gestione-domanda">Gestione della domanda</p-tab>
+      </p-tablist>
+
+      <p-tabpanels>
+        <p-tabpanel value="dati-generali">
+
+          <div class="form-section">
+            <div class="form-section-header"><i class="pi pi-file-edit"></i> Dati pratica</div>
+            <div class="form-section-body">
+              <div class="grid grid-3">
+                <div class="field">
+                  <span class="field-label">Tipo/Anno</span>
+                  <app-numero-pua-select 
+                  [required]="true"
+                  [errorMessageKeys]="{  required: 'generico:obbligatorio01' }"
+                   formControlName="numeroPuaId"></app-numero-pua-select>
+                </div>
+                <div class="field">
+                  <span class="field-label">Numero</span>
+                  <p-inputnumber formControlName="numero" [useGrouping]="false" styleClass="w-full"></p-inputnumber>
+                </div>
+                <div class="field">
+                  <span class="field-label">Data</span>
+                  <app-date-input formControlName="data" [allowFuture]="true"></app-date-input>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-section">
+            <div class="form-section-header"><i class="pi pi-user"></i> Utente</div>
+            <div class="form-section-body">
+              <input type="hidden" formControlName="pazienteId" />
+              <div class="lookup-row">
+                <app-lookup-input
+                  formControlName="pazienteSearch"
+                  label="Assistito"
+                  placeholder="Cerca assistito..."
+                  dialogTitle="Ricerca Assistito"
+                  [disabled]="!!form.get('pazienteSearch')?.disabled"
+                  (search)="onPazienteSearchClick()"
+                >
+                  <ng-template appLookupDialogContent let-close="close">
+                    <app-anagrafica-search
+                      (selectedAssistito)="onAssistitoSelected($event, close)"
+                    ></app-anagrafica-search>
+                  </ng-template>
+                </app-lookup-input>
+              </div>
+              <div class="grid grid-4">
+                <div class="field">
+                  <span class="field-label">Cognome</span>
+                  <app-custom-textbox-input 
+                    [disabled]="true" 
+                    [required]="true" 
+                    [maxLength]="100" 
+                    [errorMessageKeys]="{ required: 'generico:obbligatorio01' }"
+                    [errorMessagePlaceholders]="{ }"
+                    type="text" 
+                    formControlName="pazienteCognome"></app-custom-textbox-input>
+                </div>
+                <div class="field">
+                  <span class="field-label">Nome</span>
+                  <app-custom-textbox-input type="text" formControlName="pazienteNome"></app-custom-textbox-input>
+                </div>
+                <div class="field">
+                  <span class="field-label">Cod. Fiscale</span>
+                  <app-custom-textbox-input type="text" formControlName="pazienteCodiceFiscale"></app-custom-textbox-input>
+                </div>
+                <div class="field">
+                  <span class="field-label">Data nascita</span>
+                  <app-date-input formControlName="pazienteDataNascita"></app-date-input>
+                </div>
+                <div class="field">
+                  <span class="field-label">Sesso</span>
+                  <app-sesso-select formControlName="uiSesso"></app-sesso-select>
+                </div>
+                <div class="field">
+                  <span class="field-label">Email</span>
+                  <app-custom-textbox-input type="text" formControlName="uiEmail"></app-custom-textbox-input>
+                </div>
+                <div class="field">
+                  <span class="field-label">Telefono</span>
+                  <app-custom-textbox-input type="text" formControlName="uiTelefono1"></app-custom-textbox-input>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="grid grid-address">
+            <div class="form-section">
+              <div class="form-section-header"><i class="pi pi-home"></i> Residenza</div>
+              <div class="form-section-body">
+                <div class="grid grid-4">
+                  <div class="field">
+                    <span class="field-label">Comune</span>
+                    <app-custom-textbox-input type="text" formControlName="uiComuneResidenza"></app-custom-textbox-input>
+                  </div>
+                  <div class="field">
+                    <span class="field-label">Indirizzo</span>
+                    <app-custom-textbox-input type="text" formControlName="uiIndirizzoResidenza"></app-custom-textbox-input>
+                  </div>
+                  <div class="field">
+                    <span class="field-label">CAP</span>
+                    <app-custom-textbox-input type="text" formControlName="uiCapResidenza"></app-custom-textbox-input>
+                  </div>
+                  <div class="field">
+                    <span class="field-label">Area</span>
+                    <app-custom-select-input
+                      formControlName="uiAreaResidenzaId"
+                      [options]="areeResidenzaOptions()"
+                      optionLabel="label"
+                      optionValue="value"
+                      [showEmptyOption]="true"
+                      styleClass="w-full"
+                    ></app-custom-select-input>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-section">
+              <div class="form-section-header"><i class="pi pi-map-marker"></i> Domicilio</div>
+              <div class="form-section-body">
+                <div class="grid grid-4">
+                  <div class="field">
+                    <span class="field-label">Comune</span>
+                    <app-custom-textbox-input type="text" formControlName="uiComuneDomicilio"></app-custom-textbox-input>
+                  </div>
+                  <div class="field">
+                    <span class="field-label">Indirizzo</span>
+                    <app-custom-textbox-input type="text" formControlName="uiIndirizzoDomicilio"></app-custom-textbox-input>
+                  </div>
+                  <div class="field">
+                    <span class="field-label">CAP</span>
+                    <app-custom-textbox-input type="text" formControlName="uiCapDomicilio"></app-custom-textbox-input>
+                  </div>
+                  <div class="field">
+                    <span class="field-label">Area</span>
+                    <app-custom-select-input
+                      formControlName="uiAreaDomicilioId"
+                      [options]="areeDomicilioOptions()"
+                      optionLabel="label"
+                      optionValue="value"
+                      [showEmptyOption]="true"
+                      styleClass="w-full"
+                    ></app-custom-select-input>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-section">
+            <div class="form-section-header"><i class="pi pi-at"></i> Altro recapito</div>
+            <div class="form-section-body">
+              <div class="grid grid-4">
+                <div class="field">
+                  <span class="field-label">Comune</span>
+                  <app-custom-textbox-input type="text" formControlName="uiComuneAltroRecapito"></app-custom-textbox-input>
+                </div>
+                <div class="field">
+                  <span class="field-label">Indirizzo</span>
+                  <app-custom-textbox-input type="text" formControlName="uiIndirizzoAltroRecapito"></app-custom-textbox-input>
+                </div>
+                <div class="field">
+                  <span class="field-label">CAP</span>
+                  <app-custom-textbox-input type="text" formControlName="uiCapAltroRecapito"></app-custom-textbox-input>
+                </div>
+                <div class="field">
+                  <span class="field-label">Area</span>
+                  <app-custom-select-input
+                    formControlName="uiAreaReperibilitaId"
+                    [options]="areeReperibilitaOptions()"
+                    optionLabel="label"
+                    optionValue="value"
+                    [showEmptyOption]="true"
+                    styleClass="w-full"
+                  ></app-custom-select-input>
+                </div>
+                <div class="field">
+                  <span class="field-label">Note</span>
+                  <textarea pTextarea rows="1" formControlName="uiNoteAltroRecapito"></textarea>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-section">
+            <div class="form-section-header"><i class="pi pi-heart"></i> Medico di riferimento</div>
+            <div class="form-section-body">
+              <div class="grid grid-4">
+                <div class="field">
+                  <span class="field-label">Codice</span>
+                  <app-custom-textbox-input type="text" formControlName="uiMedicoCodice"></app-custom-textbox-input>
+                </div>
+                <div class="field">
+                  <span class="field-label">Cognome e Nome</span>
+                  <app-custom-textbox-input type="text" formControlName="uiMedicoNominativo"></app-custom-textbox-input>
+                </div>
+                <div class="field">
+                  <span class="field-label">Email</span>
+                  <app-custom-textbox-input type="text" formControlName="uiMedicoEmail"></app-custom-textbox-input>
+                </div>
+                <div class="field">
+                  <span class="field-label">Telefono</span>
+                  <app-custom-textbox-input type="text" formControlName="uiMedicoTelefono1"></app-custom-textbox-input>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </p-tabpanel>
+
+        <p-tabpanel value="gestione-domanda">
+
+          <div class="form-section">
+            <div class="form-section-header"><i class="pi pi-sign-in"></i> Accesso</div>
+            <div class="form-section-body">
+              <div class="grid grid-3">
+                <div class="field">
+                  <span class="field-label">Soggetto inviante</span>
+                  <p-inputnumber formControlName="accessoId" [useGrouping]="false" styleClass="w-full"></p-inputnumber>
+                </div>
+                <div class="field col-2">
+                  <span class="field-label">Note</span>
+                  <textarea pTextarea rows="1" formControlName="accessoNote"></textarea>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-section">
+            <div class="form-section-header"><i class="pi pi-megaphone"></i> Segnalante</div>
+            <div class="form-section-body">
+              <div class="grid grid-4">
+                <div class="field col-2">
+                  <span class="field-label">Tipo segnalazione</span>
+                  <app-custom-textbox-input type="text" formControlName="uiTipoSegnalazione"></app-custom-textbox-input>
+                </div>
+                <div class="field col-2">
+                  <span class="field-label">Data</span>
+                  <app-date-input formControlName="dataAvvio" [allowFuture]="true"></app-date-input>
+                </div>
+                <div class="field col-2">
+                  <span class="field-label">Cognome</span>
+                  <app-custom-textbox-input type="text" formControlName="uiSegnalanteCognome"></app-custom-textbox-input>
+                </div>
+                <div class="field col-2 ">
+                  <span class="field-label">Nome</span>
+                  <app-custom-textbox-input type="text" formControlName="uiSegnalanteNome"></app-custom-textbox-input>
+                </div>
+                <div class="field col-2 ">
+                  <span class="field-label">Comune nascita</span>
+                  <app-custom-textbox-input type="text" formControlName="uiSegnalanteComuneNascita"></app-custom-textbox-input>
+                </div>
+                <div class="field col-2">
+                  <span class="field-label">Data nascita</span>
+                  <app-date-input formControlName="uiSegnalanteDataNascita"></app-date-input>
+                </div>
+                <div class="field col-2 ">
+                  <span class="field-label">Comune residenza</span>
+                  <app-custom-textbox-input type="text" formControlName="uiSegnalanteComuneResidenza"></app-custom-textbox-input>
+                </div>
+                <div class="field col-2 ">
+                  <span class="field-label">Indirizzo</span>
+                  <app-custom-textbox-input type="text" formControlName="uiSegnalanteIndirizzo"></app-custom-textbox-input>
+                </div>
+                <div class="field col-2 ">
+                  <span class="field-label">Relazione</span>
+                  <app-custom-textbox-input type="text" formControlName="uiSegnalanteRelazione"></app-custom-textbox-input>
+                </div>
+                <div class="field">
+                  <span class="field-label">Telefono</span>
+                  <app-custom-textbox-input type="text" formControlName="uiSegnalanteTelefono1"></app-custom-textbox-input>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-section">
+            <div class="form-section-header"><i class="pi pi-users"></i> Referente</div>
+            <div class="form-section-body">
+              <div class="grid grid-4">
+                <div class="field">
+                  <span class="field-label">Cognome</span>
+                  <app-custom-textbox-input type="text" formControlName="uiReferenteCognome"></app-custom-textbox-input>
+                </div>
+                <div class="field">
+                  <span class="field-label">Nome</span>
+                  <app-custom-textbox-input type="text" formControlName="uiReferenteNome"></app-custom-textbox-input>
+                </div>
+                <div class="field">
+                  <span class="field-label">Comune nascita</span>
+                  <app-custom-textbox-input type="text" formControlName="uiReferenteComuneNascita"></app-custom-textbox-input>
+                </div>
+                <div class="field">
+                  <span class="field-label">Data nascita</span>
+                  <app-date-input formControlName="uiReferenteDataNascita"></app-date-input>
+                </div>
+                <div class="field">
+                  <span class="field-label">Comune residenza</span>
+                  <app-custom-textbox-input type="text" formControlName="uiReferenteComuneResidenza"></app-custom-textbox-input>
+                </div>
+                <div class="field">
+                  <span class="field-label">Indirizzo</span>
+                  <app-custom-textbox-input type="text" formControlName="uiReferenteIndirizzo"></app-custom-textbox-input>
+                </div>
+                <div class="field">
+                  <span class="field-label">Relazione</span>
+                  <app-custom-textbox-input type="text" formControlName="uiReferenteRelazione"></app-custom-textbox-input>
+                </div>
+                <div class="field">
+                  <span class="field-label">Telefono</span>
+                  <app-custom-textbox-input type="text" formControlName="uiReferenteTelefono1"></app-custom-textbox-input>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-section">
+            <div class="form-section-header"><i class="pi pi-check-circle"></i> Esito</div>
+            <div class="form-section-body">
+              <div class="grid grid-4">
+                <div class="field">
+                  <span class="field-label">Bisogno espresso</span>
+                  <p-inputnumber formControlName="esitoId" [useGrouping]="false" styleClass="w-full"></p-inputnumber>
+                </div>
+                <div class="field">
+                  <span class="field-label">Risposta data</span>
+                  <p-inputnumber formControlName="richiestaId" [useGrouping]="false" styleClass="w-full"></p-inputnumber>
+                </div>
+                <div class="field col-2">
+                  <span class="field-label">Note</span>
+                  <textarea pTextarea rows="1" formControlName="esitoNote"></textarea>
+                </div>
+                <div class="field col-2">
+                  <span class="field-label">Note interne</span>
+                  <textarea pTextarea rows="1" formControlName="motivoNote"></textarea>
+                </div>
+                <div class="field">
+                  <span class="field-label">Origine</span>
+                  <p-inputnumber formControlName="origineId" [useGrouping]="false" styleClass="w-full"></p-inputnumber>
+                </div>
+                <div class="field field-check">
+                  <input type="checkbox" formControlName="urgente" id="urgente" />
+                  <span class="field-label">Urgente</span>
+                </div>
+                <div class="field field-check">
+                  <input type="checkbox" formControlName="uiViveSolo" id="viveSolo" />
+                  <span class="field-label">Vive solo</span>
+                </div>
+                <div class="field field-check">
+                  <input type="checkbox" formControlName="attivo" id="attivo" />
+                  <span class="field-label">Attivo</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-section">
+            <div class="form-section-header"><i class="pi pi-lock"></i> Chiusura d'ufficio</div>
+            <div class="form-section-body">
+              <div class="grid grid-3">
+                <div class="field">
+                  <span class="field-label">Data</span>
+                  <app-date-input formControlName="dataChiusura" [allowFuture]="true"></app-date-input>
+                </div>
+                <div class="field">
+                  <span class="field-label">Motivo</span>
+                  <p-inputnumber formControlName="motivoChiusuraId" [useGrouping]="false" styleClass="w-full"></p-inputnumber>
+                </div>
+                <div class="field">
+                  <span class="field-label">Motivo dettaglio</span>
+                  <textarea pTextarea rows="1" formControlName="richiestaAltro"></textarea>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </p-tabpanel>
+      </p-tabpanels>
+    </p-tabs>
+
+    <div class="actions">
+      <div class="left-actions">
+        <button pButton type="submit" icon="pi pi-save" label="Salva" [loading]="saving()"></button>
+        <button pButton type="button" severity="secondary" label="Pulisci" (click)="reset()"></button>
+        @if (editMode()) {
+          <button pButton type="button" severity="contrast" label="Duplica" (click)="duplicate()"></button>
+        }
+      </div>
+      <button pButton type="button" severity="secondary" outlined="true" label="Esci" (click)="goBack()"></button>
+    </div>
+  </form>
+</p-card>

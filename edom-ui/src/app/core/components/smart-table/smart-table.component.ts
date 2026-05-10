@@ -68,6 +68,8 @@ export class SmartTableComponent implements OnChanges, AfterContentInit, OnDestr
   @Input() actionsHeader = 'Azioni';
   @Input() actionsMinWidthRem = 8;
   @Input() defaultColumnMinWidthRem = 10;
+  @Input() enableRowDoubleClick = false;
+  @Output() readonly rowDoubleClick = new EventEmitter<unknown>();
 
   @ContentChildren(SmartTableCellTemplateDirective)
   private cellTemplates?: QueryList<SmartTableCellTemplateDirective>;
@@ -152,6 +154,14 @@ export class SmartTableComponent implements OnChanges, AfterContentInit, OnDestr
   filterGlobale(tabella: Table, event: Event): void {
     const valore = (event.target as HTMLInputElement).value;
     tabella.filterGlobal(valore, 'contains');
+  }
+
+  onRowDoubleClick(row: unknown): void {
+    if (!this.enableRowDoubleClick) {
+      return;
+    }
+
+    this.rowDoubleClick.emit(row);
   }
 
   private syncVisibleColumns(): void {

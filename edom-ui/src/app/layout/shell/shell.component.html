@@ -39,7 +39,7 @@
     <header class="topbar">
       <div class="topbar-end">
         <div class="theme-controls">
-          <p-select
+          <app-custom-select-input
             [options]="themeOptions"
             [ngModel]="selectedTheme()"
             (ngModelChange)="onThemeChange($event)"
@@ -47,11 +47,11 @@
             optionValue="value"
             placeholder="Tema"
             appendTo="body"
-            [style]="{ width: '9rem' }"
+            [inputStyle]="{ width: '9rem' }"
             size="small"
           />
 
-          <p-select
+          <app-custom-select-input
             [options]="modeOptions"
             [ngModel]="selectedMode()"
             (ngModelChange)="onModeChange($event)"
@@ -59,7 +59,7 @@
             optionValue="value"
             placeholder="Modalita"
             appendTo="body"
-            [style]="{ width: '7.5rem' }"
+            [inputStyle]="{ width: '7.5rem' }"
             size="small"
           />
         </div>

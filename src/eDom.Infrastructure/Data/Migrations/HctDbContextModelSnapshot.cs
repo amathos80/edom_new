@@ -60,7 +60,7 @@ namespace eDom.Infrastructure.Data.Migrations
                         .HasColumnType("bigint")
                         .HasColumnName("AULO_ID");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityAlwaysColumn(b.Property<long>("Id"));
 
                     b.Property<DateTime>("DataOperazione")
                         .HasColumnType("timestamp with time zone")
@@ -205,7 +205,7 @@ namespace eDom.Infrastructure.Data.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("LOAC_ID");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityAlwaysColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("Data")
                         .HasColumnType("timestamp with time zone")
@@ -245,7 +245,7 @@ namespace eDom.Infrastructure.Data.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("PAZI_ID");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityAlwaysColumn(b.Property<int>("Id"));
 
                     b.Property<int?>("AreaDomicilioId")
                         .HasColumnType("integer")
@@ -655,6 +655,141 @@ namespace eDom.Infrastructure.Data.Migrations
                     b.ToTable("SI_PROCEDURE", "HICT");
                 });
 
+            modelBuilder.Entity("eDom.Core.Entities.PuaRecord", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("PU01_ID");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("AccessoId")
+                        .HasColumnType("integer")
+                        .HasColumnName("PU01_ELTG_ACCESSO");
+
+                    b.Property<string>("AccessoNote")
+                        .HasMaxLength(2000)
+                        .HasColumnType("character varying(2000)")
+                        .HasColumnName("PU01_ACCESSO_NOTE");
+
+                    b.Property<int>("AreaInterventoId")
+                        .HasColumnType("integer")
+                        .HasColumnName("PU01_ELTG_AREAINT");
+
+                    b.Property<short>("Attivo")
+                        .HasColumnType("smallint")
+                        .HasColumnName("PU01_F_ATT");
+
+                    b.Property<DateTime>("Data")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("PU01_DATA");
+
+                    b.Property<DateTime>("DataAvvio")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("PU01_DTAVVIO");
+
+                    b.Property<DateTime?>("DataChiusura")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("PU01_DTCHIUSURA");
+
+                    b.Property<DateTime?>("DataDisattivazione")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("PU01_DTDISATT");
+
+                    b.Property<DateTime>("DataInserimento")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("PU01_DTINS");
+
+                    b.Property<DateTime?>("DataModifica")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("PU01_DTMOD");
+
+                    b.Property<int>("EsitoId")
+                        .HasColumnType("integer")
+                        .HasColumnName("PU01_TCON_ESITO");
+
+                    b.Property<string>("EsitoNote")
+                        .HasMaxLength(2000)
+                        .HasColumnType("character varying(2000)")
+                        .HasColumnName("PU01_ESITO_NOTE");
+
+                    b.Property<int?>("MotivoChiusuraId")
+                        .HasColumnType("integer")
+                        .HasColumnName("PU01_ELTG_MOTCHIU");
+
+                    b.Property<int?>("MotivoId")
+                        .HasColumnType("integer")
+                        .HasColumnName("PU01_ELTG_MOTIVO");
+
+                    b.Property<string>("MotivoNote")
+                        .HasMaxLength(2000)
+                        .HasColumnType("character varying(2000)")
+                        .HasColumnName("PU01_MOTIVO_NOTE");
+
+                    b.Property<int>("Numero")
+                        .HasColumnType("integer")
+                        .HasColumnName("PU01_NUMERO");
+
+                    b.Property<int>("NumeroPuaId")
+                        .HasColumnType("integer")
+                        .HasColumnName("PU01_NUMPUA_ID");
+
+                    b.Property<int>("OrigineId")
+                        .HasColumnType("integer")
+                        .HasColumnName("PU01_TCON_ORIGINE");
+
+                    b.Property<string>("PazienteCodiceFiscale")
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)")
+                        .HasColumnName("PU01_PAZI_CODFISC");
+
+                    b.Property<string>("PazienteCognome")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("PU01_PAZI_COGNOME");
+
+                    b.Property<int>("PazienteId")
+                        .HasColumnType("integer")
+                        .HasColumnName("PU01_PAZI_ID");
+
+                    b.Property<string>("PazienteNome")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("PU01_PAZI_NOME");
+
+                    b.Property<string>("RichiestaAltro")
+                        .HasMaxLength(2000)
+                        .HasColumnType("character varying(2000)")
+                        .HasColumnName("PU01_RICH_ALTRO");
+
+                    b.Property<int>("RichiestaId")
+                        .HasColumnType("integer")
+                        .HasColumnName("PU01_TCON_RICHIESTA");
+
+                    b.Property<short>("Urgente")
+                        .HasColumnType("smallint")
+                        .HasColumnName("PU01_F_URGENTE");
+
+                    b.Property<int>("UtenteInserimento")
+                        .HasColumnType("integer")
+                        .HasColumnName("PU01_UTINS");
+
+                    b.Property<int?>("UtenteModifica")
+                        .HasColumnType("integer")
+                        .HasColumnName("PU01_UTMOD");
+
+                    b.Property<DateTime?>("Version")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("PU01_VERSION");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("SS_PUA", "HICT");
+                });
+
             modelBuilder.Entity("eDom.Core.Entities.RefreshTokenSession", b =>
                 {
                     b.Property<int>("Id")
@@ -730,7 +865,7 @@ namespace eDom.Infrastructure.Data.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("RUOL_ID");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityAlwaysColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Codice")
                         .IsRequired()
@@ -786,7 +921,7 @@ namespace eDom.Infrastructure.Data.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("RUFU_ID");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityAlwaysColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("DataInserimento")
                         .HasColumnType("timestamp with time zone")
@@ -931,7 +1066,7 @@ namespace eDom.Infrastructure.Data.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("DASH_ID");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityAlwaysColumn(b.Property<int>("Id"));
 
                     b.Property<string>("LayoutJson")
                         .IsRequired()

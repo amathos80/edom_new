@@ -3,6 +3,16 @@
   width: 100%;
 }
 
+.custom-textbox-wrapper {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
 input[pInputText] {
   width: 100%;
+}
+
+.validation-error-text {
+  margin-top: 0.25rem;
 }

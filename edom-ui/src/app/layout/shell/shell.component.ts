@@ -8,13 +8,13 @@ import { AvatarModule } from 'primeng/avatar';
 import { RippleModule } from 'primeng/ripple';
 import { TooltipModule } from 'primeng/tooltip';
 import { PrimeNG } from 'primeng/config';
-import { SelectModule } from 'primeng/select';
 import Aura from '@primeuix/themes/aura';
 import Lara from '@primeuix/themes/lara';
 import Nora from '@primeuix/themes/nora';
 import Material from '@primeuix/themes/material';
 import { AuthService } from '../../core/services/auth.service';
 import { TopMenuComponent } from '../top-menu/top-menu.component';
+import { CustomSelectInputComponent } from '../../features/custom-components/components/custom-select/custom-select.component';
 
 type ThemePresetKey = 'aura' | 'lara' | 'nora' | 'material';
 type ColorScheme = 'light' | 'dark';
@@ -22,7 +22,7 @@ type ColorScheme = 'light' | 'dark';
 @Component({
   selector: 'app-shell',
   standalone: true,
-  imports: [RouterOutlet, RouterLink, RouterLinkActive, FormsModule, ButtonModule, ToolbarModule, AvatarModule, RippleModule, TooltipModule, SelectModule, TopMenuComponent],
+  imports: [RouterOutlet, RouterLink, RouterLinkActive, FormsModule, ButtonModule, ToolbarModule, AvatarModule, RippleModule, TooltipModule, TopMenuComponent, CustomSelectInputComponent],
   templateUrl: './shell.component.html',
   styleUrl: './shell.component.scss'
 })

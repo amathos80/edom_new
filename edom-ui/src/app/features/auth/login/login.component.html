@@ -16,23 +16,24 @@
         <label for="username">Utente</label>
         <app-custom-textbox-input
         [uppercase]="true"
+        [required]="true"
+        [errorMessageKeys]="{ required: 'generico:obbligatorio01' }"
+        [errorMessagePlaceholders]="{}"
           formControlName="username"
           placeholder="Nome utente" />
-        @if (form.get('username')?.touched && form.get('username')?.hasError('required')) {
-          <small class="p-error">Il nome utente è obbligatorio.</small>
-        }
       </div>
 
       <div class="field">
         <label for="password">Password</label>
-        <p-password
+        <app-custom-password-input
           inputId="password"
           formControlName="password"
           [feedback]="false"
           [toggleMask]="true"
           styleClass="w-full"
           inputStyleClass="w-full"
-          autocomplete="current-password" />
+          autocomplete="current-password"
+          [showErrorMessage]="false" />
         @if (form.get('password')?.touched && form.get('password')?.hasError('required')) {
           <small class="p-error">La password è obbligatoria.</small>
         }

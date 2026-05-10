@@ -1,10 +1,23 @@
-<input
-  type="text"
-  pInputText
-  [value]="value"
-  [placeholder]="placeholder"
-  [disabled]="isDisabled"
-  [attr.maxlength]="maxLength ?? null"
-  (input)="handleInput($event)"
-  (blur)="handleBlur()"
-/>
+<div class="custom-textbox-wrapper">
+  <input
+    [type]="type"
+    pInputText
+    [value]="value"
+    [pSize]="size"
+    [variant]="variant"
+    [fluid]="fluid"
+    [invalid]="effectiveInvalid"
+    [placeholder]="placeholder"
+    [readonly]="readonly"
+    [attr.name]="name || null"
+    [disabled]="isDisabled"
+    [class]="styleClass"
+    [attr.maxlength]="maxLength ?? null"
+    (input)="handleInput($event)"
+    (blur)="handleBlur()"
+  />
+
+  @if (activeErrorMessage) {
+    <small class="p-error validation-error-text">{{ activeErrorMessage }}</small>
+  }
+</div>

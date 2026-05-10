@@ -4,19 +4,17 @@ using eDom.Core.Interfaces;
 
 namespace eDom.Application.Features.SistemaMessaggi;
 
-public sealed class GetSistemaMessaggiHandler(IRepository<SistemaMessaggio> repository)
+public sealed class GetSistemaMessaggiHandler(ISistemaMessaggioRepository repository)
     : IRequestHandler<GetSistemaMessaggiQuery, IEnumerable<SistemaMessaggioDto>>
 {
     public async Task<IEnumerable<SistemaMessaggioDto>> HandleAsync(GetSistemaMessaggiQuery query, CancellationToken ct = default)
     {
-        var messaggi = await repository.GetAllAsync(
-            filter: m =>
-                (string.IsNullOrWhiteSpace(query.Classe) || m.Classe.Contains(query.Classe)) &&
-                (string.IsNullOrWhiteSpace(query.Nome) || m.Nome.Contains(query.Nome)) &&
-                (string.IsNullOrWhiteSpace(query.Lingua) || m.Lingua == query.Lingua) &&
-                (!query.SoloAttivi || m.FlagAttivo == 1),
-            orderBy: src => src.OrderBy(m => m.Classe).ThenBy(m => m.Nome).ThenBy(m => m.Lingua),
-            ct: ct);
+        var messaggi = await repository.SearchAsync(
+            query.Classe,
+            query.Nome,
+            query.Lingua,
+            query.SoloAttivi,
+            ct);
 
         return messaggi.Select(m => new SistemaMessaggioDto(
             m.Id,

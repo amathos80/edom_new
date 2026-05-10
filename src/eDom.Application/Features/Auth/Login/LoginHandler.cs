@@ -13,6 +13,7 @@ public sealed class LoginHandler(
     ILogAccessoRepository logAccessoRepository,
     IConfigurazioneRepository configurazioneRepository,
     IRepository<RefreshTokenSession> refreshTokenRepository,
+    IRepository<UserTokenState> userTokenStateRepository,
     IConfiguration configuration)
     : IRequestHandler<LoginCommand, LoginResponse?>
 {
@@ -44,10 +45,12 @@ public sealed class LoginHandler(
         var hashedDefault = HashPassword("1234");
         
         bool mustChangePassword =
-            !utente.UltimoLogin.HasValue ||                                                              // primo accesso
-            (utente.DataScadenzaPassword.HasValue && utente.DataScadenzaPassword.Value.Date < DateTime.UtcNow.Date) || // password scaduta
-            utente.Password == hashedDefault ||                                                         // password default "1234"
-            utente.FlagCambiaPwd == 1;                                                                  // flag esplicito admin
+            !utente.UltimoLogin.HasValue // primo accesso
+            ||                                                              
+            (utente.DataScadenzaPassword.HasValue && utente.DataScadenzaPassword.Value.Date < DateTime.UtcNow.Date) // password scaduta
+            || 
+            (utente.Password == hashedDefault && !utente.Codice.Equals("ADMIN")) || // password default "1234"
+            utente.FlagCambiaPwd == 1; // flag esplicito admin                                                                 
 
         var ruoli = utente.Ruoli;
         var now = DateTime.UtcNow;
@@ -65,6 +68,29 @@ public sealed class LoginHandler(
             ProcedureId = 999999,
             FunzioneId  = 999999
         }, ct);
+
+        // Pulisci lo stato di invalidazione del token (consente al nuovo token di essere valido)
+        // Questo rimuove qualsiasi blocco da logout precedente
+        var states = await userTokenStateRepository.GetAllAsync(filter: s => s.UserId == utente.Id, take: 1, ct: ct);
+        var state = states.FirstOrDefault();
+
+        if (state is null)
+        {
+            await userTokenStateRepository.AddAsync(new UserTokenState
+            {
+                UserId = utente.Id,
+                InvalidBeforeUtc = null,
+                UpdatedAtUtc = now
+            }, ct);
+        }
+        else
+        {
+            state.InvalidBeforeUtc = null;
+            state.UpdatedAtUtc = now;
+            userTokenStateRepository.Update(state);
+        }
+
+        await userTokenStateRepository.SaveChangesAsync(ct);
 
         var (accessToken, accessExpiresAt, _) = AuthTokenFactory.BuildAccessToken(
             configuration,
