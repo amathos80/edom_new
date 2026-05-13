@@ -14,7 +14,18 @@
   color: var(--text-color-secondary, #6b7280);
 }
 
-// Il dialog content deve essere un flex container per passare l'altezza al figlio
+:host.required .lookup-input-wrapper {
+  border-left: 4px solid var(--custom-required-border-color);
+  padding-left: 0.5rem;
+  gap: 0.5rem;
+}
+
+:host ::ng-deep button:disabled {
+  cursor: var(--custom-disabled-cursor);
+  opacity: 0.6;
+}
+
+/* Il dialog content deve essere un flex container per passare l'altezza al figlio */
 :host ::ng-deep .p-dialog-content {
   display: flex;
   flex-direction: column;

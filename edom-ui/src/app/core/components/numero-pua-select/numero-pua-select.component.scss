@@ -1,0 +1,19 @@
+:host {
+  display: inline-block;
+  width: 100%;
+}
+
+.numero-pua-select-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+:host.required .numero-pua-select-wrapper {
+  border-left: 4px solid var(--custom-required-border-color);
+  padding-left: 0.5rem;
+}
+
+.validation-error-text {
+  margin-top: 0.25rem;
+}

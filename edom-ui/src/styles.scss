@@ -1,6 +1,19 @@
 /* PrimeNG Icons */
 @import 'primeicons/primeicons.css';
 
+/* Custom Form Controls - Colors & Theme */
+:root {
+  /* Disabled state */
+  --custom-disabled-bg: #f3f4f6;
+  --custom-disabled-color: #6b7280;
+  --custom-disabled-placeholder-color: #9ca3af;
+  --custom-disabled-cursor: not-allowed;
+
+  /* Required field indicator */
+  --custom-required-bg: #fef3c7;
+  --custom-required-border-color: #fcd34d;
+}
+
 /* Global Layout Fix - Prevent double scrollbars */
 html,
 body {

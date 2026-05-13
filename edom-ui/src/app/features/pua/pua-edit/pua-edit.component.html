@@ -25,11 +25,16 @@
                 </div>
                 <div class="field">
                   <span class="field-label">Numero</span>
-                  <p-inputnumber formControlName="numero" [useGrouping]="false" styleClass="w-full"></p-inputnumber>
+                  <app-custom-inputnumber-input formControlName="numero" 
+                  [disabled]="true"
+                  [useGrouping]="false" styleClass="w-full"></app-custom-inputnumber-input>
                 </div>
                 <div class="field">
                   <span class="field-label">Data</span>
-                  <app-date-input formControlName="data" [allowFuture]="true"></app-date-input>
+                  <app-date-input formControlName="data" 
+                      [required]="true"
+                  [errorMessageKeys]="{  required: 'generico:obbligatorio01' }"
+                  [allowFuture]="true"></app-date-input>
                 </div>
               </div>
             </div>
@@ -45,10 +50,11 @@
                   label="Assistito"
                   placeholder="Cerca assistito..."
                   dialogTitle="Ricerca Assistito"
+                  resultDisplayField="cognome"
                   [disabled]="!!form.get('pazienteSearch')?.disabled"
                   (search)="onPazienteSearchClick()"
                 >
-                  <ng-template appLookupDialogContent let-close="close">
+                  <ng-template appLookupDialogContent let-close="close" let-emitResult="emitResult">
                     <app-anagrafica-search
                       (selectedAssistito)="onAssistitoSelected($event, close)"
                     ></app-anagrafica-search>
@@ -69,27 +75,31 @@
                 </div>
                 <div class="field">
                   <span class="field-label">Nome</span>
-                  <app-custom-textbox-input type="text" formControlName="pazienteNome"></app-custom-textbox-input>
+                  <app-custom-textbox-input [disabled]="true" type="text" formControlName="pazienteNome"></app-custom-textbox-input>
                 </div>
                 <div class="field">
                   <span class="field-label">Cod. Fiscale</span>
-                  <app-custom-textbox-input type="text" formControlName="pazienteCodiceFiscale"></app-custom-textbox-input>
+                  <app-custom-textbox-input [disabled]="true" type="text" formControlName="pazienteCodiceFiscale"></app-custom-textbox-input>
                 </div>
                 <div class="field">
                   <span class="field-label">Data nascita</span>
-                  <app-date-input formControlName="pazienteDataNascita"></app-date-input>
+                  <app-date-input [disabled]="true" formControlName="pazienteDataNascita"></app-date-input>
                 </div>
                 <div class="field">
                   <span class="field-label">Sesso</span>
-                  <app-sesso-select formControlName="uiSesso"></app-sesso-select>
+                  <app-sesso-select  
+                  [required]="true"
+                  [disabled]="true"
+                  [errorMessageKeys]="{  required: 'generico:obbligatorio01' }"
+                   formControlName="uiSesso"></app-sesso-select>
                 </div>
                 <div class="field">
                   <span class="field-label">Email</span>
-                  <app-custom-textbox-input type="text" formControlName="uiEmail"></app-custom-textbox-input>
+                  <app-custom-textbox-input [disabled]="true" type="text" formControlName="uiEmail"></app-custom-textbox-input>
                 </div>
                 <div class="field">
                   <span class="field-label">Telefono</span>
-                  <app-custom-textbox-input type="text" formControlName="uiTelefono1"></app-custom-textbox-input>
+                  <app-custom-textbox-input [disabled]="true" type="text" formControlName="uiTelefono1"></app-custom-textbox-input>
                 </div>
               </div>
             </div>
@@ -102,25 +112,40 @@
                 <div class="grid grid-4">
                   <div class="field">
                     <span class="field-label">Comune</span>
-                    <app-custom-textbox-input type="text" formControlName="uiComuneResidenza"></app-custom-textbox-input>
+                    <app-custom-textbox-input 
+                     [required]="true"
+                      [disabled]="true"
+                     [errorMessageKeys]="{  required: 'generico:obbligatorio01' }"
+                     type="text" formControlName="uiComuneResidenza"></app-custom-textbox-input>
                   </div>
                   <div class="field">
                     <span class="field-label">Indirizzo</span>
-                    <app-custom-textbox-input type="text" formControlName="uiIndirizzoResidenza"></app-custom-textbox-input>
+                    <app-custom-textbox-input 
+                     [disabled]="true"
+                     [required]="true"
+                     [errorMessageKeys]="{  required: 'generico:obbligatorio01' }"
+                     type="text" formControlName="uiIndirizzoResidenza"></app-custom-textbox-input>
                   </div>
                   <div class="field">
                     <span class="field-label">CAP</span>
-                    <app-custom-textbox-input type="text" formControlName="uiCapResidenza"></app-custom-textbox-input>
+                    <app-custom-textbox-input 
+                     [disabled]="true"
+                      [required]="true"
+                      [errorMessageKeys]="{  required: 'generico:obbligatorio01' }"
+                    type="text" formControlName="uiCapResidenza"></app-custom-textbox-input>
                   </div>
                   <div class="field">
                     <span class="field-label">Area</span>
                     <app-custom-select-input
+                     [disabled]="true"
                       formControlName="uiAreaResidenzaId"
                       [options]="areeResidenzaOptions()"
                       optionLabel="label"
                       optionValue="value"
                       [showEmptyOption]="true"
                       styleClass="w-full"
+                      [required]="true"
+                      [errorMessageKeys]="{  required: 'generico:obbligatorio01' }"
                     ></app-custom-select-input>
                   </div>
                 </div>
@@ -133,19 +158,20 @@
                 <div class="grid grid-4">
                   <div class="field">
                     <span class="field-label">Comune</span>
-                    <app-custom-textbox-input type="text" formControlName="uiComuneDomicilio"></app-custom-textbox-input>
+                    <app-custom-textbox-input [disabled]="true" type="text" formControlName="uiComuneDomicilio"></app-custom-textbox-input>
                   </div>
                   <div class="field">
                     <span class="field-label">Indirizzo</span>
-                    <app-custom-textbox-input type="text" formControlName="uiIndirizzoDomicilio"></app-custom-textbox-input>
+                    <app-custom-textbox-input [disabled]="true" type="text" formControlName="uiIndirizzoDomicilio"></app-custom-textbox-input>
                   </div>
                   <div class="field">
                     <span class="field-label">CAP</span>
-                    <app-custom-textbox-input type="text" formControlName="uiCapDomicilio"></app-custom-textbox-input>
+                    <app-custom-textbox-input [disabled]="true" type="text" formControlName="uiCapDomicilio"></app-custom-textbox-input>
                   </div>
                   <div class="field">
                     <span class="field-label">Area</span>
                     <app-custom-select-input
+                      [disabled]="true"
                       formControlName="uiAreaDomicilioId"
                       [options]="areeDomicilioOptions()"
                       optionLabel="label"
@@ -165,19 +191,20 @@
               <div class="grid grid-4">
                 <div class="field">
                   <span class="field-label">Comune</span>
-                  <app-custom-textbox-input type="text" formControlName="uiComuneAltroRecapito"></app-custom-textbox-input>
+                  <app-custom-textbox-input [disabled]="true" type="text" formControlName="uiComuneAltroRecapito"></app-custom-textbox-input>
                 </div>
                 <div class="field">
                   <span class="field-label">Indirizzo</span>
-                  <app-custom-textbox-input type="text" formControlName="uiIndirizzoAltroRecapito"></app-custom-textbox-input>
+                  <app-custom-textbox-input [disabled]="true" type="text" formControlName="uiIndirizzoAltroRecapito"></app-custom-textbox-input>
                 </div>
                 <div class="field">
                   <span class="field-label">CAP</span>
-                  <app-custom-textbox-input type="text" formControlName="uiCapAltroRecapito"></app-custom-textbox-input>
+                  <app-custom-textbox-input [disabled]="true" type="text" formControlName="uiCapAltroRecapito"></app-custom-textbox-input>
                 </div>
                 <div class="field">
                   <span class="field-label">Area</span>
                   <app-custom-select-input
+                    [disabled]="true"
                     formControlName="uiAreaReperibilitaId"
                     [options]="areeReperibilitaOptions()"
                     optionLabel="label"
@@ -188,7 +215,8 @@
                 </div>
                 <div class="field">
                   <span class="field-label">Note</span>
-                  <textarea pTextarea rows="1" formControlName="uiNoteAltroRecapito"></textarea>
+                  <app-custom-textarea-input 
+                  [disabled]="true" [rows]="1" formControlName="uiNoteAltroRecapito"></app-custom-textarea-input>
                 </div>
               </div>
             </div>
@@ -200,19 +228,19 @@
               <div class="grid grid-4">
                 <div class="field">
                   <span class="field-label">Codice</span>
-                  <app-custom-textbox-input type="text" formControlName="uiMedicoCodice"></app-custom-textbox-input>
+                  <app-custom-textbox-input [disabled]="true" type="text" formControlName="uiMedicoCodice"></app-custom-textbox-input>
                 </div>
                 <div class="field">
                   <span class="field-label">Cognome e Nome</span>
-                  <app-custom-textbox-input type="text" formControlName="uiMedicoNominativo"></app-custom-textbox-input>
+                  <app-custom-textbox-input [disabled]="true" type="text" formControlName="uiMedicoNominativo"></app-custom-textbox-input>
                 </div>
                 <div class="field">
                   <span class="field-label">Email</span>
-                  <app-custom-textbox-input type="text" formControlName="uiMedicoEmail"></app-custom-textbox-input>
+                  <app-custom-textbox-input [disabled]="true" type="text" formControlName="uiMedicoEmail"></app-custom-textbox-input>
                 </div>
                 <div class="field">
                   <span class="field-label">Telefono</span>
-                  <app-custom-textbox-input type="text" formControlName="uiMedicoTelefono1"></app-custom-textbox-input>
+                  <app-custom-textbox-input [disabled]="true" type="text" formControlName="uiMedicoTelefono1"></app-custom-textbox-input>
                 </div>
               </div>
             </div>

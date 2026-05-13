@@ -4,28 +4,30 @@
 }
 
 :host.required {
-  border-left: 3px solid var(--custom-required-border-color);
+  border-left: 4px solid var(--custom-required-border-color);
   padding-left: 0.5rem;
 }
 
-.custom-select-wrapper {
+.custom-textarea-wrapper {
   display: flex;
   flex-direction: column;
   width: 100%;
 }
 
-p-select {
+textarea[pTextarea] {
   width: 100%;
 }
 
-:host ::ng-deep .p-select.p-disabled {
-  opacity: 1;
-}
-
-:host ::ng-deep .p-select.p-disabled .p-select-label {
+:host ::ng-deep textarea[pTextarea]:disabled {
   background-color: var(--custom-disabled-bg);
   color: var(--custom-disabled-color);
+  opacity: 1;
   cursor: var(--custom-disabled-cursor);
+  resize: none;
+}
+
+:host ::ng-deep textarea[pTextarea]:disabled::placeholder {
+  color: var(--custom-disabled-placeholder-color);
 }
 
 .validation-error-text {

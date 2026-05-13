@@ -31,7 +31,11 @@ export class ValidationMessageDictionaryService {
     maxLength: 'Il campo non puo superare {maxLength} caratteri.',
     email: 'Inserisci un indirizzo email valido.',
     pattern: 'Il formato inserito non e valido.',
-    number: 'Inserisci un valore numerico valido.'
+    number: 'Inserisci un valore numerico valido.',
+    dateNotAllowedFuture: 'La data non puo essere successiva a oggi ({today}).',
+    dateNotAllowedPast: 'La data non puo essere precedente a oggi ({today}).',
+    dateBeforeMin: 'La data non puo essere precedente a {minDate}.',
+    dateAfterMax: 'La data non puo essere successiva a {maxDate}.'
   };
 
   async loadMessages(): Promise<void> {

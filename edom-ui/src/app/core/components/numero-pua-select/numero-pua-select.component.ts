@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges, forwardRef, inject, signal } from '@angular/core';
+import { Component, HostBinding, Input, OnChanges, OnInit, SimpleChanges, forwardRef, inject, signal } from '@angular/core';
 import {
   AbstractControl,
   ControlValueAccessor,
@@ -19,6 +19,7 @@ import { PuaService } from '../../services/pua.service';
   standalone: true,
   imports: [FormsModule, CustomSelectInputComponent],
   templateUrl: './numero-pua-select.component.html',
+  styleUrls: ['./numero-pua-select.component.scss'],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
@@ -38,15 +39,20 @@ export class NumeroPuaSelectComponent implements ControlValueAccessor, Validator
   private control: AbstractControl | null = null;
 
   @Input() required = false;
+  @Input() disabled = false;
   @Input() errorMessageKeys: Record<string, string> = {};
   @Input() errorMessagePlaceholders: Record<string, unknown> = {};
   @Input() errorMessagePlaceholdersByKey: Record<string, Record<string, unknown>> = {};
+
+  @HostBinding('class.required') get hostClassRequired(): boolean {
+    return this.required;
+  }
 
   readonly options = signal<NumeroPuaDto[]>([]);
   readonly loading = signal(false);
 
   value: number | null = null;
-  disabled = false;
+  isFormDisabled = false;
 
   private onChange: (value: number | null) => void = () => {};
   private onTouched: () => void = () => {};
@@ -82,7 +88,11 @@ export class NumeroPuaSelectComponent implements ControlValueAccessor, Validator
   }
 
   setDisabledState(isDisabled: boolean): void {
-    this.disabled = isDisabled;
+    this.isFormDisabled = isDisabled;
+  }
+
+  get isDisabled(): boolean {
+    return this.disabled || this.isFormDisabled;
   }
 
   validate(control: AbstractControl): ValidationErrors | null {

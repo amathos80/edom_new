@@ -1,0 +1,31 @@
+<div class="custom-inputnumber-wrapper">
+  <p-inputnumber
+    [ngModel]="value"
+    (ngModelChange)="handleValueChange($event)"
+    [useGrouping]="useGrouping"
+    [mode]="mode"
+    [currency]="currency"
+    [locale]="locale"
+    [minFractionDigits]="minFractionDigits"
+    [maxFractionDigits]="maxFractionDigits"
+    [prefix]="prefix"
+    [suffix]="suffix"
+    [min]="min"
+    [max]="max"
+    [step]="step"
+    [showButtons]="showButtons"
+    [variant]="variant"
+    [fluid]="fluid"
+    [invalid]="effectiveInvalid"
+    [placeholder]="placeholder"
+    [readonly]="readonly"
+    [disabled]="isDisabled"
+    [attr.name]="name || null"
+    [styleClass]="styleClass"
+    (onBlur)="handleBlur()"
+  ></p-inputnumber>
+
+  @if (activeErrorMessage) {
+    <small class="p-error validation-error-text">{{ activeErrorMessage }}</small>
+  }
+</div>

@@ -1,20 +1,22 @@
-<app-custom-select-input
-  [options]="options()"
-  [ngModel]="value"
-  (ngModelChange)="onValueChange($event)"
-  optionLabel="codiceAnno"
-  optionValue="id"
-  [loading]="loading()"
-  [disabled]="disabled"
-  [invalid]="effectiveInvalid"
-  [showErrorMessage]="false"
-  [errorMessageKeys]="errorMessageKeys"
-  [errorMessagePlaceholders]="errorMessagePlaceholders"
-  [errorMessagePlaceholdersByKey]="errorMessagePlaceholdersByKey"
-  placeholder="Seleziona tipo/anno..."
-  styleClass="w-full">
-</app-custom-select-input>
+<div class="numero-pua-select-wrapper">
+  <app-custom-select-input
+    [options]="options()"
+    [ngModel]="value"
+    (ngModelChange)="onValueChange($event)"
+    optionLabel="codiceAnno"
+    optionValue="id"
+    [loading]="loading()"
+    [disabled]="isDisabled"
+    [invalid]="effectiveInvalid"
+    [showErrorMessage]="false"
+    [errorMessageKeys]="errorMessageKeys"
+    [errorMessagePlaceholders]="errorMessagePlaceholders"
+    [errorMessagePlaceholdersByKey]="errorMessagePlaceholdersByKey"
+    placeholder="Seleziona tipo/anno..."
+    styleClass="w-full">
+  </app-custom-select-input>
 
-@if (activeErrorMessage) {
-  <small class="p-error validation-error-text">{{ activeErrorMessage }}</small>
-}
+  @if (activeErrorMessage) {
+    <small class="p-error validation-error-text">{{ activeErrorMessage }}</small>
+  }
+</div>

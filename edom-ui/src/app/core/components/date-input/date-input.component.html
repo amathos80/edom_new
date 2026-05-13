@@ -1,9 +1,16 @@
-<p-datepicker
-  [ngModel]="dateValue"
-  (ngModelChange)="onDateChange($event)"
-  (onBlur)="onInputBlur($event)"
-  dateFormat="dd/mm/yy"
-  [showIcon]="true"
-  [disabled]="disabled"
-  styleClass="w-full">
-</p-datepicker>
+<div class="custom-date-wrapper">
+  <p-datepicker
+    [ngModel]="dateValue"
+    (ngModelChange)="onDateChange($event)"
+    (onBlur)="onInputBlur($event)"
+    dateFormat="dd/mm/yy"
+    [showIcon]="true"
+    [disabled]="isDisabled"
+    [invalid]="effectiveInvalid"
+    styleClass="w-full">
+  </p-datepicker>
+
+  @if (activeErrorMessage) {
+    <small class="p-error validation-error-text">{{ activeErrorMessage }}</small>
+  }
+</div>

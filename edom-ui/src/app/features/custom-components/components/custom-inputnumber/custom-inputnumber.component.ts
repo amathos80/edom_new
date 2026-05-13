@@ -1,6 +1,6 @@
 import { Component, EventEmitter, HostBinding, Injector, Input, OnChanges, OnInit, Output, SimpleChanges, forwardRef } from '@angular/core';
-import { AbstractControl, AsyncValidatorFn, ControlValueAccessor, NG_VALUE_ACCESSOR, NgControl, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
-import { InputTextModule } from 'primeng/inputtext';
+import { AbstractControl, AsyncValidatorFn, ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR, NgControl, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import { InputNumberModule } from 'primeng/inputnumber';
 import { ValidationMessageDictionaryService } from '../../../../core/services/validation-message-dictionary.service';
 
 type CustomValidatorEntry = {
@@ -9,24 +9,35 @@ type CustomValidatorEntry = {
 };
 
 @Component({
-  selector: 'app-custom-textbox-input',
+  selector: 'app-custom-inputnumber-input',
   standalone: true,
-  imports: [InputTextModule],
-  templateUrl: './custom-textbox.component.html',
-  styleUrl: './custom-textbox.component.scss',
+  imports: [InputNumberModule, FormsModule],
+  templateUrl: './custom-inputnumber.component.html',
+  styleUrl: './custom-inputnumber.component.scss',
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => CustomTextboxInputComponent),
+      useExisting: forwardRef(() => CustomInputNumberComponent),
       multi: true
     }
   ]
 })
-export class CustomTextboxInputComponent implements ControlValueAccessor, OnInit {
-  @Input() value = '';
+export class CustomInputNumberComponent implements ControlValueAccessor, OnInit, OnChanges {
+  @Input() value: number | null = null;
 
-  // PrimeNG InputText-related properties
-  @Input() type = 'text';
+  // PrimeNG InputNumber-related properties
+  @Input() useGrouping = true;
+  @Input() mode: 'decimal' | 'currency' = 'decimal';
+  @Input() currency: string | undefined;
+  @Input() locale: string | undefined;
+  @Input() minFractionDigits: number | undefined;
+  @Input() maxFractionDigits: number | undefined;
+  @Input() prefix: string | undefined;
+  @Input() suffix: string | undefined;
+  @Input() min: number | undefined;
+  @Input() max: number | undefined;
+  @Input() step = 1;
+  @Input() showButtons = false;
   @Input() variant: 'filled' | 'outlined' | undefined;
   @Input() size: 'small' | 'large' | undefined;
   @Input() fluid = false;
@@ -37,34 +48,27 @@ export class CustomTextboxInputComponent implements ControlValueAccessor, OnInit
 
   // Common field behavior
   @Input() placeholder = '';
-  @Input() uppercase = false;
   @Input() disabled = false;
-  @Input() maxLength: number | null = null;
 
   // Built-in declarative validation
   @Input() required = false;
   @HostBinding('class.required') get hostClassRequired(): boolean {
     return this.required;
   }
-  @Input() minLength: number | null = null;
-  @Input() pattern: string | null = null;
-  @Input() email = false;
-  @Input() number = false;
 
-  // Custom validation (Approach C)
+  // Custom validation
   @Input() customValidators: ValidatorFn[] = [];
   @Input() customAsyncValidators: AsyncValidatorFn[] = [];
   @Input() customValidationType: string | null = null;
   @Input() customValidationMap: Record<string, CustomValidatorEntry> = {};
 
-  // Error message resolution from SI_SISMESS dictionary
+  // Error message resolution
   @Input() showErrorMessage = true;
   @Input() errorMessageKeys: Record<string, string> = {};
   @Input() errorMessagePlaceholders: Record<string, unknown> = {};
   @Input() errorMessagePlaceholdersByKey: Record<string, Record<string, unknown>> = {};
 
-  /** Emette il valore elaborato (utile anche fuori da reactive forms). */
-  @Output() readonly valueChange = new EventEmitter<string>();
+  @Output() readonly valueChange = new EventEmitter<number | null>();
 
   isFormDisabled = false;
 
@@ -72,7 +76,7 @@ export class CustomTextboxInputComponent implements ControlValueAccessor, OnInit
   private baseAsyncValidator: AsyncValidatorFn | null = null;
   private baseValidatorsCaptured = false;
 
-  private onChange: (value: string) => void = () => {};
+  private onChange: (value: number | null) => void = () => {};
   private onTouched: () => void = () => {};
   private disabledByComponent = false;
 
@@ -90,8 +94,6 @@ export class CustomTextboxInputComponent implements ControlValueAccessor, OnInit
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    this.value = this.normalizeValue(this.value);
-
     if (changes['disabled']) {
       this.syncDisabledState();
     }
@@ -101,11 +103,11 @@ export class CustomTextboxInputComponent implements ControlValueAccessor, OnInit
 
   // --- ControlValueAccessor ---
 
-  writeValue(value: string | null): void {
-    this.value = this.normalizeValue(value ?? '');
+  writeValue(value: number | null): void {
+    this.value = value ?? null;
   }
 
-  registerOnChange(fn: (value: string) => void): void {
+  registerOnChange(fn: (value: number | null) => void): void {
     this.onChange = fn;
   }
 
@@ -117,20 +119,16 @@ export class CustomTextboxInputComponent implements ControlValueAccessor, OnInit
     this.isFormDisabled = isDisabled;
 
     if (!isDisabled) {
-      // Reset tracking when the parent form re-enables the control.
       this.disabledByComponent = false;
     }
   }
 
-  // --- template handler ---
+  // --- template handlers ---
 
-  handleInput(event: Event): void {
-    const element = event.target as HTMLInputElement | null;
-    const nextValue = this.normalizeValue(element?.value ?? '');
-
-    this.value = nextValue;
-    this.onChange(nextValue);
-    this.valueChange.emit(nextValue);
+  handleValueChange(value: number | null): void {
+    this.value = value;
+    this.onChange(value);
+    this.valueChange.emit(value);
   }
 
   handleBlur(): void {
@@ -170,10 +168,6 @@ export class CustomTextboxInputComponent implements ControlValueAccessor, OnInit
   hasValidationError(): boolean {
     const control = this.ngControl?.control;
     return !!control && control.invalid && (control.touched || control.dirty);
-  }
-
-  private normalizeValue(value: string): string {
-    return this.uppercase ? value.toUpperCase() : value;
   }
 
   private syncDisabledState(): void {
@@ -221,24 +215,12 @@ export class CustomTextboxInputComponent implements ControlValueAccessor, OnInit
       validators.push(Validators.required);
     }
 
-    if (this.minLength != null) {
-      validators.push(Validators.minLength(this.minLength));
+    if (this.min != null) {
+      validators.push(Validators.min(this.min));
     }
 
-    if (this.maxLength != null) {
-      validators.push(Validators.maxLength(this.maxLength));
-    }
-
-    if (this.pattern) {
-      validators.push(Validators.pattern(this.pattern));
-    }
-
-    if (this.email) {
-      validators.push(Validators.email);
-    }
-
-    if (this.number) {
-      validators.push(this.numberValidator);
+    if (this.max != null) {
+      validators.push(Validators.max(this.max));
     }
 
     validators.push(...this.customValidators);
@@ -264,29 +246,9 @@ export class CustomTextboxInputComponent implements ControlValueAccessor, OnInit
     return validators;
   }
 
-  private readonly numberValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
-    const value = control.value as string | null | undefined;
-    if (value == null || value === '') {
-      return null;
-    }
-
-    return /^\d+$/.test(value) ? null : { number: true };
-  };
-
   private normalizeErrorKey(key: string): string {
-    const lower = key.toLowerCase();
-    if (lower === 'maxlength') {
-      return 'maxLength';
-    }
-
-    if (lower === 'minlength') {
-      return 'minLength';
-    }
-
     return key;
   }
-
-
 
   private buildPlaceholders(errorKey: string, errorValue: unknown): Record<string, unknown> {
     const base = this.extractErrorPlaceholders(errorKey, errorValue);
@@ -300,28 +262,12 @@ export class CustomTextboxInputComponent implements ControlValueAccessor, OnInit
   private extractErrorPlaceholders(errorKey: string, errorValue: unknown): Record<string, unknown> {
     const details = (errorValue as Record<string, unknown> | null) ?? {};
 
-    if (errorKey === 'maxLength') {
-      return {
-        maxLength: details['requiredLength'],
-        requiredLength: details['requiredLength'],
-        actualLength: details['actualLength']
-      };
+    if (errorKey === 'min') {
+      return { min: details['min'], actual: details['actual'] };
     }
 
-    if (errorKey === 'minLength') {
-      return {
-        minLength: details['requiredLength'],
-        requiredLength: details['requiredLength'],
-        actualLength: details['actualLength']
-      };
-    }
-
-    if (errorKey === 'pattern') {
-      return {
-        pattern: details['requiredPattern'],
-        requiredPattern: details['requiredPattern'],
-        actualValue: details['actualValue']
-      };
+    if (errorKey === 'max') {
+      return { max: details['max'], actual: details['actual'] };
     }
 
     return {};

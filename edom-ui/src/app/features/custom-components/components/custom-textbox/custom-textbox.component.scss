@@ -3,6 +3,12 @@
   width: 100%;
 }
 
+:host.required {
+
+  border-left: 3px solid var(--custom-required-border-color);
+  padding-left: 0.5rem;
+}
+
 .custom-textbox-wrapper {
   display: flex;
   flex-direction: column;
@@ -11,6 +17,17 @@
 
 input[pInputText] {
   width: 100%;
+}
+
+:host ::ng-deep input[pInputText]:disabled {
+  background-color: var(--custom-disabled-bg);
+  color: var(--custom-disabled-color);
+  opacity: 1;
+  cursor: var(--custom-disabled-cursor);
+}
+
+:host ::ng-deep input[pInputText]:disabled::placeholder {
+  color: var(--custom-disabled-placeholder-color);
 }
 
 .validation-error-text {

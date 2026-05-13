@@ -1,6 +1,6 @@
 import { Component, EventEmitter, HostBinding, Injector, Input, OnChanges, OnInit, Output, SimpleChanges, forwardRef } from '@angular/core';
 import { AbstractControl, AsyncValidatorFn, ControlValueAccessor, NG_VALUE_ACCESSOR, NgControl, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
-import { InputTextModule } from 'primeng/inputtext';
+import { TextareaModule } from 'primeng/textarea';
 import { ValidationMessageDictionaryService } from '../../../../core/services/validation-message-dictionary.service';
 
 type CustomValidatorEntry = {
@@ -9,26 +9,26 @@ type CustomValidatorEntry = {
 };
 
 @Component({
-  selector: 'app-custom-textbox-input',
+  selector: 'app-custom-textarea-input',
   standalone: true,
-  imports: [InputTextModule],
-  templateUrl: './custom-textbox.component.html',
-  styleUrl: './custom-textbox.component.scss',
+  imports: [TextareaModule],
+  templateUrl: './custom-textarea.component.html',
+  styleUrl: './custom-textarea.component.scss',
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => CustomTextboxInputComponent),
+      useExisting: forwardRef(() => CustomTextareaInputComponent),
       multi: true
     }
   ]
 })
-export class CustomTextboxInputComponent implements ControlValueAccessor, OnInit {
+export class CustomTextareaInputComponent implements ControlValueAccessor, OnInit, OnChanges {
   @Input() value = '';
 
-  // PrimeNG InputText-related properties
-  @Input() type = 'text';
+  // PrimeNG Textarea-related properties
+  @Input() rows = 3;
+  @Input() cols: number | undefined;
   @Input() variant: 'filled' | 'outlined' | undefined;
-  @Input() size: 'small' | 'large' | undefined;
   @Input() fluid = false;
   @Input() invalid = false;
   @Input() readonly = false;
@@ -48,8 +48,6 @@ export class CustomTextboxInputComponent implements ControlValueAccessor, OnInit
   }
   @Input() minLength: number | null = null;
   @Input() pattern: string | null = null;
-  @Input() email = false;
-  @Input() number = false;
 
   // Custom validation (Approach C)
   @Input() customValidators: ValidatorFn[] = [];
@@ -125,7 +123,7 @@ export class CustomTextboxInputComponent implements ControlValueAccessor, OnInit
   // --- template handler ---
 
   handleInput(event: Event): void {
-    const element = event.target as HTMLInputElement | null;
+    const element = event.target as HTMLTextAreaElement | null;
     const nextValue = this.normalizeValue(element?.value ?? '');
 
     this.value = nextValue;
@@ -233,14 +231,6 @@ export class CustomTextboxInputComponent implements ControlValueAccessor, OnInit
       validators.push(Validators.pattern(this.pattern));
     }
 
-    if (this.email) {
-      validators.push(Validators.email);
-    }
-
-    if (this.number) {
-      validators.push(this.numberValidator);
-    }
-
     validators.push(...this.customValidators);
 
     const customByType = this.customValidationType ? this.customValidationMap[this.customValidationType] : undefined;
@@ -264,15 +254,6 @@ export class CustomTextboxInputComponent implements ControlValueAccessor, OnInit
     return validators;
   }
 
-  private readonly numberValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
-    const value = control.value as string | null | undefined;
-    if (value == null || value === '') {
-      return null;
-    }
-
-    return /^\d+$/.test(value) ? null : { number: true };
-  };
-
   private normalizeErrorKey(key: string): string {
     const lower = key.toLowerCase();
     if (lower === 'maxlength') {
@@ -285,8 +266,6 @@ export class CustomTextboxInputComponent implements ControlValueAccessor, OnInit
 
     return key;
   }
-
-
 
   private buildPlaceholders(errorKey: string, errorValue: unknown): Record<string, unknown> {
     const base = this.extractErrorPlaceholders(errorKey, errorValue);

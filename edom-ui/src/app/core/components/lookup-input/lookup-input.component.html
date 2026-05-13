@@ -9,9 +9,10 @@
       [disabled]="false"
       [readonly]="true"
       [placeholder]="placeholder"
-      [ngModel]="value"
+      [ngModel]="displayValue"
       (ngModelChange)="onInput($event)"
       (blur)="onBlur()"
+      [invalid]="effectiveInvalid"
     />
     <p-inputgroup-addon>
       <button
@@ -29,12 +30,16 @@
         type="button"
         icon="pi pi-times"
         severity="secondary"
-        [disabled]="disabled || readonly || !value"
+        [disabled]="disabled || readonly || !displayValue"
         [attr.aria-label]="clearButtonAriaLabel"
         (click)="clearValue()"
       ></button>
     </p-inputgroup-addon>
   </p-inputgroup>
+
+  @if (activeErrorMessage) {
+    <small class="p-error validation-error-text">{{ activeErrorMessage }}</small>
+  }
 </div>
 
 <p-dialog
@@ -50,7 +55,7 @@
   @if (dialogContent) {
     <ng-container
       [ngTemplateOutlet]="dialogContent.templateRef"
-      [ngTemplateOutletContext]="{ close: closeDialog.bind(this), value: value }"
+      [ngTemplateOutletContext]="{ close: closeDialog.bind(this), value: displayValue, emitResult: emitResult.bind(this) }"
     ></ng-container>
   } @else {
     <p class="dialog-empty">Nessun contenuto impostato per la ricerca.</p>

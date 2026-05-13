@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Injector, Input, OnChanges, OnInit, Output, SimpleChanges, forwardRef } from '@angular/core';
+import { Component, EventEmitter, HostBinding, Injector, Input, OnChanges, OnInit, Output, SimpleChanges, forwardRef } from '@angular/core';
 import { AbstractControl, AsyncValidatorFn, ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR, NgControl, ValidatorFn, Validators } from '@angular/forms';
 import { SelectModule } from 'primeng/select';
 import { ValidationMessageDictionaryService } from '../../../../core/services/validation-message-dictionary.service';
@@ -72,6 +72,9 @@ export class CustomSelectInputComponent implements ControlValueAccessor, OnInit,
 
   // Built-in declarative validation
   @Input() required = false;
+  @HostBinding('class.required') get hostClassRequired(): boolean {
+    return this.required;
+  }
 
   // Custom validation
   @Input() customValidators: ValidatorFn[] = [];

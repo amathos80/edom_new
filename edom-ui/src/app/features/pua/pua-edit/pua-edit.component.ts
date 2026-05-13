@@ -24,6 +24,8 @@ import { NumeroPuaSelectComponent } from '../../../core/components/numero-pua-se
 import { DateInputComponent } from '../../../core/components/date-input/date-input.component';
 import { CustomTextboxInputComponent } from '../../custom-components/components/custom-textbox/custom-textbox.component';
 import { CustomSelectInputComponent } from '../../custom-components/components/custom-select/custom-select.component';
+import { CustomTextareaInputComponent } from '../../custom-components/components/custom-textarea/custom-textarea.component';
+import { CustomInputNumberComponent } from "../../custom-components/components/custom-inputnumber/custom-inputnumber.component";
 
 type PuaTab = 'dati-generali' | 'gestione-domanda';
 type AreaOption = { label: string; value: number };
@@ -48,8 +50,10 @@ type AreaOption = { label: string; value: number };
     DateInputComponent,
     CustomTextboxInputComponent,
     CustomSelectInputComponent,
-    TextareaModule
-  ],
+    TextareaModule,
+    CustomTextareaInputComponent,
+    CustomInputNumberComponent
+],
   providers: [MessageService, ConfirmationService],
   templateUrl: './pua-edit.component.html',
   styleUrl: './pua-edit.component.scss'
@@ -74,10 +78,10 @@ export class PuaEditComponent implements OnInit {
 
   readonly form = this.fb.nonNullable.group({
     numeroPuaId: [null as number | null],
-    numero: [{ value: null as number | null, disabled: true }],
-    data: ['', Validators.required],
+    numero: [  null as number | null],
+    data: [''],
 
-    pazienteId: [0, [Validators.required, Validators.min(1)]],
+    pazienteId: [0],
     pazienteCognome: [''],
     pazienteNome: [{ value: '', disabled: true }, [Validators.required, Validators.maxLength(100)]],
     pazienteCodiceFiscale: [{ value: '', disabled: true }, Validators.maxLength(20)],
