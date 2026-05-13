@@ -18,6 +18,7 @@ import { PuaService } from '../../../core/services/pua.service';
 import { PazientiService } from '../../../core/services/pazienti.service';
 import { LookupInputComponent } from '../../../core/components/lookup-input/lookup-input.component';
 import { LookupDialogContentDirective } from '../../../core/components/lookup-input/lookup-dialog-content.directive';
+import { LookupFieldMapping, LookupSelectionEvent } from '../../../core/components/lookup-input/lookup.types';
 import { AnagraficaSearchComponent, AnagraficaSearchResult } from '../anagrafica-search/anagrafica-search.component';
 import { SessoSelectComponent } from '../../../core/components/sesso-select/sesso-select.component';
 import { NumeroPuaSelectComponent } from '../../../core/components/numero-pua-select/numero-pua-select.component';
@@ -75,6 +76,35 @@ export class PuaEditComponent implements OnInit {
   readonly areeResidenzaOptions = signal<AreaOption[]>([]);
   readonly areeDomicilioOptions = signal<AreaOption[]>([]);
   readonly areeReperibilitaOptions = signal<AreaOption[]>([]);
+  readonly pazienteLookupFieldMappings: LookupFieldMapping = {
+    id: 'pazienteId',
+    cognome: 'pazienteCognome',
+    nome: 'pazienteNome',
+    codiceFiscale: 'pazienteCodiceFiscale',
+    dataNascita: 'pazienteDataNascita',
+    sesso: 'uiSesso',
+    email: 'uiEmail',
+    telefono1: 'uiTelefono1',
+    telefono2: 'uiTelefono2',
+    comuneResidenzaDescr: 'uiComuneResidenza',
+    indirizzoResidenza: 'uiIndirizzoResidenza',
+    capResidenza: 'uiCapResidenza',
+    areaResidenzaId: 'uiAreaResidenzaId',
+    comuneDomicilioDescr: 'uiComuneDomicilio',
+    indirizzoDomicilio: 'uiIndirizzoDomicilio',
+    capDomicilio: 'uiCapDomicilio',
+    areaDomicilioId: 'uiAreaDomicilioId',
+    comuneReperibilitaDescr: 'uiComuneAltroRecapito',
+    indirizzoReperibilita: 'uiIndirizzoAltroRecapito',
+    capReperibilita: 'uiCapAltroRecapito',
+    areaReperibilitaId: 'uiAreaReperibilitaId',
+    medicoCodice: 'uiMedicoCodice',
+    medicoNominativo: 'uiMedicoNominativo',
+    medicoEmail: 'uiMedicoEmail',
+    medicoTelefono1: 'uiMedicoTelefono1',
+    medicoTelefono2: 'uiMedicoTelefono2',
+    nomeCompleto: 'pazienteSearch'
+  };
 
   readonly form = this.fb.nonNullable.group({
     numeroPuaId: [null as number | null],
@@ -191,38 +221,24 @@ export class PuaEditComponent implements OnInit {
     console.log('User initiated paziente search');
   }
 
-  onAssistitoSelected(paziente: AnagraficaSearchResult, closeDialog: () => void): void {
-    // Close dialog immediately
+  onAssistitoSelected(event: LookupSelectionEvent<Record<string, unknown>>): void {
+    this.populateForm(event.raw as unknown as PazientePuaData);
+  }
+
+  onAssistitoFromAnagrafeSelected(paziente: AnagraficaSearchResult, closeDialog: () => void): void {
     closeDialog();
 
-    // Check if patient comes from V_ANAGRAFE_ASSISTITI (codice is empty)
-    if (!paziente.codice || paziente.codice.trim() === '') {
-      // Patient from V_ANAGRAFE_ASSISTITI - show confirmation before creating
-      this.confirm.confirm({
-        message: "Attenzione, il paziente è stato prelevato nell'anagrafe assistiti. Verrà creata un'analoga voce nell'anagrafe pazienti al salvataggio.",
-        header: 'Creazione Paziente',
-        icon: 'pi pi-exclamation-triangle',
-        accept: () => {
-          this.createPazienteFromAnagrafe(paziente.id);
-        },
-        reject: () => {
-          // Do nothing
-        }
-      });
-    } else {
-      // Normal patient from CO_PAZIENTI - fetch full details with resolved lookups
-      this.loading.set(true);
-      this.pazientiService.getPuaData(paziente.id).subscribe({
-        next: (data: PazientePuaData) => {
-          this.populateForm(data);
-          this.loading.set(false);
-        },
-        error: () => {
-          this.msg.add({ severity: 'error', summary: 'Errore', detail: 'Impossibile caricare i dati del paziente.' });
-          this.loading.set(false);
-        }
-      });
-    }
+    this.confirm.confirm({
+      message: "Attenzione, il paziente è stato prelevato nell'anagrafe assistiti. Verrà creata un'analoga voce nell'anagrafe pazienti al salvataggio.",
+      header: 'Creazione Paziente',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        this.createPazienteFromAnagrafe(paziente.id);
+      },
+      reject: () => {
+        // Do nothing
+      }
+    });
   }
 
   private createPazienteFromAnagrafe(assistitoId: number): void {

@@ -10,6 +10,8 @@ import { TagModule } from 'primeng/tag';
 import { CustomTextboxInputComponent } from '../../custom-components/components/custom-textbox/custom-textbox.component';
 import { DateInputComponent } from '../../../core/components/date-input/date-input.component';
 import { AssistitiService } from '../../../core/services/assistiti.service';
+import { PazientiService } from '../../../core/services/pazienti.service';
+import { PazientePuaData } from '../../../core/models/paziente.model';
 
 export interface AnagraficaSearchFilters {
   cognome?: string;
@@ -39,8 +41,10 @@ const PAGE_SIZE = 20;
 })
 export class AnagraficaSearchComponent {
   private readonly assistitiService = inject(AssistitiService);
+  private readonly pazientiService = inject(PazientiService);
 
   @Output() readonly selectedAssistito = new EventEmitter<AnagraficaSearchResult>();
+  @Output() readonly selectedPazientePuaData = new EventEmitter<PazientePuaData>();
 
   readonly loading = signal(false);
   readonly pageSize = signal(PAGE_SIZE);
@@ -75,7 +79,21 @@ export class AnagraficaSearchComponent {
   }
 
   choose(row: AnagraficaSearchResult): void {
-    this.selectedAssistito.emit(row);
+    if (!row.codice || row.codice.trim() === '') {
+      this.selectedAssistito.emit(row);
+      return;
+    }
+
+    this.loading.set(true);
+    this.pazientiService.getPuaData(row.id).subscribe({
+      next: (data: PazientePuaData) => {
+        this.selectedPazientePuaData.emit(data);
+        this.loading.set(false);
+      },
+      error: () => {
+        this.loading.set(false);
+      }
+    });
   }
 
   private loadPage(page: number, pageSize: number = PAGE_SIZE): void {

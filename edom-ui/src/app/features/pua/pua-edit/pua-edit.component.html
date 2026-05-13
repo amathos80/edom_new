@@ -51,12 +51,15 @@
                   placeholder="Cerca assistito..."
                   dialogTitle="Ricerca Assistito"
                   resultDisplayField="cognome"
+                  [fieldMappings]="pazienteLookupFieldMappings"
                   [disabled]="!!form.get('pazienteSearch')?.disabled"
                   (search)="onPazienteSearchClick()"
+                  (selectedResult)="onAssistitoSelected($event)"
                 >
                   <ng-template appLookupDialogContent let-close="close" let-emitResult="emitResult">
                     <app-anagrafica-search
-                      (selectedAssistito)="onAssistitoSelected($event, close)"
+                      (selectedAssistito)="onAssistitoFromAnagrafeSelected($event, close)"
+                      (selectedPazientePuaData)="emitResult($event); close()"
                     ></app-anagrafica-search>
                   </ng-template>
                 </app-lookup-input>
